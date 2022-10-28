@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 
-from rects import Rects
+from grading.rects import Rects
 
 #------------------------------------------------------------------------------#
 def create_mask():

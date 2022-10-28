@@ -3,12 +3,13 @@
 
 import fitz
 
-from registration  import Registration
-from progress_bar  import print_progress_bar
-from tools         import pix_to_gray_image
-from page_ena      import PageENA
-from collect_marks import collect_marks
-from answers_key   import AnswersKey
+from grading.registration  import Registration
+from grading.tools         import pix_to_gray_image
+from grading.page_ena      import PageENA
+from grading.collect_marks import collect_marks
+from grading.answers_key   import AnswersKey
+
+from progress_bar import print_progress_bar
 
 _DPI        = 300
 _COLORSPACE = "GRAY"

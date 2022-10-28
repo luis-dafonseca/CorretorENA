@@ -6,7 +6,7 @@ import cv2
 import io
 import numpy as np
 
-from rects import Rects
+from grading.rects import Rects
 
 BLACK   = (0,0,0)
 WHITE   = (1,1,1)

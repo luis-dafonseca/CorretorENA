@@ -1,7 +1,8 @@
 #------------------------------------------------------------------------------#
 
 import numpy as np
-from rects import Rects
+
+from grading.rects import Rects
 
 #------------------------------------------------------------------------------#
 def _is_entry_marked( array, ii, jj ):

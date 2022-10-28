@@ -5,60 +5,37 @@ import os
 import sys
 import fitz
 
-from registration import Registration
-from progress_bar import print_progress_bar
-from tools        import pix_to_gray_image
-from enapage      import ENAPage
+from grade_exam  import grade_exam
+from answers_key import AnswersKey
 
-pdf_dir = "../pdf/"
+#------------------------------------------------------------------------------#
 
-if len(sys.argv) == 1:
-    src_name = pdf_dir + "small.pdf"
-else:
-    src_name = sys.argv[1]
+pdf_dir = "../../pdf/"
 
-mod_name = pdf_dir + "modelo.pdf"
+fname = pdf_dir + "small.pdf" if len(sys.argv) < 2 else sys.argv[1]
 
-name = os.path.basename(src_name)
+name = os.path.basename(fname)
 name = os.path.splitext(name)[0]
 
-dst_name = f'{name}-anotacoes.pdf'
+model_name       = pdf_dir + "modelo.pdf"
+answers_name     = fname
+annotations_name = f'{name}-anotacoes.pdf'
+grades_name      = f'{name}-notas.xls'
 
 #------------------------------------------------------------------------------#
 
-mod_pdf = fitz.open(mod_name)
-mod_pag = mod_pdf[0]
-mod_pix = mod_pag.get_pixmap( dpi=300, colorspace="GRAY" )
-mod_img = pix_to_gray_image( mod_pix )
-mod_pdf.close()
+model_pdf       = fitz.open(model_name)
+answers_pdf     = fitz.open(answers_name)
+annotations_pdf = fitz.open()
+grades_xls      = None
 
-reg = Registration( mod_img )
+answers_key = AnswersKey('d e b b e a a e b b d c d b c c b e e b a a a e e b e b d d')
 
-#------------------------------------------------------------------------------#
+grade_exam( model_pdf, answers_key, answers_pdf, annotations_pdf, grades_xls )
 
-src_pdf = fitz.open(src_name)
-dst_pdf = fitz.open()
-
-L = src_pdf.page_count
-print_progress_bar( 0, L, fill='*' )
-
-for ii, src_pag in enumerate(src_pdf):
-
-    src_pix = src_pag.get_pixmap( dpi=300, colorspace="GRAY" ) 
-    src_img = pix_to_gray_image( src_pix )
-
-    img = reg.transform( src_img )
-
-    page = ENAPage( dst_pdf )
-    page.insert_image( img )
-    page.write_name ( "Nome Nome Nome Nome Nome Nome Nome" )
-    page.write_score( 10*ii )
-    page.draw_rects( True )
-
-    page.commit()
-
-    print_progress_bar( ii+1, L, fill='*' )
-
-dst_pdf.save(dst_name)
+model_pdf.close()
+answers_pdf.close()
+annotations_pdf.save(annotations_name)
+# close grades_xls
 
 #------------------------------------------------------------------------------#

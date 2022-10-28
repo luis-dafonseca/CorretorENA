@@ -8,8 +8,15 @@ import numpy as np
 
 from rects import Rects
 
+BLACK   = (0,0,0)
+WHITE   = (1,1,1)
+RED     = (1,0,0)
+GREEN   = (0,1,0)
+BLUE    = (0,0,1)
+MAGENTA = (1,0,1)
+
 #------------------------------------------------------------------------------#
-class ENAPage:
+class PageENA:
 
     #--------------------------------------------------------------------------#
     def __init__( self, pdf_doc):
@@ -21,9 +28,9 @@ class ENAPage:
         self.shape = self.page.new_shape()
 
     #--------------------------------------------------------------------------#
-    def insert_image( self, img ):
+    def insert_image( self, image ):
 
-        is_success, buffer = cv2.imencode(".png", img)
+        is_success, buffer = cv2.imencode( ".png", image )
 
         self.page.insert_image( self.page_rect, stream=io.BytesIO(buffer) )
 
@@ -32,35 +39,57 @@ class ENAPage:
         self.shape.commit()
 
     #--------------------------------------------------------------------------#
-    def write_name( self, name ):
+    def insert_name( self, name ):
     
         R = Rects.name()
         self.shape.draw_rect( R )
-        self.shape.finish( color=(1,1,1), fill=(1,1,1) ) 
+        self.shape.finish( color=WHITE, fill=WHITE ) 
 
-        self.shape.insert_textbox( R, 
-                                   name,
+        self.shape.insert_textbox( R, name, color=BLUE,
                                    fontsize=int( 0.7*R.height ),
-                                   color=(0,0,1),
                                    align=fitz.TEXT_ALIGN_LEFT )
-        self.shape.finish( color=(0,0,1) ) 
+        self.shape.finish() 
 
     #--------------------------------------------------------------------------#
-    def write_score( self, score ):
-    
-        R = Rects.full_score()
-        
-        C = (0,0,1) if score >= 15 else (1,0,0)
+    def insert_grades( self, grades ):
 
-        self.shape.insert_textbox( R, 
-                                   str(score), 
+        for ii in range(30):
+
+            R = Rects.grade_entry(ii)
+            N = grades.Q[ii]
+            C = BLUE if N else RED
+
+            self.shape.insert_textbox( R, str(N), color=C,
+                                       fontsize=int( 0.9*R.height ),
+                                       align=fitz.TEXT_ALIGN_CENTER )
+    
+        R = Rects.full_grade()
+        T = grades.T
+        C = BLUE if T >= 15 else RED
+
+        self.shape.insert_textbox( R, str(T), color=C,
                                    fontsize=int( 0.9*R.height ),
-                                   color=C,
                                    align=fitz.TEXT_ALIGN_RIGHT )
-        self.shape.finish( color=C ) 
+
+        self.shape.finish() 
+
+    #--------------------------------------------------------------------------#
+    def insert_marks( self, marks, grades ):
+
+        for ii in [ kk for kk, N in enumerate(grades.Q) if N == 1 ]:
+            for jj in marks[ii]:
+                self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
+
+        self.shape.finish( width=5, color=BLUE ) 
+
+        for ii in [ kk for kk, N in enumerate(grades.Q) if N == 0 ]:
+             for jj in marks[ii]:
+                     self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
+
+        self.shape.finish( width=5, color=RED ) 
     
     #--------------------------------------------------------------------------#
-    def draw_rects( self, all_rects=False ):
+    def insert_rects( self, all_rects=False ):
     
         if all_rects:
     
@@ -74,25 +103,25 @@ class ENAPage:
             self.shape.finish( width=5, color=(0,0,1) ) 
     
             # Answers box
-            self.shape.draw_rect( Rects.answers_box_left () )
-            self.shape.draw_rect( Rects.answers_box_right() )
+            self.shape.draw_rect( Rects.marks_box_left () )
+            self.shape.draw_rect( Rects.marks_box_right() )
             self.shape.finish( width=5, color=(0,1,0) ) 
     
             # Scores box
-            self.shape.draw_rect( Rects.scores_box_left () )
-            self.shape.draw_rect( Rects.scores_box_right() )
+            self.shape.draw_rect( Rects.grades_box_left () )
+            self.shape.draw_rect( Rects.grades_box_right() )
             self.shape.finish( width=5, color=(0,1,0) ) 
     
             # Score entryes
             for ii in range(30):
-                self.shape.draw_rect( Rects.score_entry(ii) )
-            self.shape.draw_rect( Rects.full_score() )
+                self.shape.draw_rect( Rects.grade_entry(ii) )
+            self.shape.draw_rect( Rects.full_grade() )
             self.shape.finish( width=5, color=(1,0,0) ) 
     
         # Answer and Score entryes
         for ii in range(30):
             for jj in range(5):
-                self.shape.draw_rect( Rects.answer_entry( ii, jj ) )
+                self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
         self.shape.finish( width=5, color=(0,0,1) ) 
     
         # Absent and eliminated

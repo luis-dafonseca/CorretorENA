@@ -32,7 +32,7 @@ class Rects:
         return rects
 
     #--------------------------------------------------------------------------#
-    def answers_box_left():
+    def marks_box_left():
         x =  300
         y = 1840
         w =  698
@@ -40,7 +40,7 @@ class Rects:
         return fitz.IRect( x, y, x+w, y+h )
     
     #--------------------------------------------------------------------------#
-    def answers_box_right():
+    def marks_box_right():
         x = 1483
         y = 1840
         w =  698
@@ -48,7 +48,7 @@ class Rects:
         return fitz.IRect( x, y, x+w, y+h )
     
     #--------------------------------------------------------------------------#
-    def scores_box_left():
+    def grades_box_left():
         x = 1040
         y = 1840
         w =  106
@@ -56,7 +56,7 @@ class Rects:
         return fitz.IRect( x, y, x+w, y+h )
     
     #--------------------------------------------------------------------------#
-    def scores_box_right():
+    def grades_box_right():
         x = 2222
         y = 1840
         w =  106
@@ -64,21 +64,23 @@ class Rects:
         return fitz.IRect( x, y, x+w, y+h )
     
     #--------------------------------------------------------------------------#
-    def score_entry( N ):
+    def grade_entry( N ):
 
         h = 56
         l = 83.6
 
         if N <=14:
-            box = Rects.scores_box_left()
+            box = Rects.grades_box_left()
             ii = N
         else:
-            box = Rects.scores_box_right()
+            box = Rects.grades_box_right()
             ii = N - 15 
 
         rect = box
 
-        y = rect.y0 + ii * l
+        TEXT_BASE_LINE = 7
+
+        y = rect.y0 + ii * l - TEXT_BASE_LINE
 
         rect.y0 = int( y )
         rect.y1 = int( y + h )
@@ -86,7 +88,7 @@ class Rects:
         return rect
     
     #--------------------------------------------------------------------------#
-    def answer_entry( N, jj ):
+    def mark_entry( N, jj ):
 
         he = 56
         hl = 83.6
@@ -94,10 +96,10 @@ class Rects:
         wc = 148
 
         if N <=14:
-            box = Rects.answers_box_left()
+            box = Rects.marks_box_left()
             ii = N
         else:
-            box = Rects.answers_box_right()
+            box = Rects.marks_box_right()
             ii = N - 15 
 
         rect = box
@@ -137,9 +139,9 @@ class Rects:
         return fitz.IRect( x, y, x+w, y+h )
     
     #--------------------------------------------------------------------------#
-    def full_score():
+    def full_grade():
         x = 1780
-        y = 3106
+        y = 3100
         w =  100
         h =   80
         return fitz.IRect( x, y, x+w, y+h )

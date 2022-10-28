@@ -3,10 +3,10 @@ all:
 
 
 clean:
-	-@ rm -v *.png
-	-@ rm -v *.pdf
+	-@ rm -fv *.png
+	-@ rm -fv *.pdf
 
 distclean: clean
-	-@ rm -rv __pycache__
+	-@ rm -frv __pycache__
 
 .PHONY: clean distclean

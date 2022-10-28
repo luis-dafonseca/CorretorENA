@@ -18,11 +18,9 @@ class AnswersKey:
 
             K = ("".join(keys.split())).upper()
 
-            print(K)
-
             self.keys = []
             for C in K:
-                self.keys.append( 'ABCDE'.index(C) )
+                self.keys.append( 'XABCDE'.index(C)-1 )
 
         else:
             self.keys = keys
@@ -35,13 +33,17 @@ class AnswersKey:
         for ii in range(30):
     
             M = marks[ii]
-    
-            if len(M) != 1:
-                N = 0
-            elif M[0] == self.keys[ii]:
-                N = 1 
+
+            if self.keys[ii] == -1:
+                N = 1
+
             else:
-                N = 0
+                if len(M) != 1:
+                    N = 0
+                elif M[0] == self.keys[ii]:
+                    N = 1 
+                else:
+                    N = 0
     
             grades.Q[ii] = N
             grades.T    += N

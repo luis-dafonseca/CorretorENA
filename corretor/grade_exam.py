@@ -14,14 +14,6 @@ _DPI        = 300
 _COLORSPACE = "GRAY"
 
 #------------------------------------------------------------------------------#
-def xls_get_name( xls, ii ):
-    return f'Candidato {ii}'
-
-#------------------------------------------------------------------------------#
-def xls_save_grade( xls, grade ):
-    pass
-
-#------------------------------------------------------------------------------#
 def create_model_registration( model_pdf ):
 
     page = model_pdf[0]
@@ -54,12 +46,13 @@ def grade_exam( model_pdf,
         marks  = collect_marks( image )
         grades = answers_key.check( marks )
 
-        xls_save_grade( grades_xls, grades )
+        grades_xls.save_grade( ii, grades.T )
     
         page = PageENA( annotations_pdf )
 
         page.insert_image ( image )
-        page.insert_name  ( xls_get_name( grades_xls, ii ) )
+        page.insert_name  ( grades_xls.get_name(ii) )
+        page.insert_annul ( answers_key.keys )
         page.insert_marks ( marks, grades )
         page.insert_grades( grades )
 

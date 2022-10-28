@@ -87,6 +87,23 @@ class PageENA:
                      self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
 
         self.shape.finish( width=5, color=RED ) 
+
+    #--------------------------------------------------------------------------#
+    def insert_annul( self, keys ):
+
+        for ii in [ kk for kk, N in enumerate(keys) if N == -1 ]:
+                
+            R1 = Rects.mark_entry( ii, 0 )
+            R2 = Rects.mark_entry( ii, 4 )
+
+            P1 = [ R1.x0, (R1.y0+R1.y1)/2 ]
+            P2 = [ R2.x1, (R2.y0+R2.y1)/2 ]
+
+            B = R1.height/5
+
+            self.shape.draw_squiggle(P1, P2, breadth=B )
+
+        self.shape.finish( width=5, color=MAGENTA, closePath=False) 
     
     #--------------------------------------------------------------------------#
     def insert_rects( self, all_rects=False ):

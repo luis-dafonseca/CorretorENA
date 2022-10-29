@@ -9,8 +9,6 @@ from grading.page_ena      import PageENA
 from grading.collect_marks import collect_marks
 from grading.answers_key   import AnswersKey
 
-from progress_bar import print_progress_bar
-
 _DPI        = 300
 _COLORSPACE = "GRAY"
 
@@ -30,13 +28,12 @@ def grade_exam( model_pdf,
                 answers_key, 
                 answers_pdf, 
                 annotations_pdf, 
-                grades_xls ):
+                grades_xls,
+                progress_bar):
 
     reg = create_model_registration( model_pdf )
 
-    n_pages = answers_pdf.page_count
-
-    print_progress_bar( 0, n_pages, fill='*' )
+    progress_bar.start( answers_pdf.page_count )
     
     for ii, original_page in enumerate(answers_pdf):
     
@@ -59,6 +56,6 @@ def grade_exam( model_pdf,
 
         page.commit()
     
-        print_progress_bar( ii+1, n_pages, fill='*' )
+        progress_bar.step()
 
 #------------------------------------------------------------------------------#

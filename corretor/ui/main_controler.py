@@ -2,8 +2,12 @@
 
 import os
 
-from PySide6.QtWidgets import QApplication, QFileDialog, QSizePolicy
-from ui.main_uimodel   import MainUIModel
+from PySide6.QtWidgets  import QApplication, QDialog, QFileDialog, QSizePolicy, QMessageBox
+from ui.main_uimodel    import MainUIModel
+from ui.show_names      import show_names_window
+
+_DEBUG=False
+_DEBUG=True
 
 #------------------------------------------------------------------------------#
 def _get_open_pdf( parent, title, directoty ):
@@ -82,6 +86,37 @@ class MainControler:
         self._ui.progressBar.setSizePolicy( size_policy )
         self._ui.progressBar.hide()
 
+        # DEBUG
+        #----------------------------------------------------------------------#
+        if _DEBUG:
+
+            fname = './modelo.pdf'
+            self._ui.labelModelFileName.setText( fname )
+            self._uimodel.set_model( fname )
+
+            fname = './exemplo.pdf'
+            self._ui.labelAnswersFileName.setText( fname )
+            self._uimodel.set_answers( fname  )
+
+            fname = './exemplo.xlsx'
+            first_name = 'A2'
+            self._ui.labelNamesFileName.setText( fname )
+            self._uimodel.set_names( fname, first_name )
+
+            fname = './exemplo-notas.xlsx'
+            self._ui.labelOutputGradesFileName.setText( fname )
+            self._uimodel.set_grades( fname )
+
+            fname = './exemplo-anotacoes.pdf'
+            self._ui.labelOutputAnnotationsFileName.setText(fname)
+            self._uimodel.set_annotations( fname )
+
+            keys = 'C B E A C B E D C B E E A D C C D B A D A D A C D E A E B D'
+            self._ui.lineEditKeys.setText( keys )
+            self._uimodel.set_keys( keys )
+
+            self._update()
+
     #--------------------------------------------------------------------------#
     def _connectSignalsAndSlots(self):
 
@@ -143,8 +178,16 @@ class MainControler:
 
     #--------------------------------------------------------------------------#
     def _run(self):
+        
         self._ui.progressBar.show()
         self._uimodel.run()
+        self._ui.progressBar.hide()
+
+        msg = QMessageBox(self._win)
+        msg.setIcon(QMessageBox.Information)
+        msg.setText("Corretor ENA: Correção Concluída                         ")
+        msg.setWindowTitle("Corretor ENA - Conclusão")
+        msg.show()
 
     #--------------------------------------------------------------------------#
     def _about(self):
@@ -229,16 +272,16 @@ class MainControler:
             self._update()
 
     #--------------------------------------------------------------------------#
-    def _model_show(self):
-        print('<model_show> not yet implemented!')
-
-    #--------------------------------------------------------------------------#
     def _keys_edit(self):
 
         keys = 'C B E A C B E D C B E E A D C C D B A D A D A C D E A E B D'
 
         self._ui.lineEditKeys.setText( keys )
         self._uimodel.set_keys( keys )
+
+    #--------------------------------------------------------------------------#
+    def _model_show(self):
+        print('<model_show> not yet implemented!')
 
     #--------------------------------------------------------------------------#
     def _keys_show(self):
@@ -250,6 +293,11 @@ class MainControler:
 
     #--------------------------------------------------------------------------#
     def _names_show(self):
-        print('<_names_show> not yet implemented!')
+
+        filename   = self._ui.labelNamesFileName  .text()
+        first_name = self._ui.lineEditNameFistName.text()
+        names      = self._uimodel.names
+
+        show_names_window( self._win, filename, first_name, names )
 
 #------------------------------------------------------------------------------#

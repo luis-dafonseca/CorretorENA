@@ -7,7 +7,9 @@ from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 class XLSGrades:
 
     #--------------------------------------------------------------------------#
-    def __init__(self, fname=None, cell='A2'):
+    def __init__(self, fname):
+
+        self.fname = fname
 
         self.wb    = Workbook()
         self.sheet = self.wb.active
@@ -15,52 +17,53 @@ class XLSGrades:
         self.sheet['A1'] = 'Nome'
         self.sheet['B1'] = 'Nota'
 
-        if fname:
+        self.has_names = False
 
-            input_xls   = load_workbook(fname)
-            input_sheet = input_xls.active
+    #--------------------------------------------------------------------------#
+    def add_names(self, names):
+        
+        for rr, name in enumerate(names):
+            self.sheet.cell(row=rr+2,column=1).value = name
 
-            xy = coordinate_from_string(cell) 
-            cc = column_index_from_string(xy[0])
-            ll = xy[1]
+        self.has_names = True
 
-            for rr, row in enumerate( input_sheet.iter_rows( min_row=ll, values_only=True )):
+    #--------------------------------------------------------------------------#
+    def read_names(self, fname, first_name):
 
-                self.sheet.cell(row=rr+2,column=1).value = row[cc-1]
+        xls   = load_workbook(fname)
+        sheet = xls.active
 
-            input_xls.close()
+        xy = coordinate_from_string(first_name) 
+        cc = column_index_from_string(xy[0]) - 1
+        ll = xy[1]
+
+        for rr, row in enumerate( sheet.iter_rows( min_row=ll, values_only=True )):
+
+            self.sheet.cell(row=rr+2,column=1).value = row[cc]
+
+        xls.close()
+
+        self.has_names = True
 
     #--------------------------------------------------------------------------#
     def get_name(self, ii):
-        return str(self.sheet.cell(row=ii+2, column=1).value)
+
+        if self.has_names:
+            return str(self.sheet.cell(row=ii+2, column=1).value)
+        else:
+            return str(f'Candidato {ii+1}')
     
     #--------------------------------------------------------------------------#
-    def save_grade(self, ii, grade):
-        if not self.sheet.cell(row=ii+2, column=1).value:
-            self.sheet.cell(row=ii+2, column=1).value = ii+1
+    def add_grade(self, ii, grade):
+
+        if not self.has_names:
+            self.sheet.cell(row=ii+2, column=1).value = str(f'Candidato {ii+1}')
 
         self.sheet.cell(row=ii+2, column=2).value = grade
 
     #--------------------------------------------------------------------------#
-    def save(self, fname):
-        self.wb.save( fname )
+    def save(self):
+        self.wb.save( self.fname )
 
 #------------------------------------------------------------------------------#
 
-if __name__ == "__main__":
-
-    xls = XLSGrades()
-
-    for ii in range(10):
-        xls.save_grade( ii, 100+ii )
-
-    xls.save('test-1.xlsx')
-
-    xls = XLSGrades('../../pdf/exemplo.xlsx', 'A2')
-
-    for ii in range(10):
-        xls.save_grade( ii, 100+ii )
-
-    xls.save('test-2.xlsx')
-
-#------------------------------------------------------------------------------#

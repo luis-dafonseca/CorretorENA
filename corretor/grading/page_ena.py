@@ -21,10 +21,20 @@ class PageENA:
     #--------------------------------------------------------------------------#
     def __init__( self, pdf_doc):
 
+        self.doc = pdf_doc
         self.page_rect = Rects.full_page()
 
-        self.page  = pdf_doc.new_page( width=self.page_rect.width, 
-                                       height=self.page_rect.height )
+    #--------------------------------------------------------------------------#
+    def get_page( self, page_number=0 ):
+
+        self.page  = self.doc.load_page( page_number )
+        self.shape = self.page.new_shape()
+
+    #--------------------------------------------------------------------------#
+    def create_page(self):
+
+        self.page  = self.doc.new_page( width =self.page_rect.width, 
+                                        height=self.page_rect.height )
         self.shape = self.page.new_shape()
 
     #--------------------------------------------------------------------------#

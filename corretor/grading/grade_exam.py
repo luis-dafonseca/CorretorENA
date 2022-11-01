@@ -47,13 +47,12 @@ def grade_exam( model_pdf,
         grades_xls.add_grade( ii, grades.T )
     
         page = PageENA( annotations_pdf )
-
+        page.create_page  ()
         page.insert_image ( image )
         page.insert_name  ( grades_xls.get_name(ii) )
         page.insert_annul ( answers_key.keys )
         page.insert_marks ( marks, grades )
         page.insert_grades( grades )
-
         page.commit()
     
         progress_bar.step()

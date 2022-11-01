@@ -1,10 +1,15 @@
 #------------------------------------------------------------------------------#
 
 import os
+import io
+# import numpy as np
 
 from PySide6.QtWidgets  import QApplication, QDialog, QFileDialog, QSizePolicy, QMessageBox
+from PySide6            import QtGui
+
 from ui.main_uimodel    import MainUIModel
 from ui.show_names      import show_names_window
+from ui.show_pdf        import show_pdf_window
 
 _DEBUG=False
 _DEBUG=True
@@ -281,17 +286,31 @@ class MainControler:
 
     #--------------------------------------------------------------------------#
     def _model_show(self):
-        print('<model_show> not yet implemented!')
+        
+        title = 'Modelo da folha de respostas'
+        pix   = self._uimodel.get_pix_model()
+
+        pix.save('__temp__.png')
+        q_imag = QtGui.QPixmap('__temp__.png')
+
+        show_pdf_window( self._win, title, q_imag )
 
     #--------------------------------------------------------------------------#
     def _keys_show(self):
-        print('<_keys_show> not yet implemented!')
+        
+        title = 'Gabarito'
+        pix   = self._uimodel.get_pix_keys()
+
+        pix.save('__temp__.png')
+        q_imag = QtGui.QPixmap('__temp__.png')
+
+        show_pdf_window( self._win, title, q_imag )
 
     #--------------------------------------------------------------------------#
     def _answers_show(self):
         print('<_answers_show> not yet implemented!')
 
-    #--------------------------------------------------------------------------#
+    #-------------------------------------------------------------------------#
     def _names_show(self):
 
         filename   = self._ui.labelNamesFileName  .text()

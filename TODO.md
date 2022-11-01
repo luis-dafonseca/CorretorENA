@@ -17,6 +17,10 @@
 - Show Names: Tratar o caso em que existem menos do que 6 ou 7 candidatos
 - Open model: Testar se o arquivo pdf tem mais do que uma página
 
+#### Refinamentos
+
+- Mudar o texto dos botões dos diálogos de escolha de "Salvar" para "Escolher"
+
 ### In progress...
 
 ### DONE

@@ -8,6 +8,11 @@ from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 from grading.grade_exam  import grade_exam
 from grading.answers_key import AnswersKey
 from grading.xls_grades  import XLSGrades
+from grading.page_ena    import PageENA
+from grading.tools       import pix_to_gray_image
+
+_DPI        = 300
+_COLORSPACE = "GRAY"
 
 #------------------------------------------------------------------------------#
 class UIProgressBar:
@@ -132,5 +137,43 @@ class MainUIModel:
     def set_grades( self, fname ):      
         self._grades    = XLSGrades( fname )
         self.has_grades = True
+
+    #--------------------------------------------------------------------------#
+    def get_pix_model(self):      
+
+        model_page = self._model.load_page(0)
+        model_pix  = model_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
+        image      = pix_to_gray_image( model_pix )
+
+        page = PageENA( fitz.open() )
+
+        page.create_page ()
+        page.insert_image( image )
+        page.insert_rects()
+
+        page.commit()
+
+        pix = page.page.get_pixmap()
+
+        return pix
+
+    #--------------------------------------------------------------------------#
+    def get_pix_keys(self):      
+
+        model_page = self._model.load_page(0)
+        model_pix  = model_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
+        image      = pix_to_gray_image( model_pix )
+
+        page = PageENA( fitz.open() )
+
+        page.create_page ()
+        page.insert_image( image )
+        page.insert_rects()
+
+        page.commit()
+
+        pix = page.page.get_pixmap()
+
+        return pix
 
 #------------------------------------------------------------------------------#

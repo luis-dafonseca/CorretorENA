@@ -5,6 +5,8 @@ import os
 import sys
 import fitz
 
+sys.path.append('..')
+
 from grading.grade_exam  import grade_exam
 from grading.answers_key import AnswersKey
 from grading.xls_grades  import XLSGrades
@@ -70,7 +72,7 @@ class CLIProgressBar:
 
 #------------------------------------------------------------------------------#
 
-pdf_dir = "../../pdf/"
+pdf_dir = "../../../pdf/"
 
 fname = pdf_dir + "small.pdf" if len(sys.argv) < 2 else sys.argv[1]
 

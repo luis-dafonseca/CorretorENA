@@ -8,12 +8,16 @@ import numpy as np
 
 from grading.rects import Rects
 
-BLACK   = (0,0,0)
-WHITE   = (1,1,1)
-RED     = (1,0,0)
-GREEN   = (0,1,0)
-BLUE    = (0,0,1)
-MAGENTA = (1,0,1)
+
+COLOR_NAME_BG   = (1,1,1)
+COLOR_CORRECT   = (0,0,1)
+COLOR_INCORRECT = (1,0,0)
+COLOR_MASK      = (1,0,1)
+COLOR_ANNUL     = (1,0,1)
+COLOR_ENTRY     = (0,0,1)
+COLOR_SCORE     = (1,0,0)
+COLOR_ANSWER    = (0,0,1)
+COLOR_ENTRY     = (0,0,1)
 
 #------------------------------------------------------------------------------#
 class PageENA:
@@ -51,11 +55,11 @@ class PageENA:
     #--------------------------------------------------------------------------#
     def insert_name( self, name ):
     
-        R = Rects.name()
+        R = Rects.name_db()
         self.shape.draw_rect( R )
-        self.shape.finish( color=WHITE, fill=WHITE ) 
+        self.shape.finish( color=COLOR_NAME_BG, fill=COLOR_NAME_BG ) 
 
-        self.shape.insert_textbox( R, name, color=BLUE,
+        self.shape.insert_textbox( R, name, color=COLOR_CORRECT,
                                    fontsize=int( 0.7*R.height ),
                                    align=fitz.TEXT_ALIGN_LEFT )
         self.shape.finish() 
@@ -67,7 +71,7 @@ class PageENA:
 
             R = Rects.grade_entry(ii)
             N = grades.Q[ii]
-            C = BLUE if N else RED
+            C = COLOR_CORRECT if N else COLOR_INCORRECT
 
             self.shape.insert_textbox( R, str(N), color=C,
                                        fontsize=int( 0.9*R.height ),
@@ -75,7 +79,7 @@ class PageENA:
     
         R = Rects.full_grade()
         T = grades.T
-        C = BLUE if T >= 15 else RED
+        C = COLOR_CORRECT if T >= 15 else COLOR_INCORRECT
 
         self.shape.insert_textbox( R, str(T), color=C,
                                    fontsize=int( 0.9*R.height ),
@@ -90,13 +94,13 @@ class PageENA:
             for jj in marks[ii]:
                 self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
 
-        self.shape.finish( width=5, color=BLUE ) 
+        self.shape.finish( width=5, color=COLOR_CORRECT ) 
 
         for ii in [ kk for kk, N in enumerate(grades.Q) if N == 0 ]:
              for jj in marks[ii]:
                      self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
 
-        self.shape.finish( width=5, color=RED ) 
+        self.shape.finish( width=5, color=COLOR_INCORRECT ) 
 
     #--------------------------------------------------------------------------#
     def insert_annul( self, keys ):
@@ -113,47 +117,46 @@ class PageENA:
 
             self.shape.draw_squiggle(P1, P2, breadth=B )
 
-        self.shape.finish( width=5, color=MAGENTA, closePath=False) 
+        self.shape.finish( width=5, color=COLOR_ANNUL, closePath=False) 
     
     #--------------------------------------------------------------------------#
-    def insert_rects( self, all_rects=False ):
+    def draw_all_rects(self):
     
-        if all_rects:
-    
-            # Masks
-            for R in Rects.masks():
-                self.shape.draw_rect( R )
-            self.shape.finish( width=5, color=(1,0,1), dashes="[20] 0" ) 
+        # Masks
+        for R in Rects.masks():
+            self.shape.draw_rect( R )
+        self.shape.finish( width=5, color=COLOR_MASK, dashes="[20] 0" ) 
 
-            # Name
-            self.shape.draw_rect( Rects.name() )
-            self.shape.finish( width=5, color=(0,0,1) ) 
+        # Name
+        self.shape.draw_rect( Rects.name_db() )
+        self.shape.draw_rect( Rects.name_ocr() )
+        self.shape.finish( width=5, color=COLOR_ENTRY ) 
     
-            # Answers box
-            self.shape.draw_rect( Rects.marks_box_left () )
-            self.shape.draw_rect( Rects.marks_box_right() )
-            self.shape.finish( width=5, color=(0,1,0) ) 
+        # Answers box
+        self.shape.draw_rect( Rects.marks_box_left () )
+        self.shape.draw_rect( Rects.marks_box_right() )
+        self.shape.finish( width=5, color=COLOR_MASK ) 
     
-            # Scores box
-            self.shape.draw_rect( Rects.grades_box_left () )
-            self.shape.draw_rect( Rects.grades_box_right() )
-            self.shape.finish( width=5, color=(0,1,0) ) 
+        # Scores box
+        self.shape.draw_rect( Rects.grades_box_left () )
+        self.shape.draw_rect( Rects.grades_box_right() )
+        self.shape.finish( width=5, color=COLOR_MASK ) 
     
-            # Score entryes
-            for ii in range(30):
-                self.shape.draw_rect( Rects.grade_entry(ii) )
-            self.shape.draw_rect( Rects.full_grade() )
-            self.shape.finish( width=5, color=(1,0,0) ) 
+        # Score entryes
+        for ii in range(30):
+            self.shape.draw_rect( Rects.grade_entry(ii) )
+        self.shape.draw_rect( Rects.full_grade() )
+        self.shape.finish( width=5, color=COLOR_SCORE ) 
     
-        # Answer and Score entryes
+        # Answer entries
         for ii in range(30):
             for jj in range(5):
                 self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
-        self.shape.finish( width=5, color=(0,0,1) ) 
+        self.shape.finish( width=5, color=COLOR_ANSWER ) 
     
         # Absent and eliminated
         self.shape.draw_rect( Rects.absent    () )
         self.shape.draw_rect( Rects.eliminated() )
-        self.shape.finish( width=5, color=(0,0,1) ) 
+        self.shape.finish( width=5, color=COLOR_ENTRY ) 
     
 #------------------------------------------------------------------------------#

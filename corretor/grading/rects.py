@@ -66,8 +66,9 @@ class Rects:
     #--------------------------------------------------------------------------#
     def grade_entry( N ):
 
-        h = 56
-        l = 83.6
+        H = 53
+        L = 83.6
+        B = 2
 
         if N <=14:
             box = Rects.grades_box_left()
@@ -78,12 +79,11 @@ class Rects:
 
         rect = box
 
-        TEXT_BASE_LINE = 7
 
-        y = rect.y0 + ii * l - TEXT_BASE_LINE
+        y = rect.y0 + ii * L + B
 
-        rect.y0 = int( y )
-        rect.y1 = int( y + h )
+        rect.y0 = int( round( y,     0 ) )
+        rect.y1 = int( round( y + H, 0 ) )
 
         return rect
     
@@ -107,15 +107,23 @@ class Rects:
         x = rect.x0 + jj * wc
         y = rect.y0 + ii * hl
 
-        rect.x0 = int( x )
-        rect.y0 = int( y )
-        rect.x1 = int( x + we )
-        rect.y1 = int( y + he )
+        rect.x0 = int( round( x,      0 ) )
+        rect.y0 = int( round( y,      0 ) )
+        rect.x1 = int( round( x + we, 0 ) )
+        rect.y1 = int( round( y + he, 0 ) )
 
         return rect
     
     #--------------------------------------------------------------------------#
-    def name():
+    def name_ocr():
+        x =  100
+        y =  430
+        w = 1500
+        h =  100
+        return fitz.IRect( x, y, x+w, y+h )
+    
+    #--------------------------------------------------------------------------#
+    def name_db():
         x =  106
         y =  300
         w = 2200
@@ -141,7 +149,7 @@ class Rects:
     #--------------------------------------------------------------------------#
     def full_grade():
         x = 1780
-        y = 3100
+        y = 3110
         w =  100
         h =   80
         return fitz.IRect( x, y, x+w, y+h )

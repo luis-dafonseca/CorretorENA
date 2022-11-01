@@ -68,9 +68,14 @@ class PageENA:
     #--------------------------------------------------------------------------#
     def insert_grades( self, grades ):
 
+        BASE_LINE = -6
+
         for ii in range(30):
 
             R = Rects.grade_entry(ii)
+            R.y0 += BASE_LINE 
+            R.y1 += BASE_LINE 
+
             N = grades.Q[ii]
             C = COLOR_CORRECT if N else COLOR_INCORRECT
 
@@ -89,36 +94,44 @@ class PageENA:
         self.shape.finish() 
 
     #--------------------------------------------------------------------------#
-    def insert_marks( self, marks, grades ):
+    def insert_marks( self, marks, grades, keys ):
+
+        for ii in [ kk for kk, N in enumerate(grades.Q) if N == 0 ]:
+            jj = keys[ii]
+            if jj == -1:
+                seld.draw_annul(ii)
+            else:
+                self.draw_key( ii, jj )
 
         for ii in [ kk for kk, N in enumerate(grades.Q) if N == 1 ]:
             for jj in marks[ii]:
                 self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
-
-        self.shape.finish( width=5, color=COLOR_CORRECT ) 
+        self.shape.finish( width=7, color=COLOR_CORRECT ) 
 
         for ii in [ kk for kk, N in enumerate(grades.Q) if N == 0 ]:
-             for jj in marks[ii]:
-                     self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
+            for jj in marks[ii]:
+                self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
+        self.shape.finish( width=7, color=COLOR_INCORRECT ) 
 
-        self.shape.finish( width=5, color=COLOR_INCORRECT ) 
+    #--------------------------------------------------------------------------#
+    def draw_annul( self, ii ):
+
+        R1 = Rects.mark_entry( ii, 0 )
+        R2 = Rects.mark_entry( ii, 4 )
+
+        P1 = [ R1.x0+5, (R1.y0+R1.y1)/2 ]
+        P2 = [ R2.x1-5, (R2.y0+R2.y1)/2 ]
+
+        B = R1.height/5
+
+        self.shape.draw_squiggle(P1, P2, breadth=B )
+        self.shape.finish( width=5, color=COLOR_ANNUL, closePath=False) 
 
     #--------------------------------------------------------------------------#
     def insert_annul( self, keys ):
 
         for ii in [ kk for kk, N in enumerate(keys) if N == -1 ]:
-                
-            R1 = Rects.mark_entry( ii, 0 )
-            R2 = Rects.mark_entry( ii, 4 )
-
-            P1 = [ R1.x0, (R1.y0+R1.y1)/2 ]
-            P2 = [ R2.x1, (R2.y0+R2.y1)/2 ]
-
-            B = R1.height/5
-
-            self.shape.draw_squiggle(P1, P2, breadth=B )
-
-        self.shape.finish( width=5, color=COLOR_ANNUL, closePath=False) 
+            self.draw_annul(ii)
     
     #--------------------------------------------------------------------------#
     def draw_all_rects(self):
@@ -161,18 +174,25 @@ class PageENA:
         self.shape.finish( width=5, color=COLOR_ENTRY ) 
     
     #--------------------------------------------------------------------------#
+    def draw_key( self, ii, jj ):
+
+        rr = Rects.mark_entry( ii, jj )
+        rr.x0 += 5
+        rr.x1 -= 5
+        rr.y0 += 5
+        rr.y1 -= 5
+        self.shape.draw_rect( rr )
+        self.shape.finish( width=2, color=(0,0,0), fill=COLOR_KEY, fill_opacity=0.5 ) 
+    
+    #--------------------------------------------------------------------------#
     def draw_answers_key( self, keys ):
 
         self.insert_annul( keys )
     
-        for ii, jj in [ (ii,jj) for ii, jj in enumerate(keys) if jj != -1 ]:
-            rr = Rects.mark_entry( ii, jj )
-            rr.x0 += 5
-            rr.x1 -= 5
-            rr.y0 += 5
-            rr.y1 -= 5
-            self.shape.draw_rect( rr )
-
-        self.shape.finish( width=2, color=(0,0,0), fill=COLOR_KEY ) 
+        for ii, jj in enumerate(keys):
+            if jj == -1:
+                self.draw_annul(ii)
+            else:
+                self.draw_key( ii, jj )
 
 #------------------------------------------------------------------------------#

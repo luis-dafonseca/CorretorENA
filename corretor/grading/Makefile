@@ -33,7 +33,7 @@ clean:
 	done
 
 distclean: 
-	-@ rm -vf ${DISTCLEAN_FILES}
+	-@ rm -rvf ${DISTCLEAN_FILES}
 	@ for D in ${SUBDIRS}; do   \
 	  make -C $$D distclean ;   \
 	done

@@ -51,7 +51,7 @@ def grade_exam( model_pdf,
         page.insert_image ( image )
         page.insert_name  ( grades_xls.get_name(ii) )
         page.insert_annul ( answers_key.keys )
-        page.insert_marks ( marks, grades )
+        page.insert_marks ( marks, grades, answers_key.keys )
         page.insert_grades( grades )
         page.commit()
     

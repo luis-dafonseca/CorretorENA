@@ -13,8 +13,9 @@ from grading.answers_key import AnswersKey
 
 #------------------------------------------------------------------------------#
 
-model_fname = "../../../pdf/modelo.pdf" if len(sys.argv) < 2 else sys.argv[1]
-rects_fname = 'keys.pdf'                if len(sys.argv) < 3 else sys.argv[2]
+example_dir = "../../docs/example/"
+model_fname = example_dir + "modelo.pdf" if len(sys.argv) < 2 else sys.argv[1]
+rects_fname = 'keys.pdf'                 if len(sys.argv) < 3 else sys.argv[2]
 
 _DPI        = 300
 _COLORSPACE = "GRAY"
@@ -24,7 +25,7 @@ _COLORSPACE = "GRAY"
 model_pdf = fitz.open(model_fname)
 rects_pdf = fitz.open()
 
-answers_key = AnswersKey('C B E A C B E D C B E E A D C C D B A D A D A C D E A E B D') # 2023
+answers_key = AnswersKey('C B E A C B E D C X E E A D C C D X A D A D A C D E A E B D')
 
 model_page = model_pdf.load_page(0)
 model_pix  = model_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )

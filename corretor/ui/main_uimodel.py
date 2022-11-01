@@ -147,9 +147,9 @@ class MainUIModel:
 
         page = PageENA( fitz.open() )
 
-        page.create_page ()
+        page.create_page()
         page.insert_image( image )
-        page.insert_rects()
+        page.draw_all_rects()
 
         page.commit()
 
@@ -166,9 +166,9 @@ class MainUIModel:
 
         page = PageENA( fitz.open() )
 
-        page.create_page ()
+        page.create_page()
         page.insert_image( image )
-        page.insert_rects()
+        page.draw_answers_key( self._keys.keys )
 
         page.commit()
 

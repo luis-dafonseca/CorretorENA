@@ -4,7 +4,7 @@ import numpy as np
 
 from grading.rects import Rects
 
-_AREA = 56 * 106
+_AREA = Rects.mark_entry(0,0).get_area()
 
 #------------------------------------------------------------------------------#
 def _is_entry_marked( array, ii, jj ):

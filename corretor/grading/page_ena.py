@@ -18,6 +18,7 @@ COLOR_ENTRY     = (0,0,1)
 COLOR_SCORE     = (1,0,0)
 COLOR_ANSWER    = (0,0,1)
 COLOR_ENTRY     = (0,0,1)
+COLOR_KEY       = (1,0,1)
 
 #------------------------------------------------------------------------------#
 class PageENA:
@@ -159,4 +160,19 @@ class PageENA:
         self.shape.draw_rect( Rects.eliminated() )
         self.shape.finish( width=5, color=COLOR_ENTRY ) 
     
+    #--------------------------------------------------------------------------#
+    def draw_answers_key( self, keys ):
+
+        self.insert_annul( keys )
+    
+        for ii, jj in [ (ii,jj) for ii, jj in enumerate(keys) if jj != -1 ]:
+            rr = Rects.mark_entry( ii, jj )
+            rr.x0 += 5
+            rr.x1 -= 5
+            rr.y0 += 5
+            rr.y1 -= 5
+            self.shape.draw_rect( rr )
+
+        self.shape.finish( width=2, color=(0,0,0), fill=COLOR_KEY ) 
+
 #------------------------------------------------------------------------------#

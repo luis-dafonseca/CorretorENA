@@ -121,7 +121,7 @@ class MainUIModel:
         self.names = []
 
         for rr, row in enumerate( sheet.iter_rows(min_row=ll, values_only=True) ):
-            self.names.append(row[cc])
+            self.names.append( str(row[cc]).strip() )
 
         xls.close()
 
@@ -141,7 +141,7 @@ class MainUIModel:
     #--------------------------------------------------------------------------#
     def get_pix_model(self):      
 
-        model_page = self._model.load_page(0)
+        model_page = self._model[0]
         model_pix  = model_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
         image      = pix_to_gray_image( model_pix )
 
@@ -160,7 +160,7 @@ class MainUIModel:
     #--------------------------------------------------------------------------#
     def get_pix_keys(self):      
 
-        model_page = self._model.load_page(0)
+        model_page = self._model[0]
         model_pix  = model_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
         image      = pix_to_gray_image( model_pix )
 

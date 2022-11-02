@@ -1,8 +1,7 @@
 #------------------------------------------------------------------------------#
 
 import os
-import io
-# import numpy as np
+import tempfile
 
 from PySide6.QtWidgets  import QApplication, QDialog, QFileDialog, QSizePolicy, QMessageBox
 from PySide6            import QtGui
@@ -13,6 +12,16 @@ from ui.show_pdf        import show_pdf_window
 
 _DEBUG=False
 _DEBUG=True
+
+#------------------------------------------------------------------------------#
+def _pixmap_to_qimage( pix ):
+
+    temp_file = tempfile.NamedTemporaryFile()
+    pix.save( temp_file.name, "png" )
+    img = QtGui.QPixmap( temp_file.name, format="png" )
+    temp_file.close()
+
+    return img
 
 #------------------------------------------------------------------------------#
 def _get_open_pdf( parent, title, directoty ):
@@ -145,9 +154,11 @@ class MainControler:
 
         self._ui.pushButtonNamesOpen.clicked.connect( self._names_open )
         self._ui.pushButtonNamesShow.clicked.connect( self._names_show )
+        self._ui.lineEditNameFistName.editingFinished.connect( self._set_fisrt_name )
 
         self._ui.pushButtonOutputGradesChoose     .clicked.connect( self._choose_grades      )
         self._ui.pushButtonOutputAnnotationsChoose.clicked.connect( self._choose_annotations )
+
 
     #--------------------------------------------------------------------------#
     def _update(self):
@@ -240,11 +251,19 @@ class MainControler:
                                 self.last_dir )
 
         if fname:
-            
             first_name = self._ui.lineEditNameFistName.text()
 
             self.last_dir = os.path.dirname(fname)
             self._ui.labelNamesFileName.setText( fname )
+            self._uimodel.set_names( fname, first_name )
+            self._update()
+
+    #--------------------------------------------------------------------------#
+    def _set_fisrt_name(self):
+
+        if self._uimodel.has_names:
+
+            first_name = self._ui.lineEditNameFistName.text()
             self._uimodel.set_names( fname, first_name )
             self._update()
 
@@ -288,23 +307,21 @@ class MainControler:
     def _model_show(self):
         
         title = 'Modelo da folha de respostas'
-        pix   = self._uimodel.get_pix_model()
 
-        pix.save('__temp__.png')
-        q_imag = QtGui.QPixmap('__temp__.png')
+        pix = self._uimodel.get_pix_model()
+        img = _pixmap_to_qimage( pix )
 
-        show_pdf_window( self._win, title, q_imag )
+        show_pdf_window( self._win, title, img )
 
     #--------------------------------------------------------------------------#
     def _keys_show(self):
         
         title = 'Gabarito'
-        pix   = self._uimodel.get_pix_keys()
 
-        pix.save('__temp__.png')
-        q_imag = QtGui.QPixmap('__temp__.png')
+        pix = self._uimodel.get_pix_keys()
+        img = _pixmap_to_qimage( pix )
 
-        show_pdf_window( self._win, title, q_imag )
+        show_pdf_window( self._win, title, img )
 
     #--------------------------------------------------------------------------#
     def _answers_show(self):

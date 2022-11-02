@@ -23,7 +23,7 @@ class XLSGrades:
     def add_names(self, names):
         
         for rr, name in enumerate(names):
-            self.sheet.cell(row=rr+2,column=1).value = name
+            self.sheet.cell(row=rr+2,column=1).value = name.strip()
 
         self.has_names = True
 

@@ -32,7 +32,7 @@ class PageENA:
     #--------------------------------------------------------------------------#
     def get_page( self, page_number=0 ):
 
-        self.page  = self.doc.load_page( page_number )
+        self.page  = self.doc[page_number]
         self.shape = self.page.new_shape()
 
     #--------------------------------------------------------------------------#
@@ -56,12 +56,12 @@ class PageENA:
     #--------------------------------------------------------------------------#
     def insert_name( self, name ):
     
-        R = Rects.name_db()
+        R = Rects.name()
         self.shape.draw_rect( R )
         self.shape.finish( color=COLOR_NAME_BG, fill=COLOR_NAME_BG ) 
 
         self.shape.insert_textbox( R, name, color=COLOR_CORRECT,
-                                   fontsize=int( 0.7*R.height ),
+                                   fontsize=int( 0.5*R.height ),
                                    align=fitz.TEXT_ALIGN_LEFT )
         self.shape.finish() 
 
@@ -142,8 +142,7 @@ class PageENA:
         self.shape.finish( width=5, color=COLOR_MASK, dashes="[20] 0" ) 
 
         # Name
-        self.shape.draw_rect( Rects.name_db() )
-        self.shape.draw_rect( Rects.name_ocr() )
+        self.shape.draw_rect( Rects.name() )
         self.shape.finish( width=5, color=COLOR_ENTRY ) 
     
         # Answers box

@@ -22,13 +22,13 @@ all: modelo.pdf exemplo.pdf exemplo.xlsx
 	done
 
 modelo.pdf:
-	cp ../../pdf/modelo.pdf .
+	cp ../docs/example/modelo.pdf .
 
 exemplo.pdf:
-	cp ../../pdf/exemplo.pdf .
+	cp ../docs/example/exemplo.pdf .
 
 exemplo.xlsx:
-	cp ../../pdf/exemplo.xlsx .
+	cp ../docs/example/exemplo.xlsx .
 
 #------------------------------------------------------------------------------#
 

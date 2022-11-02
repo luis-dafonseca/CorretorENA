@@ -24,7 +24,7 @@ _COLORSPACE = "GRAY"
 model_pdf = fitz.open(model_fname)
 rects_pdf = fitz.open()
 
-model_page = model_pdf.load_page(0)
+model_page = model_pdf[0]
 model_pix  = model_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
 image      = pix_to_gray_image( model_pix )
 

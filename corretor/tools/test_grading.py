@@ -43,7 +43,7 @@ pix   = page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
 image = pix_to_gray_image( pix )
 reg   = Registration( image )
 
-original_page = answers_pdf.load_page(n_page)
+original_page = answers_pdf[n_page]
 original_pix  = original_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE ) 
 original_img  = pix_to_gray_image( original_pix )
 

@@ -27,7 +27,7 @@ rects_pdf = fitz.open()
 
 answers_key = AnswersKey('C B E A C B E D C X E E A D C C D X A D A D A C D E A E B D')
 
-model_page = model_pdf.load_page(0)
+model_page = model_pdf[0]
 model_pix  = model_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
 image      = pix_to_gray_image( model_pix )
 

@@ -38,6 +38,6 @@ distclean:
 	  make -C $$D distclean ;   \
 	done
 
-.PHONY: all clean distclean
+.PHONY: clean distclean
 
 #------------------------------------------------------------------------------#

@@ -6,9 +6,10 @@ import tempfile
 from PySide6.QtWidgets  import QApplication, QDialog, QFileDialog, QSizePolicy, QMessageBox
 from PySide6            import QtGui
 
-from ui.main_uimodel    import MainUIModel
-from ui.show_names      import show_names_window
-from ui.show_pdf        import show_pdf_window
+from ui.main_uimodel     import MainUIModel
+from ui.show_names       import show_names_window
+from ui.show_pdf         import show_pdf_window
+from ui.edit_answers_key import EditAnswersKey
 
 _DEBUG=False
 _DEBUG=True
@@ -300,12 +301,15 @@ class MainControler:
 
         keys = 'C B E A C B E D C B E E A D C C D B A D A D A C D E A E B D'
 
+        win = EditAnswersKey( self._win, keys )
+        win.show()
+
         self._ui.lineEditKeys.setText( keys )
         self._uimodel.set_keys( keys )
 
     #--------------------------------------------------------------------------#
     def _model_show(self):
-        
+
         title = 'Modelo da folha de respostas'
 
         pix = self._uimodel.get_pix_model()

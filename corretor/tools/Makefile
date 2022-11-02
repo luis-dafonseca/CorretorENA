@@ -16,7 +16,7 @@ DISTCLEAN_FILES= __pycache__
 
 #------------------------------------------------------------------------------#
 
-all: $(PY_FILES)
+all: 
 	@ for D in ${SUBDIRS} ; do \
 	  make -C $$D all ;        \
 	done
@@ -38,6 +38,6 @@ distclean:
 	  make -C $$D distclean ;   \
 	done
 
-.PHONY: all clean distclean
+.PHONY: clean distclean
 
 #------------------------------------------------------------------------------#

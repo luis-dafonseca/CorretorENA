@@ -6,10 +6,10 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 
 from grading.grade_exam  import grade_exam
-from grading.answers_key import AnswersKey
 from grading.xls_grades  import XLSGrades
 from grading.page_ena    import PageENA
 from grading.tools       import pix_to_gray_image
+from ui.keys_model       import KeysModel
 
 _DPI        = 300
 _COLORSPACE = "GRAY"
@@ -41,7 +41,6 @@ class MainUIModel:
         self.has_answers     = False
         self.has_annotations = False
         self.has_grades      = False
-        self.has_keys        = False
         self.has_names       = False
         
         self.names = []
@@ -50,7 +49,10 @@ class MainUIModel:
         self._answers     = None
         self._annotations = None
         self._grades      = None
-        self._keys        = ''
+
+        # keys = 'CBEACBEDCBEEADCCDBADADACDEAEBD'
+        keys = 'ABCDEABCDEABCDEABCDEABCDEABCDE'
+        self.keys_model = KeysModel( keys ) 
 
         self._progress_bar = UIProgressBar(progress_bar)
 
@@ -70,7 +72,7 @@ class MainUIModel:
             self._grades.add_names(self.names)
 
         grade_exam( self._model, 
-                    self._keys, 
+                    self.keys_model.answers_key(), 
                     self._answers, 
                     self._annotations, 
                     self._grades,
@@ -82,7 +84,6 @@ class MainUIModel:
     #--------------------------------------------------------------------------#
     def ready_to_run(self):
         return self.has_model       and \
-               self.has_keys        and \
                self.has_answers     and \
                self.has_annotations and \
                self.has_grades
@@ -94,11 +95,6 @@ class MainUIModel:
 
         self._model = fitz.open( fname )
         self.has_model  = True
-
-    #--------------------------------------------------------------------------#
-    def set_keys( self, keys ):        
-        self._keys = AnswersKey( keys )
-        self.has_keys     = True
 
     #--------------------------------------------------------------------------#
     def set_answers( self, fname ):     
@@ -168,7 +164,7 @@ class MainUIModel:
 
         page.create_page()
         page.insert_image( image )
-        page.draw_answers_key( self._keys.keys )
+        page.draw_answers_key( self.keys_model.answers_key().keys )
 
         page.commit()
 

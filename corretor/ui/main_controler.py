@@ -9,10 +9,7 @@ from PySide6            import QtGui
 from ui.main_uimodel     import MainUIModel
 from ui.show_names       import show_names_window
 from ui.show_pdf         import show_pdf_window
-from ui.edit_answers_key import EditAnswersKey
-
-_DEBUG=False
-_DEBUG=True
+from ui.edit_keys_dialog import EditKeysDialog
 
 #------------------------------------------------------------------------------#
 def _pixmap_to_qimage( pix ):
@@ -101,36 +98,14 @@ class MainControler:
         self._ui.progressBar.setSizePolicy( size_policy )
         self._ui.progressBar.hide()
 
-        # DEBUG
-        #----------------------------------------------------------------------#
-        if _DEBUG:
+        self._ui.pushButtonAnswersShow.hide()
 
-            fname = './modelo.pdf'
-            self._ui.labelModelFileName.setText( fname )
-            self._uimodel.set_model( fname )
+        k_model = self._uimodel.keys_model
 
-            fname = './exemplo.pdf'
-            self._ui.labelAnswersFileName.setText( fname )
-            self._uimodel.set_answers( fname  )
-
-            fname = './exemplo.xlsx'
-            first_name = 'A2'
-            self._ui.labelNamesFileName.setText( fname )
-            self._uimodel.set_names( fname, first_name )
-
-            fname = './exemplo-notas.xlsx'
-            self._ui.labelOutputGradesFileName.setText( fname )
-            self._uimodel.set_grades( fname )
-
-            fname = './exemplo-anotacoes.pdf'
-            self._ui.labelOutputAnnotationsFileName.setText(fname)
-            self._uimodel.set_annotations( fname )
-
-            keys = 'C B E A C B E D C B E E A D C C D B A D A D A C D E A E B D'
-            self._ui.lineEditKeys.setText( keys )
-            self._uimodel.set_keys( keys )
-
-            self._update()
+        self._ui.lineEditKeys.setFont     ( k_model.font )
+        self._ui.lineEditKeys.setInputMask( k_model.mask )
+        self._ui.lineEditKeys.setValidator( k_model.validator(self._win) )
+        self._ui.lineEditKeys.setText     ( k_model.keys )
 
     #--------------------------------------------------------------------------#
     def _connectSignalsAndSlots(self):
@@ -147,11 +122,12 @@ class MainControler:
         self._ui.pushButtonModelOpen.clicked.connect( self._model_open )
         self._ui.pushButtonModelShow.clicked.connect( self._model_show )
 
-        self._ui.pushButtonKeysEdit.clicked.connect( self._keys_edit )
-        self._ui.pushButtonKeysShow.clicked.connect( self._keys_show )
+        self._ui.pushButtonKeysEdit.clicked  .connect( self._keys_edit )
+        self._ui.pushButtonKeysShow.clicked  .connect( self._keys_show )
+        self._ui.lineEditKeys.editingFinished.connect( self._parse_keys_edit)
 
         self._ui.pushButtonAnswersOpen.clicked.connect( self._answers_open )
-        self._ui.pushButtonAnswersShow.clicked.connect( self._answers_show )
+        # self._ui.pushButtonAnswersShow.clicked.connect( self._answers_show )
 
         self._ui.pushButtonNamesOpen.clicked.connect( self._names_open )
         self._ui.pushButtonNamesShow.clicked.connect( self._names_show )
@@ -160,24 +136,21 @@ class MainControler:
         self._ui.pushButtonOutputGradesChoose     .clicked.connect( self._choose_grades      )
         self._ui.pushButtonOutputAnnotationsChoose.clicked.connect( self._choose_annotations )
 
-
     #--------------------------------------------------------------------------#
     def _update(self):
 
         if self._uimodel.has_model:
             self._ui.pushButtonModelShow.setEnabled(True)
-            self._ui.labelModelFileName.setEnabled(True)
-
-        if self._uimodel.has_keys:
-            self._ui.pushButtonKeysShow.setEnabled(True)
+            self._ui.labelModelFileName .setEnabled(True)
+            self._ui.pushButtonKeysShow .setEnabled(True)
 
         if self._uimodel.has_answers:
             self._ui.pushButtonAnswersShow.setEnabled(True)
-            self._ui.labelAnswersFileName.setEnabled(True)
+            self._ui.labelAnswersFileName .setEnabled(True)
 
         if self._uimodel.has_names:
             self._ui.pushButtonNamesShow.setEnabled(True)
-            self._ui.labelNamesFileName.setEnabled(True)
+            self._ui.labelNamesFileName .setEnabled(True)
 
         if self._uimodel.has_grades:
             self._ui.labelOutputGradesFileName.setEnabled(True)
@@ -231,7 +204,7 @@ class MainControler:
     def _answers_open(self):
 
         fname = _get_open_pdf( self._win, 
-                               'Selecione as respostas para serem corrigidas' ,
+                               'Selecione as respostas para serem corrigidas',
                                self.last_dir )
 
         if fname:
@@ -248,7 +221,7 @@ class MainControler:
     def _names_open(self):
 
         fname = _get_open_xlsx( self._win, 
-                                'Selecione a lista dos nomes dos candidatos' ,
+                                'Selecione a lista dos nomes dos candidatos',
                                 self.last_dir )
 
         if fname:
@@ -271,8 +244,7 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _choose_grades(self):
 
-        fname = _get_save_xlsx( self._win, 
-                                'Arquivo para salvar as notas' ,
+        fname = _get_save_xlsx( self._win, 'Arquivo para salvar as notas',
                                 self.suggested_grades )
 
         if fname:
@@ -285,8 +257,7 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _choose_annotations(self):
 
-        fname = _get_save_pdf( self._win, 
-                               'Arquivo para salvar as anotações' ,
+        fname = _get_save_pdf( self._win, 'Arquivo para salvar as anotações',
                                self.suggested_annotations )
 
         if fname:
@@ -299,13 +270,17 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _keys_edit(self):
 
-        keys = 'C B E A C B E D C B E E A D C C D B A D A D A C D E A E B D'
+        diag = EditKeysDialog( self._win, self._uimodel.keys_model )
 
-        win = EditAnswersKey( self._win, keys )
-        win.show()
+        if diag.exec():
+            keys = self._uimodel.keys_model.keys
+            self._ui.lineEditKeys.setText( keys )
 
-        self._ui.lineEditKeys.setText( keys )
-        self._uimodel.set_keys( keys )
+    #--------------------------------------------------------------------------#
+    def _parse_keys_edit(self):
+
+        self._uimodel.keys_model.set_keys( self._ui.lineEditKeys.text() )
+        self._uimodel.keys_model.update()
 
     #--------------------------------------------------------------------------#
     def _model_show(self):

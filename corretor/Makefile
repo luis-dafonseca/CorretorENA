@@ -16,19 +16,19 @@ DISTCLEAN_FILES= __pycache__
 
 #------------------------------------------------------------------------------#
 
-all: modelo.pdf exemplo.pdf exemplo.xlsx
+all: exemplo-dados.xlsx  exemplo-modelo.pdf  exemplo-respostas.pdf
 	@ for D in ${SUBDIRS} ; do \
 	  make -C $$D all ;        \
 	done
 
-modelo.pdf:
-	cp ../docs/example/modelo.pdf .
+exemplo-dados.xlsx:
+	cp ../docs/example/exemplo-dados.xlsx .
 
-exemplo.pdf:
-	cp ../docs/example/exemplo.pdf .
+exemplo-modelo.pdf:
+	cp ../docs/example/exemplo-modelo.pdf .
 
-exemplo.xlsx:
-	cp ../docs/example/exemplo.xlsx .
+exemplo-respostas.pdf:
+	cp ../docs/example/exemplo-respostas.pdf .
 
 #------------------------------------------------------------------------------#
 

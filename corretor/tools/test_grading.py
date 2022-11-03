@@ -20,8 +20,8 @@ _COLORSPACE = "GRAY"
 
 example_dir = '../../docs/example/'
 
-model_name       = example_dir + 'modelo.pdf'
-answers_name     = example_dir + 'exemplo.pdf'
+model_name       = example_dir + 'exemplo-modelo.pdf'
+answers_name     = example_dir + 'exemplo-respostas.pdf'
 annotations_name = 'grading.pdf'
 
 n_page = 0 if len(sys.argv) < 2 else int(sys.argv[1])-1
@@ -31,7 +31,6 @@ n_page = 0 if len(sys.argv) < 2 else int(sys.argv[1])-1
 model_pdf       = fitz.open(model_name)
 answers_pdf     = fitz.open(answers_name)
 annotations_pdf = fitz.open()
-# answers_key     = AnswersKey('CBEACBEDCBEEADCCDBADADACDEAEBD')
 
 #                         1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 
 answers_key = AnswersKey('D E B B E A A X B D D C D B C C B E E B A A A E E B E B D D')

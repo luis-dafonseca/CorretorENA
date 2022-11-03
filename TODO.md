@@ -12,6 +12,8 @@
   - Permitir salvar
   - Permitir ampliar e reduzir
 - Eliminar o arquivo temporário da conversão do pixmap
+- Criar o help e o about
+- Colocar o _DPI e _COLORSPACE e um único arquivo
 
 #### Testes de consistência
 

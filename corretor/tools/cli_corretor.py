@@ -68,9 +68,9 @@ class CLIProgressBar:
 
 example_dir = "../../docs/example/"
 
-answers_name = example_dir + "exemplo.pdf"
-model_name   = example_dir + "modelo.pdf"
-input_names  = example_dir + "exemplo.xlsx"
+answers_name = example_dir + 'exemplo-respostas.pdf'
+model_name   = example_dir + 'exemplo-modelo.pdf'
+input_names  = example_dir + 'exemplo-dados.xlsx'
 first_name   = 'A2'
 
 name = os.path.basename(answers_name)

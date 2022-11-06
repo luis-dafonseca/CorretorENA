@@ -237,6 +237,7 @@ class MainControler:
 
         if self._uimodel.has_names:
 
+            fname      = self._ui.labelNamesFileName  .text()
             first_name = self._ui.lineEditNameFistName.text()
             self._uimodel.set_names( fname, first_name )
             self._update()

@@ -6,7 +6,7 @@
 
 
 # List of all subdirectories
-SUBDIRS=$(shell find -mindepth 1 -maxdepth 1 -type d -not -name __pycache__)
+SUBDIRS=$(shell find -mindepth 1 -maxdepth 1 -type d -not -name __pycache__ -not -name venv)
 
 # Files to be removed from this directory at cleaning
 CLEAN_FILES= *~ *.png *.pdf *.xlsx

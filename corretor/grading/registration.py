@@ -15,7 +15,7 @@ def create_mask():
     mask = np.zeros( (h,w), dtype=np.uint8 )
 
     for R in Rects.masks():
-        mask [ R.y0:R.y1, R.x0:R.x1 ] = 255
+        mask[ R.y0:R.y1, R.x0:R.x1 ] = 255
 
     return mask
 

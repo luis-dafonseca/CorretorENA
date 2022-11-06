@@ -1,4 +1,3 @@
-#!/usr/bin/python
 #------------------------------------------------------------------------------#
 
 from PySide6.QtCore import QRegularExpression

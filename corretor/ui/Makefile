@@ -9,7 +9,7 @@ PY_FILES=$(UI_FILES:.ui=.py)
 SUBDIRS=$(shell find -mindepth 1 -maxdepth 1 -type d -not -name __pycache__)
 
 # Files to be removed from this directory at cleaning
-CLEAN_FILES= *~ form_*.py
+CLEAN_FILES= *~ 
 
 # Files to be removed from this directory at distribution cleaning
 DISTCLEAN_FILES= __pycache__

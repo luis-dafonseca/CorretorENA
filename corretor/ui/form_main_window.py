@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(720, 697)
+        MainWindow.resize(539, 745)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -41,6 +41,10 @@ class Ui_MainWindow(object):
         self.action_About.setObjectName(u"action_About")
         self.action_Help = QAction(MainWindow)
         self.action_Help.setObjectName(u"action_Help")
+        self.action = QAction(MainWindow)
+        self.action.setObjectName(u"action")
+        self.action_KeysENA2023 = QAction(MainWindow)
+        self.action_KeysENA2023.setObjectName(u"action_KeysENA2023")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_3 = QGridLayout(self.centralwidget)
@@ -84,19 +88,33 @@ class Ui_MainWindow(object):
 
         self.labelOutputGrades = QLabel(self.frameGrades)
         self.labelOutputGrades.setObjectName(u"labelOutputGrades")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(4)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.labelOutputGrades.sizePolicy().hasHeightForWidth())
+        self.labelOutputGrades.setSizePolicy(sizePolicy1)
 
         self.gridLayout_2.addWidget(self.labelOutputGrades, 0, 0, 1, 1)
 
-        self.labelOutputGradesFileName = QLabel(self.frameGrades)
+        self.frame_3 = QFrame(self.frameGrades)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.gridLayout_8 = QGridLayout(self.frame_3)
+        self.gridLayout_8.setObjectName(u"gridLayout_8")
+        self.labelOutputGradesFileName = QLabel(self.frame_3)
         self.labelOutputGradesFileName.setObjectName(u"labelOutputGradesFileName")
         self.labelOutputGradesFileName.setEnabled(False)
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(4)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.labelOutputGradesFileName.sizePolicy().hasHeightForWidth())
-        self.labelOutputGradesFileName.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(4)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.labelOutputGradesFileName.sizePolicy().hasHeightForWidth())
+        self.labelOutputGradesFileName.setSizePolicy(sizePolicy2)
 
-        self.gridLayout_2.addWidget(self.labelOutputGradesFileName, 1, 0, 1, 1)
+        self.gridLayout_8.addWidget(self.labelOutputGradesFileName, 0, 0, 1, 1)
+
+
+        self.gridLayout_2.addWidget(self.frame_3, 1, 0, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.frameGrades, 9, 0, 1, 1)
@@ -112,11 +130,11 @@ class Ui_MainWindow(object):
         self.labelNamesFileName = QLabel(self.frameNames)
         self.labelNamesFileName.setObjectName(u"labelNamesFileName")
         self.labelNamesFileName.setEnabled(False)
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(5)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.labelNamesFileName.sizePolicy().hasHeightForWidth())
-        self.labelNamesFileName.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy3.setHorizontalStretch(5)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.labelNamesFileName.sizePolicy().hasHeightForWidth())
+        self.labelNamesFileName.setSizePolicy(sizePolicy3)
 
         self.gridLayout_4.addWidget(self.labelNamesFileName, 2, 0, 1, 1)
 
@@ -133,11 +151,8 @@ class Ui_MainWindow(object):
 
         self.labelNames = QLabel(self.frameNames)
         self.labelNames.setObjectName(u"labelNames")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy3.setHorizontalStretch(4)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.labelNames.sizePolicy().hasHeightForWidth())
-        self.labelNames.setSizePolicy(sizePolicy3)
+        sizePolicy1.setHeightForWidth(self.labelNames.sizePolicy().hasHeightForWidth())
+        self.labelNames.setSizePolicy(sizePolicy1)
 
         self.gridLayout_4.addWidget(self.labelNames, 0, 0, 1, 1)
 
@@ -173,6 +188,11 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addLayout(self.verticalLayout_3, 3, 0, 1, 1)
 
+        self.pushButtonNamesRemove = QPushButton(self.frameNames)
+        self.pushButtonNamesRemove.setObjectName(u"pushButtonNamesRemove")
+
+        self.gridLayout_4.addWidget(self.pushButtonNamesRemove, 2, 1, 1, 1)
+
 
         self.gridLayout_9.addLayout(self.gridLayout_4, 0, 0, 1, 1)
 
@@ -198,20 +218,29 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.pushButtonOutputAnnotationsChoose, 0, 1, 1, 1)
 
-        self.labelOutputAnnotationsFileName = QLabel(self.frameAnnotations)
+        self.labelOutputAnnotations = QLabel(self.frameAnnotations)
+        self.labelOutputAnnotations.setObjectName(u"labelOutputAnnotations")
+        sizePolicy1.setHeightForWidth(self.labelOutputAnnotations.sizePolicy().hasHeightForWidth())
+        self.labelOutputAnnotations.setSizePolicy(sizePolicy1)
+
+        self.gridLayout.addWidget(self.labelOutputAnnotations, 0, 0, 1, 1)
+
+        self.frame_4 = QFrame(self.frameAnnotations)
+        self.frame_4.setObjectName(u"frame_4")
+        self.frame_4.setFrameShape(QFrame.StyledPanel)
+        self.frame_4.setFrameShadow(QFrame.Raised)
+        self.gridLayout_10 = QGridLayout(self.frame_4)
+        self.gridLayout_10.setObjectName(u"gridLayout_10")
+        self.labelOutputAnnotationsFileName = QLabel(self.frame_4)
         self.labelOutputAnnotationsFileName.setObjectName(u"labelOutputAnnotationsFileName")
         self.labelOutputAnnotationsFileName.setEnabled(False)
         sizePolicy.setHeightForWidth(self.labelOutputAnnotationsFileName.sizePolicy().hasHeightForWidth())
         self.labelOutputAnnotationsFileName.setSizePolicy(sizePolicy)
 
-        self.gridLayout.addWidget(self.labelOutputAnnotationsFileName, 1, 0, 1, 1)
+        self.gridLayout_10.addWidget(self.labelOutputAnnotationsFileName, 0, 0, 1, 1)
 
-        self.labelOutputAnnotations = QLabel(self.frameAnnotations)
-        self.labelOutputAnnotations.setObjectName(u"labelOutputAnnotations")
-        sizePolicy3.setHeightForWidth(self.labelOutputAnnotations.sizePolicy().hasHeightForWidth())
-        self.labelOutputAnnotations.setSizePolicy(sizePolicy3)
 
-        self.gridLayout.addWidget(self.labelOutputAnnotations, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.frame_4, 1, 0, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.frameAnnotations, 10, 0, 1, 1)
@@ -222,29 +251,39 @@ class Ui_MainWindow(object):
         self.frameModel.setFrameShadow(QFrame.Raised)
         self.gridLayout_12 = QGridLayout(self.frameModel)
         self.gridLayout_12.setObjectName(u"gridLayout_12")
-        self.pushButtonModelShow = QPushButton(self.frameModel)
-        self.pushButtonModelShow.setObjectName(u"pushButtonModelShow")
-        self.pushButtonModelShow.setEnabled(False)
-
-        self.gridLayout_12.addWidget(self.pushButtonModelShow, 1, 1, 1, 1)
-
         self.labelModel = QLabel(self.frameModel)
         self.labelModel.setObjectName(u"labelModel")
-        sizePolicy3.setHeightForWidth(self.labelModel.sizePolicy().hasHeightForWidth())
-        self.labelModel.setSizePolicy(sizePolicy3)
+        sizePolicy1.setHeightForWidth(self.labelModel.sizePolicy().hasHeightForWidth())
+        self.labelModel.setSizePolicy(sizePolicy1)
 
         self.gridLayout_12.addWidget(self.labelModel, 0, 0, 1, 1)
 
-        self.labelModelFileName = QLabel(self.frameModel)
+        self.frame = QFrame(self.frameModel)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.gridLayout_6 = QGridLayout(self.frame)
+        self.gridLayout_6.setObjectName(u"gridLayout_6")
+        self.labelModelFileName = QLabel(self.frame)
         self.labelModelFileName.setObjectName(u"labelModelFileName")
         self.labelModelFileName.setEnabled(False)
+        self.labelModelFileName.setWordWrap(False)
 
-        self.gridLayout_12.addWidget(self.labelModelFileName, 1, 0, 1, 1)
+        self.gridLayout_6.addWidget(self.labelModelFileName, 0, 0, 1, 1)
+
+
+        self.gridLayout_12.addWidget(self.frame, 1, 0, 1, 1)
 
         self.pushButtonModelOpen = QPushButton(self.frameModel)
         self.pushButtonModelOpen.setObjectName(u"pushButtonModelOpen")
 
         self.gridLayout_12.addWidget(self.pushButtonModelOpen, 0, 1, 1, 1)
+
+        self.pushButtonModelShow = QPushButton(self.frameModel)
+        self.pushButtonModelShow.setObjectName(u"pushButtonModelShow")
+        self.pushButtonModelShow.setEnabled(False)
+
+        self.gridLayout_12.addWidget(self.pushButtonModelShow, 1, 1, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.frameModel, 0, 0, 1, 1)
@@ -263,8 +302,8 @@ class Ui_MainWindow(object):
 
         self.labelKeys = QLabel(self.frameKeys)
         self.labelKeys.setObjectName(u"labelKeys")
-        sizePolicy3.setHeightForWidth(self.labelKeys.sizePolicy().hasHeightForWidth())
-        self.labelKeys.setSizePolicy(sizePolicy3)
+        sizePolicy1.setHeightForWidth(self.labelKeys.sizePolicy().hasHeightForWidth())
+        self.labelKeys.setSizePolicy(sizePolicy1)
 
         self.gridLayout_5.addWidget(self.labelKeys, 0, 0, 1, 1)
 
@@ -288,23 +327,20 @@ class Ui_MainWindow(object):
         self.frameAnswers.setFrameShadow(QFrame.Raised)
         self.gridLayout_14 = QGridLayout(self.frameAnswers)
         self.gridLayout_14.setObjectName(u"gridLayout_14")
-        self.labelAnswers = QLabel(self.frameAnswers)
-        self.labelAnswers.setObjectName(u"labelAnswers")
-        sizePolicy3.setHeightForWidth(self.labelAnswers.sizePolicy().hasHeightForWidth())
-        self.labelAnswers.setSizePolicy(sizePolicy3)
-
-        self.gridLayout_14.addWidget(self.labelAnswers, 0, 0, 1, 1)
-
-        self.pushButtonAnswersOpen = QPushButton(self.frameAnswers)
-        self.pushButtonAnswersOpen.setObjectName(u"pushButtonAnswersOpen")
-
-        self.gridLayout_14.addWidget(self.pushButtonAnswersOpen, 0, 1, 1, 1)
-
-        self.labelAnswersFileName = QLabel(self.frameAnswers)
+        self.frame_2 = QFrame(self.frameAnswers)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.gridLayout_7 = QGridLayout(self.frame_2)
+        self.gridLayout_7.setObjectName(u"gridLayout_7")
+        self.labelAnswersFileName = QLabel(self.frame_2)
         self.labelAnswersFileName.setObjectName(u"labelAnswersFileName")
         self.labelAnswersFileName.setEnabled(False)
 
-        self.gridLayout_14.addWidget(self.labelAnswersFileName, 1, 0, 1, 1)
+        self.gridLayout_7.addWidget(self.labelAnswersFileName, 0, 0, 1, 1)
+
+
+        self.gridLayout_14.addWidget(self.frame_2, 1, 0, 1, 1)
 
         self.pushButtonAnswersShow = QPushButton(self.frameAnswers)
         self.pushButtonAnswersShow.setObjectName(u"pushButtonAnswersShow")
@@ -312,23 +348,38 @@ class Ui_MainWindow(object):
 
         self.gridLayout_14.addWidget(self.pushButtonAnswersShow, 1, 1, 1, 1)
 
+        self.pushButtonAnswersOpen = QPushButton(self.frameAnswers)
+        self.pushButtonAnswersOpen.setObjectName(u"pushButtonAnswersOpen")
+
+        self.gridLayout_14.addWidget(self.pushButtonAnswersOpen, 0, 1, 1, 1)
+
+        self.labelAnswers = QLabel(self.frameAnswers)
+        self.labelAnswers.setObjectName(u"labelAnswers")
+        sizePolicy1.setHeightForWidth(self.labelAnswers.sizePolicy().hasHeightForWidth())
+        self.labelAnswers.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_14.addWidget(self.labelAnswers, 0, 0, 1, 1)
+
 
         self.gridLayout_3.addWidget(self.frameAnswers, 2, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 720, 30))
+        self.menubar.setGeometry(QRect(0, 0, 539, 30))
         self.menuArquivo = QMenu(self.menubar)
         self.menuArquivo.setObjectName(u"menuArquivo")
         self.menuAjuda = QMenu(self.menubar)
         self.menuAjuda.setObjectName(u"menuAjuda")
+        self.menuKeys = QMenu(self.menubar)
+        self.menuKeys.setObjectName(u"menuKeys")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menuArquivo.menuAction())
+        self.menubar.addAction(self.menuKeys.menuAction())
         self.menubar.addAction(self.menuAjuda.menuAction())
         self.menuArquivo.addAction(self.action_Run)
         self.menuArquivo.addSeparator()
@@ -371,6 +422,8 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(statustip)
         self.action_Help.setStatusTip(QCoreApplication.translate("MainWindow", u"Exibe informa\u00e7\u00f5es sobre o programa", None))
 #endif // QT_CONFIG(statustip)
+        self.action.setText(QCoreApplication.translate("MainWindow", u"ENA 2022", None))
+        self.action_KeysENA2023.setText(QCoreApplication.translate("MainWindow", u"ENA 2023", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonRun.setToolTip(QCoreApplication.translate("MainWindow", u"Executa a corre\u00e7\u00e3o", None))
 #endif // QT_CONFIG(tooltip)
@@ -418,6 +471,7 @@ class Ui_MainWindow(object):
         self.lineEditNameFistName.setStatusTip(QCoreApplication.translate("MainWindow", u"Indica a c\u00e9lula onde est\u00e1 armazenado o primeiro nome", None))
 #endif // QT_CONFIG(statustip)
         self.lineEditNameFistName.setText(QCoreApplication.translate("MainWindow", u"A2", None))
+        self.pushButtonNamesRemove.setText(QCoreApplication.translate("MainWindow", u"Remover", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Corre\u00e7\u00e3o", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonOutputAnnotationsChoose.setToolTip(QCoreApplication.translate("MainWindow", u"Escolhe nome do arquivo PDF para salvar as anota\u00e7\u00f5es", None))
@@ -426,15 +480,8 @@ class Ui_MainWindow(object):
         self.pushButtonOutputAnnotationsChoose.setStatusTip(QCoreApplication.translate("MainWindow", u"Escolhe nome do arquivo PDF para salvar as anota\u00e7\u00f5es", None))
 #endif // QT_CONFIG(statustip)
         self.pushButtonOutputAnnotationsChoose.setText(QCoreApplication.translate("MainWindow", u"Escolher", None))
-        self.labelOutputAnnotationsFileName.setText(QCoreApplication.translate("MainWindow", u"Nome do arquivo", None))
         self.labelOutputAnnotations.setText(QCoreApplication.translate("MainWindow", u"Arquivo PDF onde ser\u00e3o salvas as anota\u00e7\u00f5es da corre\u00e7\u00e3o", None))
-#if QT_CONFIG(tooltip)
-        self.pushButtonModelShow.setToolTip(QCoreApplication.translate("MainWindow", u"Exibe o modelo da folha de respostas com as marca\u00e7\u00f5es para a corre\u00e7\u00e3o", None))
-#endif // QT_CONFIG(tooltip)
-#if QT_CONFIG(statustip)
-        self.pushButtonModelShow.setStatusTip(QCoreApplication.translate("MainWindow", u"Exibe o modelo da folha de respostas com as marca\u00e7\u00f5es para a corre\u00e7\u00e3o", None))
-#endif // QT_CONFIG(statustip)
-        self.pushButtonModelShow.setText(QCoreApplication.translate("MainWindow", u"Ver", None))
+        self.labelOutputAnnotationsFileName.setText(QCoreApplication.translate("MainWindow", u"Nome do arquivo", None))
         self.labelModel.setText(QCoreApplication.translate("MainWindow", u"Arquivo PDF com o modelo da folha de respostas", None))
         self.labelModelFileName.setText(QCoreApplication.translate("MainWindow", u"Nome do arquivo", None))
 #if QT_CONFIG(tooltip)
@@ -444,6 +491,13 @@ class Ui_MainWindow(object):
         self.pushButtonModelOpen.setStatusTip(QCoreApplication.translate("MainWindow", u"Seleciona arquivo PDF que cont\u00e9m o modelo da folha de respostas", None))
 #endif // QT_CONFIG(statustip)
         self.pushButtonModelOpen.setText(QCoreApplication.translate("MainWindow", u"Abrir", None))
+#if QT_CONFIG(tooltip)
+        self.pushButtonModelShow.setToolTip(QCoreApplication.translate("MainWindow", u"Exibe o modelo da folha de respostas com as marca\u00e7\u00f5es para a corre\u00e7\u00e3o", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(statustip)
+        self.pushButtonModelShow.setStatusTip(QCoreApplication.translate("MainWindow", u"Exibe o modelo da folha de respostas com as marca\u00e7\u00f5es para a corre\u00e7\u00e3o", None))
+#endif // QT_CONFIG(statustip)
+        self.pushButtonModelShow.setText(QCoreApplication.translate("MainWindow", u"Ver", None))
 #if QT_CONFIG(statustip)
         self.pushButtonKeysEdit.setStatusTip(QCoreApplication.translate("MainWindow", u"Abre o editor para criar o gabarito", None))
 #endif // QT_CONFIG(statustip)
@@ -462,14 +516,6 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(statustip)
         self.lineEditKeys.setStatusTip(QCoreApplication.translate("MainWindow", u"Edi\u00e7\u00e3o manual do gabarito, espa\u00e7os, maiusculas ou min\u00fasculas s\u00e3o ignorados, use X para anular uma quest\u00e3o", None))
 #endif // QT_CONFIG(statustip)
-        self.labelAnswers.setText(QCoreApplication.translate("MainWindow", u"Arquivo PDF com as respostas dos candidatos", None))
-#if QT_CONFIG(tooltip)
-        self.pushButtonAnswersOpen.setToolTip(QCoreApplication.translate("MainWindow", u"Seleciona arquivo PDF com as respostas dos candidatos", None))
-#endif // QT_CONFIG(tooltip)
-#if QT_CONFIG(statustip)
-        self.pushButtonAnswersOpen.setStatusTip(QCoreApplication.translate("MainWindow", u"Seleciona arquivo PDF com as respostas dos candidatos", None))
-#endif // QT_CONFIG(statustip)
-        self.pushButtonAnswersOpen.setText(QCoreApplication.translate("MainWindow", u"Abrir", None))
         self.labelAnswersFileName.setText(QCoreApplication.translate("MainWindow", u"Nome do arquivo", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonAnswersShow.setToolTip(QCoreApplication.translate("MainWindow", u"Exibe o arquivo PDF com as respostas dos candidatos", None))
@@ -478,7 +524,16 @@ class Ui_MainWindow(object):
         self.pushButtonAnswersShow.setStatusTip(QCoreApplication.translate("MainWindow", u"Exibe o arquivo PDF com as respostas dos candidatos", None))
 #endif // QT_CONFIG(statustip)
         self.pushButtonAnswersShow.setText(QCoreApplication.translate("MainWindow", u"Ver", None))
+#if QT_CONFIG(tooltip)
+        self.pushButtonAnswersOpen.setToolTip(QCoreApplication.translate("MainWindow", u"Seleciona arquivo PDF com as respostas dos candidatos", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(statustip)
+        self.pushButtonAnswersOpen.setStatusTip(QCoreApplication.translate("MainWindow", u"Seleciona arquivo PDF com as respostas dos candidatos", None))
+#endif // QT_CONFIG(statustip)
+        self.pushButtonAnswersOpen.setText(QCoreApplication.translate("MainWindow", u"Abrir", None))
+        self.labelAnswers.setText(QCoreApplication.translate("MainWindow", u"Arquivo PDF com as respostas dos candidatos", None))
         self.menuArquivo.setTitle(QCoreApplication.translate("MainWindow", u"&Arquivo", None))
         self.menuAjuda.setTitle(QCoreApplication.translate("MainWindow", u"Aj&uda", None))
+        self.menuKeys.setTitle(QCoreApplication.translate("MainWindow", u"Gabaritos", None))
     # retranslateUi
 

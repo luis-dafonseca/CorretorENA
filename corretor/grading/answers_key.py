@@ -1,12 +1,14 @@
 #------------------------------------------------------------------------------#
 
+import grading.ena_param as ep
+
 #------------------------------------------------------------------------------#
 class Grades:
 
     #--------------------------------------------------------------------------#
     def __init__(self):
         self.T = 0
-        self.Q = [0] * 30
+        self.Q = [0] * ep.N_QUESTIONS
 
 #------------------------------------------------------------------------------#
 class AnswersKey:
@@ -16,7 +18,7 @@ class AnswersKey:
 
         if isinstance(keys, str):
 
-            K = ("".join(keys.split())).upper()
+            K = (''.join(keys.split())).upper()
 
             self.keys = []
             for C in K:
@@ -30,7 +32,7 @@ class AnswersKey:
 
         grades = Grades()
     
-        for ii in range(30):
+        for ii in range(ep.N_QUESTIONS):
     
             M = marks[ii]
 

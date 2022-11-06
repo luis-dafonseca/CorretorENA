@@ -5,8 +5,8 @@ import cv2
 import io
 import numpy as np
 
-from grading.rects import Rects
-
+import grading.ena_param as ep
+from   grading.rects import Rects
 
 COLOR_NAME_BG   = (1,1,1)
 COLOR_CORRECT   = (0,0,1)
@@ -44,7 +44,7 @@ class PageENA:
     #--------------------------------------------------------------------------#
     def insert_image( self, image ):
 
-        is_success, buffer = cv2.imencode( ".png", image )
+        is_success, buffer = cv2.imencode( '.png', image )
 
         self.page.insert_image( self.page_rect, stream=io.BytesIO(buffer) )
 
@@ -69,7 +69,7 @@ class PageENA:
 
         BASE_LINE = -6
 
-        for ii in range(30):
+        for ii in range(ep.N_QUESTIONS):
 
             R = Rects.grade_entry(ii)
             R.y0 += BASE_LINE 
@@ -138,7 +138,7 @@ class PageENA:
         # Masks
         for R in Rects.masks():
             self.shape.draw_rect( R )
-        self.shape.finish( width=5, color=COLOR_MASK, dashes="[20] 0" ) 
+        self.shape.finish( width=5, color=COLOR_MASK, dashes='[20] 0' ) 
 
         # Name
         self.shape.draw_rect( Rects.name() )
@@ -155,13 +155,13 @@ class PageENA:
         self.shape.finish( width=5, color=COLOR_MASK ) 
     
         # Score entryes
-        for ii in range(30):
+        for ii in range(ep.N_QUESTIONS):
             self.shape.draw_rect( Rects.grade_entry(ii) )
         self.shape.draw_rect( Rects.full_grade() )
         self.shape.finish( width=5, color=COLOR_SCORE ) 
     
         # Answer entries
-        for ii in range(30):
+        for ii in range(ep.N_QUESTIONS):
             for jj in range(5):
                 self.shape.draw_rect( Rects.mark_entry( ii, jj ) )
         self.shape.finish( width=5, color=COLOR_ANSWER ) 

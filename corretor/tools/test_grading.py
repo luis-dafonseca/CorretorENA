@@ -6,14 +6,12 @@ import fitz
 
 sys.path.append('..')
 
-from grading.answers_key   import AnswersKey
-from grading.tools         import pix_to_gray_image
-from grading.registration  import Registration
-from grading.collect_marks import collect_marks
-from grading.page_ena      import PageENA
-
-_DPI        = 300
-_COLORSPACE = "GRAY"
+import grading.ena_param     as ep
+from   grading.answers_key   import AnswersKey
+from   grading.tools         import pix_to_gray_image
+from   grading.registration  import Registration
+from   grading.collect_marks import collect_marks
+from   grading.page_ena      import PageENA
 
 #------------------------------------------------------------------------------#
 
@@ -37,12 +35,12 @@ answers_key = AnswersKey('D E B B E A A X B D D C D B C C B E E B A A A E E B E 
 #------------------------------------------------------------------------------#
 
 page  = model_pdf[0]
-pix   = page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
+pix   = page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
 image = pix_to_gray_image( pix )
 reg   = Registration( image )
 
 original_page = answers_pdf[n_page]
-original_pix  = original_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE ) 
+original_pix  = original_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE ) 
 original_img  = pix_to_gray_image( original_pix )
 
 image  = reg.transform( original_img )

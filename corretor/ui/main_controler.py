@@ -3,8 +3,9 @@
 import os
 import tempfile
 
-from PySide6.QtWidgets  import QApplication, QDialog, QFileDialog, QSizePolicy, QMessageBox
-from PySide6            import QtGui
+from functools import partial
+from PySide6.QtWidgets import QApplication, QDialog, QFileDialog, QSizePolicy, QMessageBox
+from PySide6           import QtGui
 
 from ui.main_uimodel     import MainUIModel
 from ui.show_names       import show_names_window
@@ -15,8 +16,8 @@ from ui.edit_keys_dialog import EditKeysDialog
 def _pixmap_to_qimage( pix ):
 
     temp_file = tempfile.NamedTemporaryFile()
-    pix.save( temp_file.name, "png" )
-    img = QtGui.QPixmap( temp_file.name, format="png" )
+    pix.save( temp_file.name, 'png' )
+    img = QtGui.QPixmap( temp_file.name, format='png' )
     temp_file.close()
 
     return img
@@ -119,6 +120,11 @@ class MainControler:
         self._ui.action_About.triggered.connect( self._about )
         self._ui.action_Help .triggered.connect( self._help  )
 
+        for yy in self._uimodel.keys_model.get_ena_years():
+            action = QtGui.QAction( f'ENA {yy}', self._win )
+            action.triggered.connect( partial( self._set_ena_keys, yy ) )
+            self._ui.menuKeys.addAction( action )
+
         self._ui.pushButtonModelOpen.clicked.connect( self._model_open )
         self._ui.pushButtonModelShow.clicked.connect( self._model_show )
 
@@ -175,8 +181,8 @@ class MainControler:
 
         msg = QMessageBox(self._win)
         msg.setIcon(QMessageBox.Information)
-        msg.setText("Corretor ENA: Correção Concluída                         ")
-        msg.setWindowTitle("Corretor ENA - Conclusão")
+        msg.setText('Corretor ENA: Correção Concluída                         ')
+        msg.setWindowTitle('Corretor ENA - Conclusão')
         msg.show()
 
     #--------------------------------------------------------------------------#
@@ -279,9 +285,13 @@ class MainControler:
 
     #--------------------------------------------------------------------------#
     def _parse_keys_edit(self):
-
         self._uimodel.keys_model.set_keys( self._ui.lineEditKeys.text() )
         self._uimodel.keys_model.update()
+
+    #--------------------------------------------------------------------------#
+    def _set_ena_keys( self, yy ):
+        keys = self._uimodel.keys_model.set_ena_keys(yy)
+        self._ui.lineEditKeys.setText( keys )
 
     #--------------------------------------------------------------------------#
     def _model_show(self):

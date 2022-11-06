@@ -21,7 +21,7 @@ class CLIProgressBar:
                 decimals = 1, 
                 length = 100, 
                 fill = '█', 
-                printEnd = "\r"):
+                printEnd = '\r'):
         """
         Call in a loop to create terminal progress bar
         @params:
@@ -32,10 +32,10 @@ class CLIProgressBar:
             decimals    - Optional  : positive number of decimals in percent complete (Int)
             length      - Optional  : character length of bar (Int)
             fill        - Optional  : bar fill character (Str)
-            printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+            printEnd    - Optional  : end character (e.g. '\r', '\r\n') (Str)
         """
     
-        percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+        percent = ('{0:.' + str(decimals) + 'f}').format(100 * (iteration / float(total)))
         
         filledLength = int(length * iteration // total)
         
@@ -65,7 +65,7 @@ class CLIProgressBar:
 
 #------------------------------------------------------------------------------#
 
-example_dir = "../../docs/example/"
+example_dir = '../../docs/example/'
 
 answers_name = example_dir + 'exemplo-respostas.pdf'
 model_name   = example_dir + 'exemplo-modelo.pdf'

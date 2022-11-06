@@ -5,14 +5,12 @@ import fitz
 from openpyxl import Workbook, load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 
-from grading.grade_exam  import grade_exam
-from grading.xls_grades  import XLSGrades
-from grading.page_ena    import PageENA
-from grading.tools       import pix_to_gray_image
-from ui.keys_model       import KeysModel
-
-_DPI        = 300
-_COLORSPACE = "GRAY"
+import grading.ena_param  as ep
+from   grading.grade_exam import grade_exam
+from   grading.xls_grades import XLSGrades
+from   grading.page_ena   import PageENA
+from   grading.tools      import pix_to_gray_image
+from   ui.keys_model      import KeysModel
 
 #------------------------------------------------------------------------------#
 class UIProgressBar:
@@ -50,9 +48,7 @@ class MainUIModel:
         self._annotations = None
         self._grades      = None
 
-        # keys = 'CBEACBEDCBEEADCCDBADADACDEAEBD'
-        keys = 'ABCDEABCDEABCDEABCDEABCDEABCDE'
-        self.keys_model = KeysModel( keys ) 
+        self.keys_model = KeysModel()
 
         self._progress_bar = UIProgressBar(progress_bar)
 
@@ -138,7 +134,7 @@ class MainUIModel:
     def get_pix_model(self):      
 
         model_page = self._model[0]
-        model_pix  = model_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
+        model_pix  = model_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
         image      = pix_to_gray_image( model_pix )
 
         page = PageENA( fitz.open() )
@@ -157,7 +153,7 @@ class MainUIModel:
     def get_pix_keys(self):      
 
         model_page = self._model[0]
-        model_pix  = model_page.get_pixmap( dpi=_DPI, colorspace=_COLORSPACE )
+        model_pix  = model_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
         image      = pix_to_gray_image( model_pix )
 
         page = PageENA( fitz.open() )

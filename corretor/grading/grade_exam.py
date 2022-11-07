@@ -43,7 +43,7 @@ def grade_exam( model_pdf,
         marks  = collect_marks( image )
         grades = check_answers( marks, k_lst )
 
-        grades_xls.add_grade( ii, grades.total )
+        grades_xls.add_grade( ii, marks.eliminated, marks.absent, grades.total )
     
         page = PageENA( annotations_pdf )
         page.create_page  ()

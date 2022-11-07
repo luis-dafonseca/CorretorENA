@@ -10,6 +10,7 @@ from   grading.grade_exam import grade_exam
 from   grading.xls_grades import XLSGrades
 from   grading.page_ena   import PageENA
 from   grading.tools      import pix_to_gray_image
+from   grading.grades     import keys_str_to_list
 from   ui.keys_model      import KeysModel
 
 #------------------------------------------------------------------------------#
@@ -161,12 +162,12 @@ class MainUIModel:
         model_pix  = model_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
         image      = pix_to_gray_image( model_pix )
 
-        page = PageENA( fitz.open() )
+        k_lst = keys_str_to_list( self.keys_model.keys )
 
+        page = PageENA( fitz.open() )
         page.create_page()
         page.insert_image( image )
-        page.draw_answers_key( self.keys_model.answers_key().keys )
-
+        page.draw_answers_key( k_lst )
         page.commit()
 
         pix = page.page.get_pixmap()

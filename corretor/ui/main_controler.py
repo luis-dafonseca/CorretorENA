@@ -4,8 +4,13 @@ import os
 import tempfile
 
 from functools import partial
-from PySide6.QtWidgets import QApplication, QDialog, QFileDialog, QSizePolicy, QMessageBox
-from PySide6           import QtGui
+from PySide6.QtWidgets import ( QApplication, 
+                                QDialog, 
+                                QFileDialog, 
+                                QSizePolicy, 
+                                QMessageBox )
+from PySide6.QtCore import QRegularExpression
+from PySide6.QtGui  import QRegularExpressionValidator, QPixmap, QAction
 
 from ui.main_uimodel     import MainUIModel
 from ui.show_names       import show_names_window
@@ -17,7 +22,7 @@ def _pixmap_to_qimage( pix ):
 
     temp_file = tempfile.NamedTemporaryFile()
     pix.save( temp_file.name, 'png' )
-    img = QtGui.QPixmap( temp_file.name, format='png' )
+    img = QPixmap( temp_file.name, format='png' )
     temp_file.close()
 
     return img
@@ -108,6 +113,12 @@ class MainControler:
         self._ui.lineEditKeys.setValidator( k_model.validator(self._win) )
         self._ui.lineEditKeys.setText     ( k_model.keys )
 
+        regex     = QRegularExpression('[A-Z][1-9]')
+        validator = QRegularExpressionValidator( regex, self._win )
+        self._ui.lineEditNameFistName.setFont( k_model.font )
+        self._ui.lineEditNameFistName.setInputMask( '>AD' )
+        self._ui.lineEditNameFistName.setValidator( validator )
+
     #--------------------------------------------------------------------------#
     def _connectSignalsAndSlots(self):
 
@@ -121,7 +132,7 @@ class MainControler:
         self._ui.action_Help .triggered.connect( self._help  )
 
         for yy in self._uimodel.keys_model.get_ena_years():
-            action = QtGui.QAction( f'ENA {yy}', self._win )
+            action = QAction( f'ENA {yy}', self._win )
             action.triggered.connect( partial( self._set_ena_keys, yy ) )
             self._ui.menuKeys.addAction( action )
 

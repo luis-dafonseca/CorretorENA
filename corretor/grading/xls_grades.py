@@ -1,7 +1,9 @@
 #------------------------------------------------------------------------------#
 
-from openpyxl import Workbook, load_workbook
+from openpyxl            import Workbook, load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
+
+import grading.ena_param as ep
 
 #------------------------------------------------------------------------------#
 class XLSGrades:
@@ -16,6 +18,7 @@ class XLSGrades:
 
         self.sheet['A1'] = 'Nome'
         self.sheet['B1'] = 'Nota'
+        self.sheet['C1'] = 'Status'
 
         self.has_names = False
 
@@ -38,7 +41,6 @@ class XLSGrades:
         ll = xy[1]
 
         for rr, row in enumerate( sheet.iter_rows( min_row=ll, values_only=True )):
-
             self.sheet.cell(row=rr+2,column=1).value = row[cc]
 
         xls.close()
@@ -54,12 +56,23 @@ class XLSGrades:
             return str(f'Candidato {ii+1}')
     
     #--------------------------------------------------------------------------#
-    def add_grade(self, ii, grade):
+    def add_grade(self, ii, eliminated, absent, grade ):
 
         if not self.has_names:
             self.sheet.cell(row=ii+2, column=1).value = str(f'Candidato {ii+1}')
 
         self.sheet.cell(row=ii+2, column=2).value = grade
+
+        if eliminated:
+            status = 'Eliminado'
+        elif absent:
+            status = 'Ausente'
+        elif grade >= ep.MIN_SCORE:
+            status = 'Aprovado'
+        else:
+            status = 'Reprovado'
+
+        self.sheet.cell(row=ii+2, column=3).value = status
 
     #--------------------------------------------------------------------------#
     def save(self):

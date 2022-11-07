@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>539</width>
+    <width>614</width>
     <height>745</height>
    </rect>
   </property>
@@ -263,6 +263,9 @@
          </item>
          <item row="2" column="1">
           <widget class="QPushButton" name="pushButtonNamesRemove">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>Remover</string>
            </property>
@@ -581,7 +584,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>539</width>
+     <width>614</width>
      <height>30</height>
     </rect>
    </property>

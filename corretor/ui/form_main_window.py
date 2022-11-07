@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(539, 745)
+        MainWindow.resize(614, 745)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -190,6 +190,7 @@ class Ui_MainWindow(object):
 
         self.pushButtonNamesRemove = QPushButton(self.frameNames)
         self.pushButtonNamesRemove.setObjectName(u"pushButtonNamesRemove")
+        self.pushButtonNamesRemove.setEnabled(False)
 
         self.gridLayout_4.addWidget(self.pushButtonNamesRemove, 2, 1, 1, 1)
 
@@ -366,7 +367,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 539, 30))
+        self.menubar.setGeometry(QRect(0, 0, 614, 30))
         self.menuArquivo = QMenu(self.menubar)
         self.menuArquivo.setObjectName(u"menuArquivo")
         self.menuAjuda = QMenu(self.menubar)

@@ -135,8 +135,9 @@ class MainControler:
         self._ui.pushButtonAnswersOpen.clicked.connect( self._answers_open )
         # self._ui.pushButtonAnswersShow.clicked.connect( self._answers_show )
 
-        self._ui.pushButtonNamesOpen.clicked.connect( self._names_open )
-        self._ui.pushButtonNamesShow.clicked.connect( self._names_show )
+        self._ui.pushButtonNamesOpen  .clicked.connect( self._names_open   )
+        self._ui.pushButtonNamesShow  .clicked.connect( self._names_show   )
+        self._ui.pushButtonNamesRemove.clicked.connect( self._names_remove )
         self._ui.lineEditNameFistName.editingFinished.connect( self._set_fisrt_name )
 
         self._ui.pushButtonOutputGradesChoose     .clicked.connect( self._choose_grades      )
@@ -145,28 +146,23 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _update(self):
 
-        if self._uimodel.has_model:
-            self._ui.pushButtonModelShow.setEnabled(True)
-            self._ui.labelModelFileName .setEnabled(True)
-            self._ui.pushButtonKeysShow .setEnabled(True)
+        self._ui.pushButtonModelShow.setEnabled(self._uimodel.has_model)
+        self._ui.labelModelFileName .setEnabled(self._uimodel.has_model)
+        self._ui.pushButtonKeysShow .setEnabled(self._uimodel.has_model)
 
-        if self._uimodel.has_answers:
-            self._ui.pushButtonAnswersShow.setEnabled(True)
-            self._ui.labelAnswersFileName .setEnabled(True)
+        self._ui.pushButtonAnswersShow.setEnabled(self._uimodel.has_answers)
+        self._ui.labelAnswersFileName .setEnabled(self._uimodel.has_answers)
 
-        if self._uimodel.has_names:
-            self._ui.pushButtonNamesShow.setEnabled(True)
-            self._ui.labelNamesFileName .setEnabled(True)
+        self._ui.pushButtonNamesShow  .setEnabled(self._uimodel.has_names)
+        self._ui.pushButtonNamesRemove.setEnabled(self._uimodel.has_names)
+        self._ui.labelNamesFileName   .setEnabled(self._uimodel.has_names)
 
-        if self._uimodel.has_grades:
-            self._ui.labelOutputGradesFileName.setEnabled(True)
+        self._ui.labelOutputGradesFileName     .setEnabled(self._uimodel.has_grades)
+        self._ui.labelOutputAnnotationsFileName.setEnabled(self._uimodel.has_annotations)
 
-        if self._uimodel.has_annotations:
-            self._ui.labelOutputAnnotationsFileName.setEnabled(True)
-
-        if self._uimodel.ready_to_run():
-            self._ui.action_Run   .setEnabled(True)
-            self._ui.pushButtonRun.setEnabled(True)
+        ready = self._uimodel.ready_to_run()
+        self._ui.action_Run   .setEnabled(ready)
+        self._ui.pushButtonRun.setEnabled(ready)
 
     #--------------------------------------------------------------------------#
     def _exit(self):
@@ -181,7 +177,7 @@ class MainControler:
 
         msg = QMessageBox(self._win)
         msg.setIcon(QMessageBox.Information)
-        msg.setText('Corretor ENA: Correção Concluída                         ')
+        msg.setText('Corretor ENA: Correção Concluída' + ' '*25)
         msg.setWindowTitle('Corretor ENA - Conclusão')
         msg.show()
 
@@ -238,11 +234,16 @@ class MainControler:
             self._uimodel.set_names( fname, first_name )
             self._update()
 
-    #--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+    def _names_remove(self):
+        self._ui.lineEditNameFistName.setText('A2')
+        self._ui.labelNamesFileName  .setText( '' )
+        self._uimodel.remove_names()
+        self._update()
+
+#--------------------------------------------------------------------------#
     def _set_fisrt_name(self):
-
         if self._uimodel.has_names:
-
             fname      = self._ui.labelNamesFileName  .text()
             first_name = self._ui.lineEditNameFistName.text()
             self._uimodel.set_names( fname, first_name )

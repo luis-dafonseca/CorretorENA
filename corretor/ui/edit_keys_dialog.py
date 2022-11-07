@@ -93,7 +93,7 @@ class EditKeysDialog(QDialog):
         label = QLabel('Gabarito: ', self)
 
         self.edit = QLineEdit( self.model.keys_next, self )
-        self.edit.editingFinished.connect(self.parse_line_edit)
+        self.edit.textEdited.connect(self.parse_line_edit)
 
         self.edit.setFont     ( self.model.font )
         self.edit.setInputMask( self.model.mask )

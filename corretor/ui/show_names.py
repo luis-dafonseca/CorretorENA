@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------------#
 
-from PySide6.QtWidgets  import QDialog
+from PySide6.QtWidgets  import QDialog, QDialogButtonBox
 from ui.form_show_names import Ui_ShowNames
 
 #------------------------------------------------------------------------------#
@@ -25,7 +25,8 @@ def show_names_window( parent, filename, first_name, names ):
     dialog.ui.labelNumber_5.setText( str(N-1) )
     dialog.ui.labelNumber_6.setText( str(N  ) )
 
-    dialog.ui.pushButtonOK.clicked.connect( dialog.close )
-    dialog.show()
+    dialog.ui.buttonBox.button( QDialogButtonBox.Cancel ).hide()
+
+    dialog.exec()
 
 #------------------------------------------------------------------------------#

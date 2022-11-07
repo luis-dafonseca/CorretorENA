@@ -23,21 +23,9 @@ class Ui_ShowNames(object):
     def setupUi(self, ShowNames):
         if not ShowNames.objectName():
             ShowNames.setObjectName(u"ShowNames")
-        ShowNames.resize(592, 284)
-        ShowNames.setLocale(QLocale(QLocale.Portuguese, QLocale.Brazil))
+        ShowNames.resize(527, 274)
         self.gridLayout = QGridLayout(ShowNames)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.buttonBox = QDialogButtonBox(ShowNames)
-        self.buttonBox.setObjectName(u"buttonBox")
-        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
-
-        self.gridLayout.addWidget(self.buttonBox, 3, 0, 1, 1)
-
-        self.label_2 = QLabel(ShowNames)
-        self.label_2.setObjectName(u"label_2")
-
-        self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
-
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.label_8 = QLabel(ShowNames)
@@ -45,7 +33,13 @@ class Ui_ShowNames(object):
 
         self.horizontalLayout_2.addWidget(self.label_8)
 
-        self.labelFileName = QLabel(ShowNames)
+        self.frame_2 = QFrame(ShowNames)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.gridLayout_3 = QGridLayout(self.frame_2)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.labelFileName = QLabel(self.frame_2)
         self.labelFileName.setObjectName(u"labelFileName")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(2)
@@ -53,20 +47,46 @@ class Ui_ShowNames(object):
         sizePolicy.setHeightForWidth(self.labelFileName.sizePolicy().hasHeightForWidth())
         self.labelFileName.setSizePolicy(sizePolicy)
 
-        self.horizontalLayout_2.addWidget(self.labelFileName)
+        self.gridLayout_3.addWidget(self.labelFileName, 0, 0, 1, 1)
+
+
+        self.horizontalLayout_2.addWidget(self.frame_2)
 
         self.label_6 = QLabel(ShowNames)
         self.label_6.setObjectName(u"label_6")
 
         self.horizontalLayout_2.addWidget(self.label_6)
 
-        self.labelFirstName = QLabel(ShowNames)
+        self.frame_3 = QFrame(ShowNames)
+        self.frame_3.setObjectName(u"frame_3")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.frame_3.sizePolicy().hasHeightForWidth())
+        self.frame_3.setSizePolicy(sizePolicy1)
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.gridLayout_4 = QGridLayout(self.frame_3)
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.labelFirstName = QLabel(self.frame_3)
         self.labelFirstName.setObjectName(u"labelFirstName")
+        self.labelFirstName.setMinimumSize(QSize(40, 0))
+        self.labelFirstName.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_2.addWidget(self.labelFirstName)
+        self.gridLayout_4.addWidget(self.labelFirstName, 0, 0, 1, 1)
 
 
-        self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
+        self.horizontalLayout_2.addWidget(self.frame_3)
+
+
+        self.gridLayout.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
+
+        self.buttonBox = QDialogButtonBox(ShowNames)
+        self.buttonBox.setObjectName(u"buttonBox")
+        self.buttonBox.setOrientation(Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
+
+        self.gridLayout.addWidget(self.buttonBox, 2, 0, 1, 1)
 
         self.frame = QFrame(ShowNames)
         self.frame.setObjectName(u"frame")
@@ -150,11 +170,11 @@ class Ui_ShowNames(object):
 
         self.label_9 = QLabel(self.frame)
         self.label_9.setObjectName(u"label_9")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
-        self.label_9.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
+        self.label_9.setSizePolicy(sizePolicy2)
         self.label_9.setMinimumSize(QSize(40, 0))
         self.label_9.setAlignment(Qt.AlignCenter)
 
@@ -164,17 +184,18 @@ class Ui_ShowNames(object):
         self.gridLayout_2.addLayout(self.formLayout, 1, 0, 1, 1)
 
 
-        self.gridLayout.addWidget(self.frame, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.frame, 1, 0, 1, 1)
 
 
         self.retranslateUi(ShowNames)
+        self.buttonBox.accepted.connect(ShowNames.accept)
+        self.buttonBox.rejected.connect(ShowNames.reject)
 
         QMetaObject.connectSlotsByName(ShowNames)
     # setupUi
 
     def retranslateUi(self, ShowNames):
-        ShowNames.setWindowTitle(QCoreApplication.translate("ShowNames", u"Dialog", None))
-        self.label_2.setText(QCoreApplication.translate("ShowNames", u"Nomes dos primeiros e \u00faltimos candidatos", None))
+        ShowNames.setWindowTitle(QCoreApplication.translate("ShowNames", u"Nomes dos primeiros e \u00faltimos candidatos", None))
         self.label_8.setText(QCoreApplication.translate("ShowNames", u"Arquivo: ", None))
         self.labelFileName.setText(QCoreApplication.translate("ShowNames", u"TextLabel", None))
         self.label_6.setText(QCoreApplication.translate("ShowNames", u"C\u00e9lula: ", None))

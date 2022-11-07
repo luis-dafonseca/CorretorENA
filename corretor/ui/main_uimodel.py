@@ -120,6 +120,11 @@ class MainUIModel:
         self.has_names = True
 
     #--------------------------------------------------------------------------#
+    def remove_names( self ):       
+        self.names     = []
+        self.has_names = False
+
+    #--------------------------------------------------------------------------#
     def set_annotations( self, fname ): 
         self._fname_annotations = fname
         self._annotations       = fitz.open()

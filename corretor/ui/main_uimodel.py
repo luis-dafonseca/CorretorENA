@@ -68,7 +68,7 @@ class MainUIModel:
             self._grades.add_names(self.names)
 
         grade_exam( self._model, 
-                    self.keys_model.answers_key(), 
+                    self.keys_model.keys, 
                     self._answers, 
                     self._annotations, 
                     self._grades,

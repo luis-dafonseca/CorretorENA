@@ -6,9 +6,8 @@ import fitz
 
 sys.path.append('..')
 
-from grading.grade_exam  import grade_exam
-from grading.answers_key import AnswersKey
-from grading.xls_grades  import XLSGrades
+from grading.grade_exam import grade_exam
+from grading.xls_grades import XLSGrades
 
 #------------------------------------------------------------------------------#
 class CLIProgressBar:
@@ -87,12 +86,11 @@ grades_xls      = XLSGrades(grades_name)
 
 grades_xls.read_names( input_names, first_name )
 
-#                         1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 
-answers_key = AnswersKey('D E B B E A A X B D D C D B C C B E E B A A A E E B E B D D')
+key = 'DEBBEAAXBDDCDBCCBEEBAAAEEBEBDD'
 
 progress_bar = CLIProgressBar()
 
-grade_exam( model_pdf, answers_key, answers_pdf, annotations_pdf, grades_xls, progress_bar )
+grade_exam( model_pdf, key, answers_pdf, annotations_pdf, grades_xls, progress_bar )
 
 model_pdf.close()
 answers_pdf.close()

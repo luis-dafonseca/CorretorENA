@@ -3,8 +3,7 @@
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui  import QRegularExpressionValidator, QFontDatabase
 
-import grading.ena_param   as ep
-from   grading.answers_key import AnswersKey
+import grading.ena_param as ep
 
 #------------------------------------------------------------------------------#
 def str_to_key( s ):
@@ -54,9 +53,5 @@ class KeysModel:
     #--------------------------------------------------------------------------#
     def get_ena_years( self ):
         return self.ena_keys.keys()
-
-    #--------------------------------------------------------------------------#
-    def answers_key( self ):
-        return AnswersKey( self.keys )
 
 #------------------------------------------------------------------------------#

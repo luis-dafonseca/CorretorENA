@@ -141,7 +141,7 @@ class Rects:
     def full_grade():
         x = 1780
         y = 3110
-        w =  100
+        w =  580
         h =   80
         return fitz.IRect( x, y, x+w, y+h )
 

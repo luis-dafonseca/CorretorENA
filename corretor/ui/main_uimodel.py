@@ -87,10 +87,16 @@ class MainUIModel:
 
     #--------------------------------------------------------------------------#
     def set_model( self, fname ):       
+
+        new_model = fitz.open( fname )
+        
+        if new_model.page_count != 1:
+            raise ValueError( f'{fname} não contém um modelo' )
+
         if self.has_model:
             self._model.close()
 
-        self._model = fitz.open( fname )
+        self._model = new_model
         self.has_model  = True
 
     #--------------------------------------------------------------------------#

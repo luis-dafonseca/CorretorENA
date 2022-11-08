@@ -197,9 +197,21 @@ class MainControler:
 
         if fname:
             self._last_dir = os.path.dirname(fname)
-            self._ui.labelModelFileName.setText( fname )
-            self._uimodel.set_model( fname )
-            self._update()
+
+            try:
+                self._uimodel.set_model( fname )
+
+            except ValueError:
+
+                fname = os.path.basename( fname )
+                QMessageBox.critical( self._win,
+                                      'Erro lendo o modelo', 
+                                      f'O arquivo {fname} não contém um modelo!',
+                                      buttons=QMessageBox.StandardButton.Ok )
+
+            else:
+                self._ui.labelModelFileName.setText( fname )
+                self._update()
 
     #--------------------------------------------------------------------------#
     def _answers_open(self):

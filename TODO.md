@@ -15,7 +15,6 @@
 #### Testes de consistência
 
 - Show Names: Tratar o caso em que existem menos do que 6 ou 7 candidatos
-- Open model: Testar se o arquivo pdf tem mais do que uma página
 - Testar se a quantidade de nomes é igual a quantidade de páginas de respostas
 - Perguntar que o usuário deseja abandonar o gabarito atual ao abrir um arquivo
 
@@ -25,6 +24,8 @@
 - Não permitir abrir duas janelas de visualização
 - Menu da janela principal
   - Incluir opções para abrir os arquivos no menu
+- Criar um quadro de dialogo para o progress bar com a opção de cancelar a correção
+- Escrever o número total de provas, de ausentes e eliminados no quadro de finalização da correção
 
 #### Windows
 
@@ -36,6 +37,7 @@
 
 ### DONE
 
+- Open model: Testar se o arquivo pdf tem mais do que uma página
 - Garantir que ao abrir um arquivo de gabarito ele contenha um gabarito
 - Permitir salvar gabaritos
 - Menu da janela principal

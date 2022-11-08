@@ -58,9 +58,11 @@ class PageENA:
         rr = Rects.name()
         self.shape.draw_rect( rr )
         self.shape.finish( color=COLOR_NAME_BG, fill=COLOR_NAME_BG ) 
+        
+        rr.y0 = (rr.y0 + rr.y1 ) // 2
 
         self.shape.insert_textbox( rr, name, color=COLOR_CORRECT,
-                                   fontsize=int( 0.45*rr.height ),
+                                   fontsize=int( 0.8*rr.height ),
                                    align=fitz.TEXT_ALIGN_LEFT )
         self.shape.finish() 
 

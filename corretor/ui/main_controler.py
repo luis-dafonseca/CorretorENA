@@ -28,47 +28,31 @@ def _pixmap_to_qimage( pix ):
     return img
 
 #------------------------------------------------------------------------------#
-def _get_open_pdf( parent, title, directoty ):
-    fname, ftr = QFileDialog.getOpenFileName( parent=parent, 
-                                              caption=title, 
-                                              dir=directoty, 
-                                              filter='*.pdf' )
+def _get_open_fname( parent_, title_, directoty_, ext_ ):
+
+    fname, ftr = QFileDialog.getOpenFileName( parent  = parent_, 
+                                              caption = title_, 
+                                              dir     = directoty_, 
+                                              filter  = '*.' + ext_ )
+
     return fname
 
 #------------------------------------------------------------------------------#
-def _get_save_pdf( parent, title, directoty ):
-    fname, ftr = QFileDialog.getSaveFileName( parent=parent, 
-                                              caption=title, 
-                                              dir=directoty, 
-                                              filter='*.pdf')
-    return fname
+def _get_save_fname( parent_, title_, directoty_, ext_ ):
 
-#------------------------------------------------------------------------------#
-def _get_open_xlsx( parent, title, directoty ):
-    fname, ftr = QFileDialog.getOpenFileName( parent=parent, 
-                                              caption=title, 
-                                              dir=directoty, 
-                                              filter='*.xlsx' )
-    return fname
+    fname, ftr = QFileDialog.getSaveFileName( parent  = parent_, 
+                                              caption = title_, 
+                                              dir     = directoty_, 
+                                              filter  = '*.' + ext_ )
 
-#------------------------------------------------------------------------------#
-def _get_save_xlsx( parent, title, directoty ):
-    fname, ftr = QFileDialog.getSaveFileName( parent=parent, 
-                                              caption=title, 
-                                              dir=directoty, 
-                                              filter='*.xlsx')
-    return fname
-
-#------------------------------------------------------------------------------#
-def _add_file_extension( fname, ext ):
-
-    ext = '.' + ext
-    nn  = len(ext)
-
-    if len(fname) < nn:
-        fname += ext
-    elif fname[-nn:] != ext:
-        fname += ext
+    if fname:
+        ee = '.' + ext_
+        nn = len(ee)
+    
+        if len(fname) < nn:
+            fname += ee
+        elif fname[-nn:] != ee:
+            fname += ee
 
     return fname
 
@@ -81,9 +65,10 @@ class MainControler:
         self._win = window
         self._ui  = window.ui
 
-        self.last_dir              = '.'
-        self.suggested_annotations = ''
-        self.suggested_grades      = ''
+        self._last_dir              = '.'
+        self._suggested_annotations = ''
+        self._suggested_grades      = ''
+        self._keys_fname            = ''
 
         self._uimodel = MainUIModel( self._ui.progressBar )
 
@@ -128,6 +113,10 @@ class MainControler:
         self._ui.action_Exit   .triggered.connect( self._exit )
         self._ui.pushButtonExit.clicked  .connect( self._exit )
 
+        self._ui.action_Keys_Open  .triggered.connect( self._keys_open   )
+        self._ui.action_Keys_Save  .triggered.connect( self._keys_save   )
+        self._ui.action_Keys_Saveas.triggered.connect( self._keys_saveas )
+
         self._ui.action_About.triggered.connect( self._about )
         self._ui.action_Help .triggered.connect( self._help  )
 
@@ -144,7 +133,7 @@ class MainControler:
         self._ui.lineEditKeys.editingFinished.connect( self._parse_keys_edit)
 
         self._ui.pushButtonAnswersOpen.clicked.connect( self._answers_open )
-        # self._ui.pushButtonAnswersShow.clicked.connect( self._answers_show )
+        self._ui.pushButtonAnswersShow.clicked.connect( self._answers_show )
 
         self._ui.pushButtonNamesOpen  .clicked.connect( self._names_open   )
         self._ui.pushButtonNamesShow  .clicked.connect( self._names_show   )
@@ -203,12 +192,11 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _model_open(self):
 
-        fname = _get_open_pdf( self._win, 
-                               'Selecione o modelo da folha de respostas',
-                               self.last_dir )
+        fname = _get_open_fname( self._win, 'Selecione o modelo da folha de respostas',
+                                 self._last_dir, 'pdf' )
 
         if fname:
-            self.last_dir = os.path.dirname(fname)
+            self._last_dir = os.path.dirname(fname)
             self._ui.labelModelFileName.setText( fname )
             self._uimodel.set_model( fname )
             self._update()
@@ -216,15 +204,14 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _answers_open(self):
 
-        fname = _get_open_pdf( self._win, 
-                               'Selecione as respostas para serem corrigidas',
-                               self.last_dir )
+        fname = _get_open_fname( self._win, 'Selecione as respostas para serem corrigidas',
+                                 self._last_dir, 'pdf' )
 
         if fname:
 
-            self.last_dir = os.path.dirname(fname)
-            self.suggested_annotations = fname[:-4] + '-anotacoes.pdf'
-            self.suggested_grades      = fname[:-4] + '-notas.xlsx'
+            self._last_dir = os.path.dirname(fname)
+            self._suggested_annotations = fname[:-4] + '-anotacoes.pdf'
+            self._suggested_grades      = fname[:-4] + '-notas.xlsx'
 
             self._ui.labelAnswersFileName.setText( fname )
             self._uimodel.set_answers( fname  )
@@ -233,14 +220,13 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _names_open(self):
 
-        fname = _get_open_xlsx( self._win, 
-                                'Selecione a lista dos nomes dos candidatos',
-                                self.last_dir )
+        fname = _get_open_fname( self._win, 'Selecione a lista dos nomes dos candidatos',
+                                 self._last_dir, 'xlsx' )
 
         if fname:
             first_name = self._ui.lineEditNameFistName.text()
 
-            self.last_dir = os.path.dirname(fname)
+            self._last_dir = os.path.dirname(fname)
             self._ui.labelNamesFileName.setText( fname )
             self._uimodel.set_names( fname, first_name )
             self._update()
@@ -263,12 +249,11 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _choose_grades(self):
 
-        fname = _get_save_xlsx( self._win, 'Arquivo para salvar as notas',
-                                self.suggested_grades )
+        fname = _get_save_fname( self._win, 'Arquivo para salvar as notas',
+                                 self._suggested_grades, 'xlsx' )
 
         if fname:
-            fname = _add_file_extension( fname, 'xlsx' )
-            self.last_dir = os.path.dirname(fname)
+            self._last_dir = os.path.dirname(fname)
             self._ui.labelOutputGradesFileName.setText( fname )
             self._uimodel.set_grades( fname )
             self._update()
@@ -276,15 +261,59 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _choose_annotations(self):
 
-        fname = _get_save_pdf( self._win, 'Arquivo para salvar as anotações',
-                               self.suggested_annotations )
+        fname = _get_save_fname( self._win, 'Arquivo para salvar as anotações',
+                                 self._suggested_annotations, 'pdf' )
 
         if fname:
-            fname = _add_file_extension( fname, 'pdf' )
-            self.last_dir = os.path.dirname(fname)
+            self._last_dir = os.path.dirname(fname)
             self._ui.labelOutputAnnotationsFileName.setText(fname)
             self._uimodel.set_annotations( fname )
             self._update()
+
+    #--------------------------------------------------------------------------#
+    def _keys_open(self):
+
+        new_keys_fname = _get_open_fname( self._win, 'Arquivo com o gabarito',
+                                          self._last_dir, 'txt' )
+
+        if new_keys_fname:
+
+            try:
+                keys = self._uimodel.keys_model.read_keys( new_keys_fname )
+
+            except ValueError:
+
+                fname = os.path.basename( new_keys_fname )
+                QMessageBox.critical( self._win,
+                                      'Erro lendo o gabarito', 
+                                      f'O arquivo {fname} não contém um gabarito!',
+                                      buttons=QMessageBox.StandardButton.Ok )
+
+            else:
+                self._keys_fname = new_keys_fname
+                self._ui.lineEditKeys.setText( keys )
+
+    #--------------------------------------------------------------------------#
+    def _keys_save(self):
+
+        if not self._keys_fname:
+            self._keys_fname = _get_save_fname( self._win, 'Arquivo para salvar o gabarito',
+                                                self._last_dir, 'txt' )
+
+        if self._keys_fname:
+            with open( self._keys_fname, 'w' ) as f:
+                f.write( self._ui.lineEditKeys.text() )
+
+    #--------------------------------------------------------------------------#
+    def _keys_saveas(self):
+
+        new_keys_fname = _get_save_fname( self._win, 'Arquivo para salvar o gabarito',
+                                          self._last_dir, 'txt' )
+
+        if new_keys_fname:
+            self._keys_fname = new_keys_fname
+            with open( self._keys_fname, 'w' ) as f:
+                f.write( self._ui.lineEditKeys.text() )
 
     #--------------------------------------------------------------------------#
     def _keys_edit(self):

@@ -607,6 +607,10 @@
     <property name="title">
      <string>Gabaritos</string>
     </property>
+    <addaction name="action_Keys_Open"/>
+    <addaction name="action_Keys_Save"/>
+    <addaction name="action_Keys_Saveas"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuArquivo"/>
    <addaction name="menuKeys"/>
@@ -660,14 +664,19 @@
     <string>Exibe informações sobre o programa</string>
    </property>
   </action>
-  <action name="action">
+  <action name="action_Keys_Open">
    <property name="text">
-    <string>ENA 2022</string>
+    <string>A&amp;brir</string>
    </property>
   </action>
-  <action name="action_KeysENA2023">
+  <action name="action_Keys_Save">
    <property name="text">
-    <string>ENA 2023</string>
+    <string>&amp;Salvar</string>
+   </property>
+  </action>
+  <action name="action_Keys_Saveas">
+   <property name="text">
+    <string>Sa&amp;lvar como...</string>
    </property>
   </action>
  </widget>

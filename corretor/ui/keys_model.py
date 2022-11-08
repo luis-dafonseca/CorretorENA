@@ -7,7 +7,7 @@ import grading.ena_param as ep
 
 #------------------------------------------------------------------------------#
 def str_to_key( s ):
-    return ''.join(s.split())
+    return ( ''.join(s.split()) ).upper()
 
 #------------------------------------------------------------------------------#
 class KeysModel:
@@ -53,5 +53,30 @@ class KeysModel:
     #--------------------------------------------------------------------------#
     def get_ena_years( self ):
         return self.ena_keys.keys()
+
+    #--------------------------------------------------------------------------#
+    def read_keys( self, filename ):
+
+        with open(filename) as f:
+            contents = f.readlines()
+        
+        if len(contents) != 1:
+            raise ValueError( f'{filename} não contém um gabarito' )
+        
+        str_keys = str_to_key( contents[0] )
+        
+        if len(str_keys) != 30:
+            raise ValueError( f'{filename} não contém um gabarito' )
+
+        aa = set( 'ABCDEX' )
+        ss = set( str_keys )
+        
+        if not ss.issubset(ss):
+            raise ValueError( f'{filename} não contém um gabarito' )
+
+        self.keys      = str_keys
+        self.keys_next = str_keys
+
+        return str_keys
 
 #------------------------------------------------------------------------------#

@@ -1,15 +1,16 @@
 #------------------------------------------------------------------------------#
 
+import os
 import fitz
+import tempfile
 
-from openpyxl import Workbook, load_workbook
+from openpyxl            import Workbook, load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 
 import grading.ena_param  as ep
 from   grading.grade_exam import grade_exam
 from   grading.xls_grades import XLSGrades
 from   grading.page_ena   import PageENA
-from   grading.tools      import pix_to_gray_image
 from   grading.grades     import keys_str_to_list
 from   ui.keys_model      import KeysModel
 
@@ -48,6 +49,8 @@ class MainUIModel:
         self._answers     = None
         self._annotations = None
         self._grades      = None
+
+        self._answers_fname = ''
 
         self.keys_model = KeysModel()
 
@@ -96,16 +99,17 @@ class MainUIModel:
         if self.has_model:
             self._model.close()
 
-        self._model = new_model
-        self.has_model  = True
+        self._model    = new_model
+        self.has_model = True
 
     #--------------------------------------------------------------------------#
     def set_answers( self, fname ):     
         if self.has_answers:
             self._answers.close()
 
-        self._answers    = fitz.open( fname )
-        self.has_answers = True
+        self._answers       = fitz.open( fname )
+        self._answers_fname = os.path.abspath( fname )
+        self.has_answers    = True
 
     #--------------------------------------------------------------------------#
     def set_names( self, fname, first_name ):       
@@ -143,41 +147,43 @@ class MainUIModel:
         self.has_grades = True
 
     #--------------------------------------------------------------------------#
-    def get_pix_model(self):      
+    def get_model_pdf(self):      
 
-        model_page = self._model[0]
-        model_pix  = model_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
-        image      = pix_to_gray_image( model_pix )
+        pixmap = self._model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
 
-        page = PageENA( fitz.open() )
+        new_pdf = fitz.open() 
 
+        page = PageENA( new_pdf )
         page.create_page()
-        page.insert_image( image )
+        page.insert_pixmap( pixmap )
         page.draw_all_rects()
-
         page.commit()
 
-        pix = page.page.get_pixmap()
+        self._temp_file = tempfile.NamedTemporaryFile()
+        new_pdf.save( self._temp_file.name )
 
-        return pix
+        return self._temp_file.name
 
     #--------------------------------------------------------------------------#
-    def get_pix_keys(self):      
+    def get_keys_pdf(self):      
 
-        model_page = self._model[0]
-        model_pix  = model_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
-        image      = pix_to_gray_image( model_pix )
+        pixmap = self._model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
 
-        k_lst = keys_str_to_list( self.keys_model.keys )
+        new_pdf = fitz.open() 
 
-        page = PageENA( fitz.open() )
+        page = PageENA( new_pdf )
         page.create_page()
-        page.insert_image( image )
-        page.draw_answers_key( k_lst )
+        page.insert_pixmap( pixmap )
+        page.draw_answers_key( keys_str_to_list( self.keys_model.keys ) )
         page.commit()
 
-        pix = page.page.get_pixmap()
+        self._temp_file = tempfile.NamedTemporaryFile()
+        new_pdf.save( self._temp_file.name )
 
-        return pix
+        return self._temp_file.name
+
+    #--------------------------------------------------------------------------#
+    def get_answers_pdf(self):      
+        return self._answers_fname
 
 #------------------------------------------------------------------------------#

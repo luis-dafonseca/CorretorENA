@@ -42,6 +42,11 @@ class PageENA:
         self.shape = self.page.new_shape()
 
     #--------------------------------------------------------------------------#
+    def insert_pixmap( self, pixmap_ ):
+
+        self.page.insert_image( self.page_rect, pixmap=pixmap_ )
+
+    #--------------------------------------------------------------------------#
     def insert_image( self, image ):
 
         is_success, buffer = cv2.imencode( '.png', image )

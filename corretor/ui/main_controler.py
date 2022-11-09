@@ -1,7 +1,6 @@
 #------------------------------------------------------------------------------#
 
 import os
-import tempfile
 
 from functools import partial
 from PySide6.QtWidgets import ( QApplication, 
@@ -9,23 +8,14 @@ from PySide6.QtWidgets import ( QApplication,
                                 QFileDialog, 
                                 QSizePolicy, 
                                 QMessageBox )
+
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui  import QRegularExpressionValidator, QPixmap, QAction
 
 from ui.main_uimodel     import MainUIModel
 from ui.show_names       import show_names_window
-from ui.show_pdf         import show_pdf_window
 from ui.edit_keys_dialog import EditKeysDialog
-
-#------------------------------------------------------------------------------#
-def _pixmap_to_qimage( pix ):
-
-    temp_file = tempfile.NamedTemporaryFile()
-    pix.save( temp_file.name, 'png' )
-    img = QPixmap( temp_file.name, format='png' )
-    temp_file.close()
-
-    return img
+from ui.pdf_window       import PDFWindow
 
 #------------------------------------------------------------------------------#
 def _get_open_fname( parent_, title_, directoty_, ext_ ):
@@ -65,6 +55,8 @@ class MainControler:
         self._win = window
         self._ui  = window.ui
 
+        self._pdf_window = None
+
         self._last_dir              = '.'
         self._suggested_annotations = ''
         self._suggested_grades      = ''
@@ -88,8 +80,6 @@ class MainControler:
         size_policy.setRetainSizeWhenHidden(True)
         self._ui.progressBar.setSizePolicy( size_policy )
         self._ui.progressBar.hide()
-
-        self._ui.pushButtonAnswersShow.hide()
 
         k_model = self._uimodel.keys_model
 
@@ -349,26 +339,32 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _model_show(self):
 
-        title = 'Modelo da folha de respostas'
+        if not self._pdf_window:
+            self._pdf_window = PDFWindow( self._win )
 
-        pix = self._uimodel.get_pix_model()
-        img = _pixmap_to_qimage( pix )
-
-        show_pdf_window( self._win, title, img )
+        self._pdf_window.load( self._uimodel.get_model_pdf() )
+        self._pdf_window.setWindowTitle('Modelo da folha de respostas')
+        self._pdf_window.show()
 
     #--------------------------------------------------------------------------#
     def _keys_show(self):
         
-        title = 'Gabarito'
+        if not self._pdf_window:
+            self._pdf_window = PDFWindow( self._win )
 
-        pix = self._uimodel.get_pix_keys()
-        img = _pixmap_to_qimage( pix )
-
-        show_pdf_window( self._win, title, img )
+        self._pdf_window.load( self._uimodel.get_keys_pdf() )
+        self._pdf_window.setWindowTitle('Gabarito')
+        self._pdf_window.show()
 
     #--------------------------------------------------------------------------#
     def _answers_show(self):
-        print('<_answers_show> not yet implemented!')
+        
+        if not self._pdf_window:
+            self._pdf_window = PDFWindow( self._win )
+
+        self._pdf_window.load( self._uimodel.get_answers_pdf(), True )
+        self._pdf_window.setWindowTitle('Respostas dos candidatos')
+        self._pdf_window.show()
 
     #-------------------------------------------------------------------------#
     def _names_show(self):

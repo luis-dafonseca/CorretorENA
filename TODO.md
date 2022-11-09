@@ -5,11 +5,6 @@
 
 #### Novas funcionalidades
 
-- Permitir salvar o pdf do modelo com as respostas do gabarito
-- Exibição dos pdf
-  - Permitir salvar
-  - Permitir ampliar e reduzir
-- Eliminar o arquivo temporário da conversão do pixmap
 - Criar o help e o about
 
 #### Testes de consistência
@@ -21,11 +16,11 @@
 #### Refinamentos
 
 - Mudar o texto dos botões dos diálogos de escolha de "Salvar" para "Escolher"
-- Não permitir abrir duas janelas de visualização
 - Menu da janela principal
   - Incluir opções para abrir os arquivos no menu
 - Criar um quadro de dialogo para o progress bar com a opção de cancelar a correção
 - Escrever o número total de provas, de ausentes e eliminados no quadro de finalização da correção
+- Criar um quadro de dialogo para a barra de progresso
 
 #### Windows
 
@@ -37,6 +32,9 @@
 
 ### DONE
 
+- Não permitir abrir duas janelas de visualização
+- Exibição dos pdf - Permitir ampliar e reduzir
+- Eliminar o arquivo temporário da conversão do pixmap
 - Open model: Testar se o arquivo pdf tem mais do que uma página
 - Garantir que ao abrir um arquivo de gabarito ele contenha um gabarito
 - Permitir salvar gabaritos
@@ -62,3 +60,6 @@
 ### GIVE UP
 
 - Usar OCR para ler os nomes dos candidatos nas folhas de respostas e comparar com os nomes fornecidos
+- Exibição dos pdf - Permitir salvar
+- Permitir salvar o pdf do modelo com as respostas do gabarito
+

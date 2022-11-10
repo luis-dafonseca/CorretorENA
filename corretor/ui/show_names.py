@@ -26,7 +26,6 @@ def show_names_window( parent, filename, first_name, names ):
     dialog.ui.labelNumber_6.setText( str(N  ) )
 
     dialog.ui.buttonBox.button( QDialogButtonBox.Cancel ).hide()
-
     dialog.exec()
 
 #------------------------------------------------------------------------------#

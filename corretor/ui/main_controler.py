@@ -2,46 +2,37 @@
 
 import os
 
-from functools import partial
+from functools         import partial
+from PySide6.QtCore    import QRegularExpression, QUrl
 from PySide6.QtWidgets import ( QApplication, 
-                                QDialog, 
                                 QFileDialog, 
-                                QSizePolicy, 
                                 QMessageBox )
-
-from PySide6.QtCore import QRegularExpression
-from PySide6.QtGui  import QRegularExpressionValidator, QPixmap, QAction
+from PySide6.QtGui     import ( QRegularExpressionValidator, 
+                                QAction,
+                                QDesktopServices )
 
 from ui.main_uimodel     import MainUIModel
 from ui.show_names       import show_names_window
 from ui.edit_keys_dialog import EditKeysDialog
-from ui.pdf_window       import PDFWindow
 
 #------------------------------------------------------------------------------#
 def _get_open_fname( parent_, title_, directoty_, ext_ ):
-
-    fname, ftr = QFileDialog.getOpenFileName( parent  = parent_, 
-                                              caption = title_, 
-                                              dir     = directoty_, 
-                                              filter  = '*.' + ext_ )
-
+    fname, _ = QFileDialog.getOpenFileName( parent  = parent_, 
+                                            caption = title_, 
+                                            dir     = directoty_, 
+                                            filter  = '*.' + ext_ )
     return fname
 
 #------------------------------------------------------------------------------#
 def _get_save_fname( parent_, title_, directoty_, ext_ ):
-
-    fname, ftr = QFileDialog.getSaveFileName( parent  = parent_, 
-                                              caption = title_, 
-                                              dir     = directoty_, 
-                                              filter  = '*.' + ext_ )
-
+    fname, _ = QFileDialog.getSaveFileName( parent  = parent_, 
+                                            caption = title_, 
+                                            dir     = directoty_, 
+                                            filter  = '*.' + ext_ )
     if fname:
         ee = '.' + ext_
         nn = len(ee)
-    
-        if len(fname) < nn:
-            fname += ee
-        elif fname[-nn:] != ee:
+        if len(fname) < nn or fname[-nn:] != ee:
             fname += ee
 
     return fname
@@ -54,8 +45,6 @@ class MainControler:
 
         self._win = window
         self._ui  = window.ui
-
-        self._pdf_window = None
 
         self._last_dir              = '.'
         self._suggested_annotations = ''
@@ -90,7 +79,7 @@ class MainControler:
 
         regex     = QRegularExpression('[A-Z][1-9]')
         validator = QRegularExpressionValidator( regex, self._win )
-        self._ui.lineEditNameFistName.setFont( k_model.font )
+        self._ui.lineEditNameFistName.setFont     ( k_model.font )
         self._ui.lineEditNameFistName.setInputMask( '>AD' )
         self._ui.lineEditNameFistName.setValidator( validator )
 
@@ -338,33 +327,15 @@ class MainControler:
 
     #--------------------------------------------------------------------------#
     def _model_show(self):
-
-        if not self._pdf_window:
-            self._pdf_window = PDFWindow( self._win )
-
-        self._pdf_window.load( self._uimodel.get_model_pdf() )
-        self._pdf_window.setWindowTitle('Modelo da folha de respostas')
-        self._pdf_window.show()
+        QDesktopServices.openUrl( QUrl(f'file:///{self._uimodel.get_model_pdf()}') )
 
     #--------------------------------------------------------------------------#
     def _keys_show(self):
-        
-        if not self._pdf_window:
-            self._pdf_window = PDFWindow( self._win )
-
-        self._pdf_window.load( self._uimodel.get_keys_pdf() )
-        self._pdf_window.setWindowTitle('Gabarito')
-        self._pdf_window.show()
+        QDesktopServices.openUrl( QUrl(f'file:///{self._uimodel.get_keys_pdf()}') )
 
     #--------------------------------------------------------------------------#
     def _answers_show(self):
-        
-        if not self._pdf_window:
-            self._pdf_window = PDFWindow( self._win )
-
-        self._pdf_window.load( self._uimodel.get_answers_pdf(), True )
-        self._pdf_window.setWindowTitle('Respostas dos candidatos')
-        self._pdf_window.show()
+        QDesktopServices.openUrl( QUrl(f'file:///{self._uimodel.get_answers_pdf()}') )
 
     #-------------------------------------------------------------------------#
     def _names_show(self):

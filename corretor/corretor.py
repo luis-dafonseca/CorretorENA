@@ -10,7 +10,8 @@ from ui.main_controler import MainControler
 def main( argv ):
 
     app = QApplication(argv)
-
+    QApplication.setStyle('fusion')
+    
     window = MainWindow()
     window.show()
 

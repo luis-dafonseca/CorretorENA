@@ -159,7 +159,7 @@ class MainUIModel:
         page.draw_all_rects()
         page.commit()
 
-        self._temp_file = tempfile.NamedTemporaryFile()
+        self._temp_file = tempfile.NamedTemporaryFile( prefix='modelo_', suffix='.pdf' )
         new_pdf.save( self._temp_file.name )
 
         return self._temp_file.name
@@ -177,7 +177,7 @@ class MainUIModel:
         page.draw_answers_key( keys_str_to_list( self.keys_model.keys ) )
         page.commit()
 
-        self._temp_file = tempfile.NamedTemporaryFile()
+        self._temp_file = tempfile.NamedTemporaryFile( prefix='gabarito_', suffix='.pdf' )
         new_pdf.save( self._temp_file.name )
 
         return self._temp_file.name

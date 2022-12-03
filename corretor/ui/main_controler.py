@@ -15,6 +15,19 @@ from ui.main_uimodel     import MainUIModel
 from ui.show_names       import show_names_window
 from ui.edit_keys_dialog import EditKeysDialog
 
+
+#------------------------------------------------------------------------------#
+
+APP_NAME = 'Corretor ENA'
+
+TEXT_ABOUT = """
+Um programa para corrigir as provas do ENA.
+
+Desenvolvedor: Luis A. D'Afonseca
+""" 
+
+TEXT_HELP = TEXT_ABOUT
+
 #------------------------------------------------------------------------------#
 def _get_open_fname( parent_, title_, directoty_, ext_ ):
     fname, _ = QFileDialog.getOpenFileName( parent  = parent_, 
@@ -156,17 +169,17 @@ class MainControler:
 
         msg = QMessageBox(self._win)
         msg.setIcon(QMessageBox.Information)
-        msg.setText('Corretor ENA: Correção Concluída' + ' '*25)
-        msg.setWindowTitle('Corretor ENA - Conclusão')
+        msg.setText(        APP_NAME+': Correção Concluída' + ' '*25)
+        msg.setWindowTitle( APP_NAME+' - Conclusão')
         msg.show()
 
     #--------------------------------------------------------------------------#
     def _about(self):
-        print('<about> not yet implemented!')
+        QMessageBox.about( self._win, APP_NAME+' - Sobre', TEXT_ABOUT )
 
     #--------------------------------------------------------------------------#
     def _help(self):
-        print('<help> not yet implemented!')
+        QMessageBox.about( self._win, APP_NAME+' - Ajuda', TEXT_HELP )
 
     #--------------------------------------------------------------------------#
     def _model_open(self):

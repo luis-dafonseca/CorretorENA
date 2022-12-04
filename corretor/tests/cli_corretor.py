@@ -48,19 +48,24 @@ class CLIProgressBar:
 
     #--------------------------------------------------------------------------#
     def __init__(self):
+
         self.total = 0
         self.iter  = 0
 
     #--------------------------------------------------------------------------#
     def start(self,N):
+
         self.total = N
         self.iter  = 0
         CLIProgressBar._print( self.iter, self.total, fill='*' )
 
     #--------------------------------------------------------------------------#
     def step(self):
+
         self.iter += 1
         CLIProgressBar._print( self.iter, self.total, fill='*' )
+
+        return True
 
 #------------------------------------------------------------------------------#
 

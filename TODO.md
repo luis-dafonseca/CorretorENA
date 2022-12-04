@@ -5,7 +5,15 @@
 
 #### Novas funcionalidades
 
-- Criar o help e o about
+- Escrever o help
+- Completar as informações do sobre
+  - versão
+  - nome do autor
+  - endereço download e código - git
+  - licença
+  - ícones
+- Reverter o estado do pdf e xls no cancelamento da correção
+- Testas o uso de arquivos de planinha diferentes do xlsx
 
 #### Testes de consistência
 
@@ -16,22 +24,36 @@
 #### Refinamentos
 
 - Mudar o texto dos botões dos diálogos de escolha de "Salvar" para "Escolher"
-- Menu da janela principal
-  - Incluir opções para abrir os arquivos no menu
-- Criar um quadro de dialogo para o progress bar com a opção de cancelar a correção
-- Escrever o número total de provas, de ausentes e eliminados no quadro de finalização da correção
-- Criar um quadro de dialogo para a barra de progresso
+- Incluir opções para abrir os arquivos no menu da janela principal
+- Colocar as informações de autor, links, versão em um único arquivo
+- Incluir documentação nos recursos
+- Redesenhar o ícone
+
+- Documentação e exemplo
+  - Escrever a Documentação
+  - Escanear algumas folhas de respostas com o celular para criar exemplos problemáticos
+    - Sombras
+    - Folha torta
+    - Baixa resolução
 
 #### Windows
 
-- Descobrir porque a GUI é horrível
 - Implementar o tema escuro
-- Melhorar a aparência do fundos azul e vermelho para os botões
+- Escrever script para "compilar" o programa
 
 ### In progress...
 
 ### DONE
 
+- Criar recursos com:
+  - ícones
+- Substituir a barra de progresso na barra de status por um quadro de diálogo.
+  - Criar botão cancel
+  - Reverter o estado do pdf e xls no cancelamento
+- Windows
+  - Descobrir porque a GUI é horrível
+  - Melhorar a aparência do fundos azul e vermelho para os botões
+- Criar o help e o about
 - Não permitir abrir duas janelas de visualização
 - Exibição dos pdf - Permitir ampliar e reduzir
 - Eliminar o arquivo temporário da conversão do pixmap
@@ -57,8 +79,11 @@
   - Testar se a string digitada é um gabarito
   - Exibir o modelo com as respostas do gabarito
 
-### GIVE UP
+### GAVE UP
 
+- Escrever o número total de provas, de ausentes e eliminados no quadro de finalização da correção
+- ProgressDialog
+  - Incluir tempo faltante estimado
 - Usar OCR para ler os nomes dos candidatos nas folhas de respostas e comparar com os nomes fornecidos
 - Exibição dos pdf - Permitir salvar
 - Permitir salvar o pdf do modelo com as respostas do gabarito

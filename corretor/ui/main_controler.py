@@ -14,7 +14,7 @@ from PySide6.QtGui     import ( QRegularExpressionValidator,
 from ui.main_uimodel     import MainUIModel
 from ui.show_names       import show_names_window
 from ui.edit_keys_dialog import EditKeysDialog
-
+from ui.progress_dialog  import ProgressDialog
 
 #------------------------------------------------------------------------------#
 
@@ -64,7 +64,7 @@ class MainControler:
         self._suggested_grades      = ''
         self._keys_fname            = ''
 
-        self._uimodel = MainUIModel( self._ui.progressBar )
+        self._uimodel = MainUIModel( )
 
         self._start()
         self._connectSignalsAndSlots()
@@ -77,11 +77,6 @@ class MainControler:
         self._ui.labelNamesFileName            .setText('')
         self._ui.labelOutputGradesFileName     .setText('')
         self._ui.labelOutputAnnotationsFileName.setText('')
-
-        size_policy = self._ui.progressBar.sizePolicy()
-        size_policy.setRetainSizeWhenHidden(True)
-        self._ui.progressBar.setSizePolicy( size_policy )
-        self._ui.progressBar.hide()
 
         k_model = self._uimodel.keys_model
 
@@ -102,8 +97,7 @@ class MainControler:
         self._ui.action_Run   .triggered.connect( self._run )
         self._ui.pushButtonRun.clicked  .connect( self._run )
 
-        self._ui.action_Exit   .triggered.connect( self._exit )
-        self._ui.pushButtonExit.clicked  .connect( self._exit )
+        self._ui.action_Exit.triggered.connect( self._exit )
 
         self._ui.action_Keys_Open  .triggered.connect( self._keys_open   )
         self._ui.action_Keys_Save  .triggered.connect( self._keys_save   )
@@ -162,15 +156,21 @@ class MainControler:
 
     #--------------------------------------------------------------------------#
     def _run(self):
+
+        progress = ProgressDialog( self._win, APP_NAME+' - Correção' )
         
-        self._ui.progressBar.show()
-        self._uimodel.run()
-        self._ui.progressBar.hide()
+        finished = self._uimodel.run( progress )
 
         msg = QMessageBox(self._win)
         msg.setIcon(QMessageBox.Information)
-        msg.setText(        APP_NAME+': Correção Concluída' + ' '*25)
-        msg.setWindowTitle( APP_NAME+' - Conclusão')
+
+        if finished:
+            msg.setWindowTitle( APP_NAME+' - Conclusão')
+            msg.setText(        APP_NAME+': Correção Concluída' + ' '*25)
+        else:
+            msg.setWindowTitle( APP_NAME+' - Conclusão')
+            msg.setText(        APP_NAME+': Correção Cancelada' + ' '*25)
+
         msg.show()
 
     #--------------------------------------------------------------------------#

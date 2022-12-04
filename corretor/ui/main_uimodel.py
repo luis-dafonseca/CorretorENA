@@ -7,35 +7,20 @@ import tempfile
 from openpyxl            import Workbook, load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 
-import grading.ena_param  as ep
-from   grading.grade_exam import grade_exam
-from   grading.xls_grades import XLSGrades
-from   grading.page_ena   import PageENA
-from   grading.grades     import keys_str_to_list
-from   ui.keys_model      import KeysModel
+import grading.ena_param as ep
 
-#------------------------------------------------------------------------------#
-class UIProgressBar:
+from grading.grade_exam import grade_exam
+from grading.xls_grades import XLSGrades
+from grading.page_ena   import PageENA
+from grading.grades     import keys_str_to_list
 
-    #--------------------------------------------------------------------------#
-    def __init__(self,progress_bar):
-        self.progress_bar = progress_bar
-
-    #--------------------------------------------------------------------------#
-    def start(self,N):
-        self.value     = 0
-        self.increment = 100/N
-
-    #--------------------------------------------------------------------------#
-    def step(self):
-        self.value += self.increment
-        self.progress_bar.setValue(self.value)
+from ui.keys_model      import KeysModel
 
 #------------------------------------------------------------------------------#
 class MainUIModel:
 
     #--------------------------------------------------------------------------#
-    def __init__(self, progress_bar):
+    def __init__( self ):
 
         self.has_model       = False
         self.has_answers     = False
@@ -54,8 +39,6 @@ class MainUIModel:
 
         self.keys_model = KeysModel()
 
-        self._progress_bar = UIProgressBar(progress_bar)
-
     #--------------------------------------------------------------------------#
     def __del__(self):
 
@@ -66,20 +49,23 @@ class MainUIModel:
             self._answers.close()
 
     #--------------------------------------------------------------------------#
-    def run(self):
+    def run( self, progress ):
 
         if self.has_names:
             self._grades.add_names(self.names)
 
-        grade_exam( self._model, 
-                    self.keys_model.keys, 
-                    self._answers, 
-                    self._annotations, 
-                    self._grades,
-                    self._progress_bar )
-        
-        self._annotations.save( self._fname_annotations )
-        self._grades     .save()
+        finished = grade_exam( self._model, 
+                               self.keys_model.keys, 
+                               self._answers, 
+                               self._annotations, 
+                               self._grades,
+                               progress )
+       
+        if finished:
+            self._annotations.save( self._fname_annotations )
+            self._grades     .save()
+
+        return finished
 
     #--------------------------------------------------------------------------#
     def ready_to_run(self):

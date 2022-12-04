@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------#
-# ./corretor/tests/Makefile
+# ./corretor/resources/Makefile
 
 
 
@@ -9,14 +9,14 @@
 SUBDIRS=$(shell find -mindepth 1 -maxdepth 1 -type d -not -name __pycache__)
 
 # Files to be removed from this directory at cleaning
-CLEAN_FILES= *~ *.pdf *.xlsx *.png
+CLEAN_FILES= *~
 
 # Files to be removed from this directory at distribution cleaning
 DISTCLEAN_FILES= __pycache__
 
 #------------------------------------------------------------------------------#
 
-all: 
+all:
 	@ for D in ${SUBDIRS} ; do \
 	  make -C $$D all ;        \
 	done

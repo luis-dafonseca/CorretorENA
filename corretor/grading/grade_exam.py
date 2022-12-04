@@ -26,13 +26,13 @@ def grade_exam( model_pdf,
                 answers_pdf, 
                 annotations_pdf, 
                 grades_xls,
-                progress_bar):
+                progress ):
 
     reg = create_model_registration( model_pdf )
 
     k_lst = keys_str_to_list( keys )
 
-    progress_bar.start( answers_pdf.page_count )
+    progress.start( answers_pdf.page_count )
     
     for ii, original_page in enumerate(answers_pdf):
     
@@ -53,6 +53,9 @@ def grade_exam( model_pdf,
         page.insert_grades( marks, grades )
         page.commit()
     
-        progress_bar.step()
+        if not progress.step():
+            return False
+        
+    return True
 
 #------------------------------------------------------------------------------#

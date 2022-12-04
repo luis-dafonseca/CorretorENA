@@ -1,9 +1,9 @@
 #------------------------------------------------------------------------------#
 # ./corretor/Makefile
 
-
-
-
+# Qt resource file 
+QR_FILES=$(shell find -maxdepth 1 -name '*.qrc' -type f)
+PY_FILES=$(QR_FILES:.qrc=_rc.py)
 
 # List of all subdirectories
 SUBDIRS=$(shell find -mindepth 1 -maxdepth 1 -type d -not -name __pycache__ -not -name venv)
@@ -16,10 +16,13 @@ DISTCLEAN_FILES= __pycache__
 
 #------------------------------------------------------------------------------#
 
-all: exemplo-dados.xlsx  exemplo-modelo.pdf  exemplo-respostas.pdf
+all: $(PY_FILES) exemplo-dados.xlsx  exemplo-modelo.pdf  exemplo-respostas.pdf
 	@ for D in ${SUBDIRS} ; do \
 	  make -C $$D all ;        \
 	done
+
+%_rc.py: %.qrc
+	pyside6-rcc $< -o $@
 
 exemplo-dados.xlsx:
 	cp ../docs/example/exemplo-dados.xlsx .

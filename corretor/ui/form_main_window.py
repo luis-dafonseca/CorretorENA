@@ -20,7 +20,6 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QLabel, QLineEdit, QMainWindow, QMenu,
     QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
     QStatusBar, QVBoxLayout, QWidget)
-import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -32,9 +31,6 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        icon = QIcon()
-        icon.addFile(u":/icons/resources/icon.ico", QSize(), QIcon.Normal, QIcon.Off)
-        MainWindow.setWindowIcon(icon)
         MainWindow.setLocale(QLocale(QLocale.Portuguese, QLocale.Brazil))
         self.action_Exit = QAction(MainWindow)
         self.action_Exit.setObjectName(u"action_Exit")

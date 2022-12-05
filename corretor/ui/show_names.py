@@ -4,7 +4,7 @@ from PySide6.QtWidgets  import QDialog, QDialogButtonBox
 from ui.form_show_names import Ui_ShowNames
 
 #------------------------------------------------------------------------------#
-def show_names_window( parent, filename, first_name, names ):
+def ShowNamesWindow( parent, filename, first_name, names ):
 
     dialog = QDialog(parent)
     dialog.ui = Ui_ShowNames()

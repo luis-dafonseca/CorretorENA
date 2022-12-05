@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------------#
 
-import sys
+import sys, os
 sys.path.append('.')
 
 from PySide6.QtGui     import QIcon
@@ -11,8 +11,6 @@ import ena_param as ep
 from ui.main_window    import MainWindow
 from ui.main_controler import MainControler
 
-import resources_rc
-
 #------------------------------------------------------------------------------#
 def main( argv ):
 
@@ -22,9 +20,11 @@ def main( argv ):
     except ImportError:
         pass
 
+    basedir = os.path.dirname(__file__)
+
     app = QApplication(argv)
     app.setStyle('fusion')
-    app.setWindowIcon(QIcon(':/icons/icon.ico'))
+    app.setWindowIcon(QIcon( basedir + '/resources/icon.ico'))
     
     window = MainWindow()
     window.show()

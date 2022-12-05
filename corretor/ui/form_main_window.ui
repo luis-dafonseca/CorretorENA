@@ -19,10 +19,6 @@
   <property name="windowTitle">
    <string>Corretor ENA</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="../resources.qrc">
-    <normaloff>:/icons/resources/icon.ico</normaloff>:/icons/resources/icon.ico</iconset>
-  </property>
   <property name="locale">
    <locale language="Portuguese" country="Brazil"/>
   </property>
@@ -779,8 +775,6 @@
   <tabstop>pushButtonOutputAnnotationsChoose</tabstop>
   <tabstop>pushButtonRun</tabstop>
  </tabstops>
- <resources>
-  <include location="../resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -34,8 +34,6 @@ def make_default():
         py_file = ui_file[:-2] + 'py'
         run(f'pyside6-uic --g python {ui_file} -o {py_file}')
     
-    run('pyside6-rcc resources.qrc -o resources_rc.py')
-    
     print('Done')
 
 #------------------------------------------------------------------------------#

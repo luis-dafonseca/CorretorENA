@@ -14,9 +14,10 @@ from PySide6.QtGui     import ( QRegularExpressionValidator,
 import ena_param as ep
 
 from ui.main_uimodel     import MainUIModel
-from ui.show_names       import show_names_window
+from ui.show_names       import ShowNamesWindow
 from ui.edit_keys_dialog import EditKeysDialog
 from ui.progress_dialog  import ProgressDialog
+from ui.help_window      import HelpWindow
 
 #------------------------------------------------------------------------------#
 def _get_open_fname( parent_, title_, directoty_, ext_ ):
@@ -169,7 +170,7 @@ class MainControler:
 
     #--------------------------------------------------------------------------#
     def _help(self):
-        QMessageBox.about( self._win, ep.TITLE+' - Ajuda', ep.ABOUT )
+        HelpWindow( self._win )
 
     #--------------------------------------------------------------------------#
     def _model_open(self):
@@ -347,6 +348,6 @@ class MainControler:
         first_name = self._ui.lineEditNameFistName.text()
         names      = self._uimodel.names
 
-        show_names_window( self._win, filename, first_name, names )
+        ShowNamesWindow( self._win, filename, first_name, names )
 
 #------------------------------------------------------------------------------#

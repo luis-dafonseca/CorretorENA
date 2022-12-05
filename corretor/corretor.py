@@ -1,7 +1,9 @@
 #------------------------------------------------------------------------------#
 
-import sys, os
+import sys
 sys.path.append('.')
+
+from pathlib import Path
 
 from PySide6.QtGui     import QIcon
 from PySide6.QtWidgets import QApplication
@@ -20,11 +22,11 @@ def main( argv ):
     except ImportError:
         pass
 
-    basedir = os.path.dirname(__file__)
+    icon_file = Path(__file__).resolve().parent / 'resources' / 'icon.ico'
 
     app = QApplication(argv)
     app.setStyle('fusion')
-    app.setWindowIcon(QIcon( basedir + '/resources/icon.ico'))
+    app.setWindowIcon(QIcon( str(icon_file) ))
     
     window = MainWindow()
     window.show()

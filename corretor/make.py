@@ -2,8 +2,12 @@
 
 """
 This script replaces a Makefile to avoid dependencies
-
 As the project is very simple it is possible to manage all building tasks manually.
+
+Targets:
+    default: Build py files from resources and ui 
+    clean:   Remove temporary files
+    help:    Show this message
 """
 
 #------------------------------------------------------------------------------#
@@ -49,13 +53,16 @@ def make_clean():
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':
 
-    target = '' if len(sys.argv) == 1 else sys.argv[1]
+    target = 'default' if len(sys.argv) == 1 else sys.argv[1]
 
-    if not target:
+    if target == 'default':
         make_default()
 
     elif target == 'clean':
         make_clean()
+
+    elif target == 'help':
+        print(__doc__)
 
     else:
         print(f'Unkown target {target}!')

@@ -331,15 +331,18 @@ class MainControler:
 
     #--------------------------------------------------------------------------#
     def _model_show(self):
-        QDesktopServices.openUrl( QUrl(f'file:///{self._uimodel.get_model_pdf()}') )
+        url = QUrl.fromLocalFile(self._uimodel.get_model_pdf())
+        QDesktopServices.openUrl( url )
 
     #--------------------------------------------------------------------------#
     def _keys_show(self):
-        QDesktopServices.openUrl( QUrl(f'file:///{self._uimodel.get_keys_pdf()}') )
+        url = QUrl.fromLocalFile(self._uimodel.get_keys_pdf())
+        QDesktopServices.openUrl( url )
 
     #--------------------------------------------------------------------------#
     def _answers_show(self):
-        QDesktopServices.openUrl( QUrl(f'file:///{self._uimodel.get_answers_pdf()}') )
+        url = QUrl.fromLocalFile(self._uimodel.get_answers_pdf())
+        QDesktopServices.openUrl( url )
 
     #-------------------------------------------------------------------------#
     def _names_show(self):

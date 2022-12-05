@@ -7,7 +7,7 @@ import tempfile
 from openpyxl            import Workbook, load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 
-import grading.ena_param as ep
+import ena_param as ep
 
 from grading.grade_exam import grade_exam
 from grading.xls_grades import XLSGrades

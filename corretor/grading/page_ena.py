@@ -3,10 +3,11 @@
 import fitz
 import cv2
 import io
-import numpy as np
 
-import grading.ena_param as ep
-from   grading.rects import Rects
+import numpy     as np
+import ena_param as ep
+
+from grading.rects import Rects
 
 COLOR_NAME_BG   = (1,1,1)
 COLOR_CORRECT   = (0,0,1)

@@ -6,6 +6,8 @@ sys.path.append('.')
 from PySide6.QtGui     import QIcon
 from PySide6.QtWidgets import QApplication
 
+import ena_param as ep
+
 from ui.main_window    import MainWindow
 from ui.main_controler import MainControler
 
@@ -16,8 +18,7 @@ def main( argv ):
 
     try:
         from ctypes import windll
-        myappid = 'Prof_Luis_A_DAfonseca.Corretor_ENA'
-        windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+        windll.shell32.SetCurrentProcessExplicitAppUserModelID(ep.MYAPPID)
     except ImportError:
         pass
 

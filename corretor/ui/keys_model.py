@@ -3,7 +3,7 @@
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui  import QRegularExpressionValidator, QFontDatabase
 
-import grading.ena_param as ep
+import ena_param as ep
 
 #------------------------------------------------------------------------------#
 def str_to_key( s ):

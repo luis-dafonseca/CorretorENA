@@ -1,9 +1,9 @@
 #------------------------------------------------------------------------------#
 
-import numpy as np
+import numpy     as np
+import ena_param as ep
 
-import grading.ena_param as ep
-from   grading.rects import Rects
+from grading.rects import Rects
 
 _AREA = Rects.mark_entry(0,0).get_area()
 

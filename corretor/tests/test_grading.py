@@ -6,12 +6,13 @@ import fitz
 
 sys.path.append('..')
 
-import grading.ena_param    as ep
-from   grading.grades       import check_answers, keys_str_to_list
-from   grading.tools        import pix_to_gray_image
-from   grading.registration import Registration
-from   grading.marks        import collect_marks
-from   grading.page_ena     import PageENA
+import ena_param as ep
+
+from grading.grades       import check_answers, keys_str_to_list
+from grading.tools        import pix_to_gray_image
+from grading.registration import Registration
+from grading.marks        import collect_marks
+from grading.page_ena     import PageENA
 
 #------------------------------------------------------------------------------#
 

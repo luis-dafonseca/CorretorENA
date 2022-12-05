@@ -2,12 +2,13 @@
 
 import fitz
 
-import grading.ena_param    as ep
-from   grading.registration import Registration
-from   grading.tools        import pix_to_gray_image
-from   grading.page_ena     import PageENA
-from   grading.marks        import collect_marks
-from   grading.grades       import check_answers, keys_str_to_list
+import ena_param as ep
+
+from grading.registration import Registration
+from grading.tools        import pix_to_gray_image
+from grading.page_ena     import PageENA
+from grading.marks        import collect_marks
+from grading.grades       import check_answers, keys_str_to_list
 
 #------------------------------------------------------------------------------#
 def create_model_registration( model_pdf ):

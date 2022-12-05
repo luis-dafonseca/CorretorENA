@@ -11,22 +11,12 @@ from PySide6.QtGui     import ( QRegularExpressionValidator,
                                 QAction,
                                 QDesktopServices )
 
+import ena_param as ep
+
 from ui.main_uimodel     import MainUIModel
 from ui.show_names       import show_names_window
 from ui.edit_keys_dialog import EditKeysDialog
 from ui.progress_dialog  import ProgressDialog
-
-#------------------------------------------------------------------------------#
-
-APP_NAME = 'Corretor ENA'
-
-TEXT_ABOUT = """
-Um programa para corrigir as provas do ENA.
-
-Desenvolvedor: Luis A. D'Afonseca
-""" 
-
-TEXT_HELP = TEXT_ABOUT
 
 #------------------------------------------------------------------------------#
 def _get_open_fname( parent_, title_, directoty_, ext_ ):
@@ -157,7 +147,7 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def _run(self):
 
-        progress = ProgressDialog( self._win, APP_NAME+' - Correção' )
+        progress = ProgressDialog( self._win, ep.TITLE+' - Correção' )
         
         finished = self._uimodel.run( progress )
 
@@ -165,21 +155,21 @@ class MainControler:
         msg.setIcon(QMessageBox.Information)
 
         if finished:
-            msg.setWindowTitle( APP_NAME+' - Conclusão')
-            msg.setText(        APP_NAME+': Correção Concluída' + ' '*25)
+            msg.setWindowTitle( ep.TITLE+' - Conclusão')
+            msg.setText(        ep.TITLE+': Correção Concluída' + ' '*25)
         else:
-            msg.setWindowTitle( APP_NAME+' - Conclusão')
-            msg.setText(        APP_NAME+': Correção Cancelada' + ' '*25)
+            msg.setWindowTitle( ep.TITLE+' - Conclusão')
+            msg.setText(        ep.TITLE+': Correção Cancelada' + ' '*25)
 
         msg.show()
 
     #--------------------------------------------------------------------------#
     def _about(self):
-        QMessageBox.about( self._win, APP_NAME+' - Sobre', TEXT_ABOUT )
+        QMessageBox.about( self._win, ep.TITLE+' - Sobre', ep.ABOUT )
 
     #--------------------------------------------------------------------------#
     def _help(self):
-        QMessageBox.about( self._win, APP_NAME+' - Ajuda', TEXT_HELP )
+        QMessageBox.about( self._win, ep.TITLE+' - Ajuda', ep.ABOUT )
 
     #--------------------------------------------------------------------------#
     def _model_open(self):

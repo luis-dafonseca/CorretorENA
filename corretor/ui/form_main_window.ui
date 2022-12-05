@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
-    <height>765</height>
+    <width>539</width>
+    <height>698</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -16,6 +16,12 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Corretor ENA</string>
   </property>
@@ -23,11 +29,17 @@
    <locale language="Portuguese" country="Brazil"/>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="0" column="0">
      <widget class="QFrame" name="frameModel">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -74,10 +86,16 @@
           <bool>false</bool>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>26</height>
+          </size>
          </property>
          <property name="frameShape">
           <enum>QFrame::Panel</enum>
@@ -96,7 +114,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="labelModel">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>4</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -112,7 +130,7 @@
     <item row="1" column="0">
      <widget class="QFrame" name="frameKeys">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -143,7 +161,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="labelKeys">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>4</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -185,7 +203,7 @@
     <item row="2" column="0">
      <widget class="QFrame" name="frameAnswers">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -200,7 +218,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="labelAnswers">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>4</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -216,10 +234,16 @@
           <bool>false</bool>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>26</height>
+          </size>
          </property>
          <property name="frameShape">
           <enum>QFrame::Box</enum>
@@ -264,7 +288,7 @@
     <item row="9" column="0">
      <widget class="QFrame" name="frameGrades">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -290,7 +314,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>34</height>
+           <height>26</height>
           </size>
          </property>
          <property name="frameShape">
@@ -306,7 +330,7 @@
          <item>
           <widget class="QLabel" name="labelOutputGrades">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>4</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -337,7 +361,7 @@
     <item row="3" column="0">
      <widget class="QFrame" name="frameNames">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -357,10 +381,16 @@
             <bool>false</bool>
            </property>
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>5</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>26</height>
+            </size>
            </property>
            <property name="frameShape">
             <enum>QFrame::Box</enum>
@@ -402,7 +432,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="labelNames">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>4</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -419,7 +449,7 @@
              <item>
               <widget class="QLabel" name="labelNomeCell">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>2</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -435,7 +465,7 @@
              <item>
               <widget class="QLineEdit" name="lineEditNameFistName">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -566,7 +596,7 @@
     <item row="10" column="0">
      <widget class="QFrame" name="frameAnnotations">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -583,7 +613,7 @@
          <item>
           <widget class="QLabel" name="labelOutputAnnotations">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>4</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -622,7 +652,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>34</height>
+           <height>26</height>
           </size>
          </property>
          <property name="frameShape">
@@ -659,7 +689,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>567</width>
+     <width>539</width>
      <height>23</height>
     </rect>
    </property>
@@ -691,7 +721,14 @@
    <addaction name="menuKeys"/>
    <addaction name="menuAjuda"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+  </widget>
   <action name="action_Exit">
    <property name="text">
     <string>&amp;Sair</string>
@@ -763,10 +800,12 @@
  </widget>
  <tabstops>
   <tabstop>pushButtonModelOpen</tabstop>
+  <tabstop>pushButtonModelShow</tabstop>
   <tabstop>lineEditKeys</tabstop>
   <tabstop>pushButtonKeysEdit</tabstop>
   <tabstop>pushButtonKeysShow</tabstop>
   <tabstop>pushButtonAnswersOpen</tabstop>
+  <tabstop>pushButtonAnswersShow</tabstop>
   <tabstop>pushButtonNamesOpen</tabstop>
   <tabstop>pushButtonNamesRemove</tabstop>
   <tabstop>lineEditNameFistName</tabstop>

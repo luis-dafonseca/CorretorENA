@@ -29,6 +29,7 @@ def main( argv ):
     app.setWindowIcon(QIcon( str(icon_file) ))
     
     window = MainWindow()
+    window.resize( 539, 658 )
     window.show()
 
     main_controler = MainControler( window )

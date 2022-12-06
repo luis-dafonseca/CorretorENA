@@ -14,10 +14,8 @@ class HelpWindow(QMainWindow):
 
         super().__init__(parent)
 
-        text_file = Path(__file__).resolve().parent.parent / 'resources' / 'documentacao.md'
+        text_file = ep.RESOURCES / 'documentacao.md'
         text_url  = QUrl.fromLocalFile(str(text_file))
-
-        print(text_file)
 
         self.text = QTextBrowser()
         self.text.setAcceptRichText   (True)
@@ -25,8 +23,8 @@ class HelpWindow(QMainWindow):
         self.text.setSource( text_url )
 
         self.setWindowTitle( ep.TITLE + ' - Ajuda')
-        self.setGeometry(100, 60, 800, 600)
         self.setCentralWidget( self.text )
+        self.resize( 800, 600 )
 
         self.show()
 

@@ -3,8 +3,6 @@
 import sys
 sys.path.append('.')
 
-from pathlib import Path
-
 from PySide6.QtGui     import QIcon
 from PySide6.QtWidgets import QApplication
 
@@ -22,7 +20,7 @@ def main( argv ):
     except ImportError:
         pass
 
-    icon_file = Path(__file__).resolve().parent / 'resources' / 'icon.ico'
+    icon_file = ep.RESOURCES / 'icon.ico'
 
     app = QApplication(argv)
     app.setStyle('fusion')

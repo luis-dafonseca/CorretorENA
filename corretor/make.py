@@ -8,6 +8,7 @@ Targets:
     default: Build py files from resources and ui 
     clean:   Remove temporary files
     help:    Show this message
+    dist:    Create ditribution package using PyInstaller
 """
 
 #------------------------------------------------------------------------------#
@@ -15,6 +16,7 @@ Targets:
 import sys
 import glob
 import os
+import PyInstaller.__main__ as installer
 
 #------------------------------------------------------------------------------#
 def run(cmd):
@@ -49,6 +51,31 @@ def make_clean():
     print('Done')
 
 #------------------------------------------------------------------------------#
+def make_dist():
+
+    if sys.platform.startswith('linux'):
+        os_name = 'Linux'
+        sep = ':'
+
+    elif sys.platform.startswith('win32'):
+        os_name = 'Windows'
+        sep = ';'
+
+    else:
+        print(f'Unkown platform {sys.platform}!')
+        return
+
+    print(f'Creating a distribution package for {os_name}...')
+
+    installer.run([ 'corretor.py',
+                    '--name=CorretorENA',
+                    '--icon=./resources/icon.ico',
+                    '--add-data=resources'+sep+'resources',
+                    '--windowed' ])
+
+    print('Done')
+
+#------------------------------------------------------------------------------#
 if __name__ == '__main__':
 
     target = 'default' if len(sys.argv) == 1 else sys.argv[1]
@@ -58,6 +85,9 @@ if __name__ == '__main__':
 
     elif target == 'clean':
         make_clean()
+
+    elif target == 'dist':
+        make_dist()
 
     elif target == 'help':
         print(__doc__)

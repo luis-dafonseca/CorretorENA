@@ -2,7 +2,7 @@
 
 from pathlib           import Path
 from PySide6.QtCore    import QUrl
-from PySide6.QtWidgets import QMainWindow, QTextBrowser
+from PySide6.QtWidgets import QMainWindow, QTextEdit
 
 import ena_param as ep
 
@@ -14,13 +14,12 @@ class HelpWindow(QMainWindow):
 
         super().__init__(parent)
 
-        text_file = ep.RESOURCES / 'documentacao.md'
-        text_url  = QUrl.fromLocalFile(str(text_file))
+        text_file = ep.RESOURCES / 'help.md'
 
-        self.text = QTextBrowser()
-        self.text.setAcceptRichText   (True)
-        self.text.setOpenExternalLinks(True)
-        self.text.setSource( text_url )
+        self.text = QTextEdit()
+        self.text.setAcceptRichText(True)
+        self.text.setReadOnly      (True)
+        self.text.setMarkdown( text_file.read_text() )
 
         self.setWindowTitle( ep.TITLE + ' - Ajuda')
         self.setCentralWidget( self.text )

@@ -2,12 +2,19 @@
 
 from pathlib import Path
 
-# Resources
+# Working parameters
 #------------------------------------------------------------------------------#
 
+# User home directory
+HOME = Path.home()
+
+# Resources  parameters
+#------------------------------------------------------------------------------#
+
+# Resources path
 RESOURCES = Path(__file__).resolve().parent / 'resources'
 
-# Aplication information
+# Application  parameters
 #------------------------------------------------------------------------------#
 
 AUTHOR  = "Luis A. D'Afonseca"
@@ -21,7 +28,7 @@ Desenvolvedor: {AUTHOR}
 Versão: {VERSION}
 Licença: GNU General Public License - Version 3""" 
 
-# Grading parameters
+# Registration and grading parameters
 #------------------------------------------------------------------------------#
 
 DPI        = 300

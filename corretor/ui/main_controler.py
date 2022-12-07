@@ -50,7 +50,7 @@ class MainControler:
         self._win = window
         self._ui  = window.ui
 
-        self._last_dir              = '.'
+        self._last_dir              = str(ep.HOME)
         self._suggested_annotations = ''
         self._suggested_grades      = ''
         self._keys_fname            = ''

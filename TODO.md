@@ -5,15 +5,15 @@
 
 #### Novas funcionalidades
 
-- Escrever o help
-- Completar as informações do sobre
-  - versão
-  - nome do autor
-  - endereço download e código - git
-  - licença
-  - ícones
 - Reverter o estado do pdf e xls no cancelamento da correção
 - Testas o uso de arquivos de planinha diferentes do xlsx
+
+- Configurações
+  - Incluir parâmetros do ajuste da imagem e da verificação de marcações no ENAParam
+  - Tornar a classe Rects ciente do DPI
+  - Criar arquivo de configurações
+  - Criar quadro de diálogo de configurações
+  - Implementar parsing de parâmetros nos programas de linha de comando
 
 #### Testes de consistência
 
@@ -26,25 +26,39 @@
 - Mudar o texto dos botões dos diálogos de escolha de "Salvar" para "Escolher"
 - Incluir opções para abrir os arquivos no menu da janela principal
 - Colocar as informações de autor, links, versão em um único arquivo
-- Incluir documentação nos recursos
 - Redesenhar o ícone
 
-- Documentação e exemplo
-  - Escrever a Documentação
+- Documentação e exemplos
   - Escanear algumas folhas de respostas com o celular para criar exemplos problemáticos
     - Sombras
     - Folha torta
     - Baixa resolução
+  - Documentar que usar o celular para escanear não é uma boa ideia
+  - Remover exemplos do git
+  - Arte final no ícone
+
+- Renomear o ena_param para algo como configuration
 
 #### Windows
 
 - Implementar o tema escuro
-- Escrever script para "compilar" o programa
+- Verficar Microsoft Version Information Structures https://pyinstaller.org/en/stable/usage.html
 
 ### In progress...
 
 ### DONE
 
+- Escrever script para "compilar" o programa
+- Documentação e exemplos
+  - Escrever a Documentação
+  - Separar documentação do help
+- Completar as informações do sobre
+  - versão
+  - nome do autor
+  - endereço download e código - git
+  - licença
+  - ícones
+- Escrever o help
 - Criar recursos com:
   - ícones
 - Substituir a barra de progresso na barra de status por um quadro de diálogo.

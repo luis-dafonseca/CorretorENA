@@ -1,0 +1,315 @@
+﻿
+[Header]
+ProjectFileVersion = 1.1
+[General]
+Program name = Corretor ENA
+Program version = 0.0.1 - alpha
+Windows 2000 = 0
+Windows XP = 0
+Windows Server 2003 = 0
+Windows Vista = 0
+Windows Server 2008 = 0
+Windows 7 = 1
+Windows 8 = 1
+Windows 10 = 1
+Windows Server 2016 = 0
+DoNotCheckOS = 0
+Company name = Corretor ENA
+Website = https://github.com/luis-dafonseca/CorretorENA
+SFA = 1
+DFA = 1
+Comp = 1
+[Graphics]
+Wizard image = C:\Program Files (x86)\solicus\InstallForge\images\Wizard_2.bmp
+Header image = C:\Users\usuario\Documents\python\Corretor_ENA\docs\icon-512.png
+Show Label = 1
+VisualStylesEnabled = 1
+[Files]
+Installation path = <LocalApplicationData>\<AppName>\
+Autcip = 1
+[Uninstall]
+Vwau = 0
+Website = https://
+Include uninstaller = 1
+Uninstaller filename = Uninstall
+UseCustomDisplayIcon = 0
+CustomDisplayIcon = <InstallPath>\
+[Licence]
+Licence dialog = 0
+[Finish]
+Sart program = 1
+Reboot computer = 0
+Program = <InstallPath>\CorretorENA.exe
+ProgramArguments = 
+[Shortcuts]
+Allowtc = 1
+Shortcut path = <Company>\<AppName>
+[Serialoptions]
+Allows = 0
+Number = 1000
+Mask = #####-#####-#####-#####
+[SplashScreen]
+Image = 
+Sound = 
+Time = 2
+PlaySound = 0
+Allow = 0
+[Build]
+File = C:\Users\usuario\Documents\python\Corretor_ENA\packaging\Instalador_CorretorENA.exe
+SetupIconPath = C:\Users\usuario\Documents\python\Corretor_ENA\corretor\resources\icon.ico
+UninstallIconPath = C:\Users\usuario\Documents\python\Corretor_ENA\corretor\resources\icon.ico
+CompressionMethod = 0
+CompressionLevel = 2
+[Updater]
+Allow = 0
+1 = <AppName>
+2 = <AppVersion>
+3 = http://
+4 = http://
+5 = http://
+6 = Update
+Language = 0
+RunProg = 
+RunProgs = 0
+Execdlls = 0
+[Languages]
+9
+[Files/Dirs]
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_asyncio.pyd
+62.9 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_bz2.pyd
+81.4 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_ctypes.pyd
+120.4 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_decimal.pyd
+242.9 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_elementtree.pyd
+124.9 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_hashlib.pyd
+60.4 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_lzma.pyd
+154.4 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_multiprocessing.pyd
+32.4 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_overlapped.pyd
+47.4 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_queue.pyd
+29.9 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_socket.pyd
+75.9 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\_ssl.pyd
+155.4 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-console-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-datetime-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-debug-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-errorhandling-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-fibers-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-file-l1-1-0.dll
+24.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-file-l1-2-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-file-l2-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-handle-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-heap-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-interlocked-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-libraryloader-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-localization-l1-2-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-memory-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-namedpipe-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-processenvironment-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-processthreads-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-processthreads-l1-1-1.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-profile-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-rtlsupport-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-string-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-synch-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-synch-l1-2-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-sysinfo-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-timezone-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-core-util-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-conio-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-convert-l1-1-0.dll
+24.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-environment-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-filesystem-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-heap-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-locale-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-math-l1-1-0.dll
+28.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-process-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-runtime-l1-1-0.dll
+24.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-stdio-l1-1-0.dll
+24.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-string-l1-1-0.dll
+24.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-time-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\api-ms-win-crt-utility-l1-1-0.dll
+20.5 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\base_library.zip
+1 MB
+zip
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\CorretorENA.exe
+3.3 MB
+exe
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\libcrypto-1_1.dll
+3.3 MB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\libffi-7.dll
+32 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\libopenblas.FB5AE2TYXYH2IJRDKGDGQ3XBKLKTF43H.gfortran-win_amd64.dll
+34 MB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\libssl-1_1.dll
+686.3 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\pyexpat.pyd
+193.9 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\python3.dll
+63.4 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\python310.dll
+4.3 MB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\select.pyd
+28.4 KB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\ucrtbase.dll
+1.1 MB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\unicodedata.pyd
+1.1 MB
+pyd
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\VCRUNTIME140.dll
+96.4 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\VCRUNTIME140_1.dll
+37.4 KB
+dll
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\cv2\
+N/A
+[Folder]
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\fitz\
+N/A
+[Folder]
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\numpy\
+N/A
+[Folder]
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\PySide6\
+N/A
+[Folder]
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\resources\
+N/A
+[Folder]
+C:\Users\usuario\Documents\python\Corretor_ENA\packaging\dist\CorretorENA\shiboken6\
+N/A
+[Folder]
+[Licence_Begin]
+114
+{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\fs20\par
+}
+ [Licence_End]
+[Registry]
+[Variables]
+[SCs]
+Desktop
+Corretor ENA
+<InstallPath>\CorretorENA.exe
+
+
+0
+Startmenu
+Corretor ENA
+<InstallPath>\CorretorENA.exe
+
+
+0
+[IFP_End]
+[Serials]
+[Serials_End]
+[Commands]

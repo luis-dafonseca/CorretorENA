@@ -67,11 +67,14 @@ def make_dist():
 
     print(f'Creating a distribution package for {os_name}...')
 
-    installer.run([ 'corretor.py',
+    installer.run([ '../corretor/corretor.py',
                     '--name=CorretorENA',
-                    '--icon=./resources/icon.ico',
-                    '--add-data=resources'+sep+'resources',
+                    '--icon=../corretor/resources/icon.ico',
                     '--noconfirm',
+                   f'--add-data=../corretor/resources{sep}resources',
+                   f'--specpath=../packaging',
+                   f'--distpath=../packaging/dist',
+                   f'--workpath=../packaging/work',
                     '--windowed' ])
 
     print('Done')

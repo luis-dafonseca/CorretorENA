@@ -71,6 +71,7 @@ def make_dist():
                     '--name=CorretorENA',
                     '--icon=./resources/icon.ico',
                     '--add-data=resources'+sep+'resources',
+                    '--noconfirm',
                     '--windowed' ])
 
     print('Done')

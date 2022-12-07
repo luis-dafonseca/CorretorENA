@@ -1,12 +1,20 @@
 #------------------------------------------------------------------------------#
 
+import sys
+
 from pathlib import Path
 
 # Working parameters
 #------------------------------------------------------------------------------#
 
 # User home directory
-HOME = Path.home()
+
+if sys.platform.startswith('win32'):
+    HOME = Path.home() / 'Documents'
+    if not HOME.is_dir():
+        HOME = Path.home()
+else:
+    HOME = Path.home()
 
 # Resources  parameters
 #------------------------------------------------------------------------------#

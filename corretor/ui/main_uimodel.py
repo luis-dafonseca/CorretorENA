@@ -3,6 +3,7 @@
 import os
 import fitz
 import tempfile
+from pathlib import Path
 
 from openpyxl            import Workbook, load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
@@ -30,12 +31,15 @@ class MainUIModel:
         
         self.names = []
 
-        self._model       = None
-        self._answers     = None
-        self._annotations = None
-        self._grades      = None
+        self.model       = None
+        self.answers     = None
+        self.annotations = None
+        self.grades      = None
 
-        self._answers_fname = ''
+        self.num_answers = 0
+        self.num_names   = 0
+
+        self.answers_fname = ''
 
         self.keys_model = KeysModel()
 
@@ -43,27 +47,27 @@ class MainUIModel:
     def __del__(self):
 
         if self.has_model:
-            self._model.close()
+            self.model.close()
 
         if self.has_answers:
-            self._answers.close()
+            self.answers.close()
 
     #--------------------------------------------------------------------------#
     def run( self, progress ):
 
         if self.has_names:
-            self._grades.add_names(self.names)
+            self.grades.add_names(self.names)
 
-        finished = grade_exam( self._model, 
+        finished = grade_exam( self.model, 
                                self.keys_model.keys, 
-                               self._answers, 
-                               self._annotations, 
-                               self._grades,
+                               self.answers, 
+                               self.annotations, 
+                               self.grades,
                                progress )
        
         if finished:
-            self._annotations.save( self._fname_annotations )
-            self._grades     .save()
+            self.annotations.save( self.fname_annotations )
+            self.grades     .save()
 
         return finished
 
@@ -77,65 +81,117 @@ class MainUIModel:
     #--------------------------------------------------------------------------#
     def set_model( self, fname ):       
 
-        new_model = fitz.open( fname )
+        name = Path(fname).name
+
+        try:
+            new_model = fitz.open( fname )
+        except:
+            raise ValueError( f'O arquivo {name} não pôde ser aberto!\n' )
         
-        if new_model.page_count != 1:
-            raise ValueError( f'{fname} não contém um modelo' )
+        nn = new_model.page_count
+
+        if nn == 0:
+            raise ValueError( f'O arquivo {name} não é um modelo!\n\nEle não contém nenhuma página.\n' )
+        elif nn > 1:
+            raise ValueError( f'O arquivo {name} não é um modelo!\n\nEle contém mais do que uma página.\n' )
 
         if self.has_model:
-            self._model.close()
+            self.model.close()
 
-        self._model    = new_model
+        self.model     = new_model
         self.has_model = True
 
     #--------------------------------------------------------------------------#
     def set_answers( self, fname ):     
-        if self.has_answers:
-            self._answers.close()
 
-        self._answers       = fitz.open( fname )
-        self._answers_fname = os.path.abspath( fname )
-        self.has_answers    = True
+        name = Path(fname).name
+
+        try:
+            new_answers = fitz.open( fname )
+        except:
+            raise ValueError( f'O arquivo {name} não pôde ser aberto!\n' )
+
+        nn = new_answers.page_count
+        
+        if nn == 0:
+            raise ValueError( f'O arquivo {name} não contém nenhuma página.\n' )
+        
+        if self.has_answers:
+            self.answers.close()
+
+        self.num_answers   = nn
+        self.answers       = new_answers
+        self.answers_fname = os.path.abspath( fname )
+        self.has_answers   = True
+
+        if self.has_names and ( self.num_answers != self.num_names ):
+            raise IndexError( f'Cuidado: A quantidade de respostas ({self.num_answers}) não coincide com a quantidade de nomes ({self.num_names}).\n' )
 
     #--------------------------------------------------------------------------#
     def set_names( self, fname, first_name ):       
 
-        xls   = load_workbook(fname)
-        sheet = xls.active
+        name = Path(fname).name
 
-        xy = coordinate_from_string(first_name) 
-        cc = column_index_from_string(xy[0]) - 1
-        ll = xy[1]
+        try:
+            xls = load_workbook(fname)
+        except:
+            raise ValueError( f'O arquivo {name} não pôde ser aberto!\n' )
 
-        self.names = []
+        try:
+            sheet = xls.active
 
-        for rr, row in enumerate( sheet.iter_rows(min_row=ll, values_only=True) ):
-            self.names.append( str(row[cc]).strip() )
+            xy = coordinate_from_string(first_name) 
+            cc = column_index_from_string(xy[0]) - 1
+            ll = xy[1]
 
-        xls.close()
+            self.names = []
 
+            for rr, row in enumerate( sheet.iter_rows(min_row=ll, values_only=True) ):
+                self.names.append( str(row[cc]).strip() )
+
+            xls.close()
+
+        except:
+            self.names = []
+            raise ValueError( f'Não foi possível ler os nomes do arquivo {name}!\n' )
+
+        self.num_names = len(self.names)
         self.has_names = True
+
+        if self.has_answers and ( self.num_answers != self.num_names ):
+            raise IndexError( f'Cuidado: A quantidade de respostas ({self.num_answers}) não coincide com a quantidade de nomes ({self.num_names}).\n' )
 
     #--------------------------------------------------------------------------#
     def remove_names( self ):       
         self.names     = []
+        self.num_names = 0
         self.has_names = False
 
     #--------------------------------------------------------------------------#
     def set_annotations( self, fname ): 
-        self._fname_annotations = fname
-        self._annotations       = fitz.open()
-        self.has_annotations    = True
+
+        try:
+            self.annotations = fitz.open()
+        except:
+            raise ValueError( f'O arquivo {Path(fname).name} não pôde ser aberto!\n' )
+
+        self.fname_annotations = fname
+        self.has_annotations   = True
 
     #--------------------------------------------------------------------------#
     def set_grades( self, fname ):      
-        self._grades    = XLSGrades( fname )
+
+        try:
+            self.grades = XLSGrades( fname )
+        except:
+            raise ValueError( f'O arquivo {Path(fname).name} não pôde ser aberto!\n' )
+
         self.has_grades = True
 
     #--------------------------------------------------------------------------#
     def get_model_pdf(self):      
 
-        pixmap = self._model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
+        pixmap = self.model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
 
         new_pdf = fitz.open() 
 
@@ -145,15 +201,15 @@ class MainUIModel:
         page.draw_all_rects()
         page.commit()
 
-        self._temp_file = tempfile.NamedTemporaryFile( prefix='modelo_', suffix='.pdf' )
-        new_pdf.save( self._temp_file.name )
+        self.temp_file = tempfile.NamedTemporaryFile( prefix='modelo_', suffix='.pdf' )
+        new_pdf.save( self.temp_file.name )
 
-        return self._temp_file.name
+        return self.temp_file.name
 
     #--------------------------------------------------------------------------#
     def get_keys_pdf(self):      
 
-        pixmap = self._model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
+        pixmap = self.model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
 
         new_pdf = fitz.open() 
 
@@ -163,13 +219,13 @@ class MainUIModel:
         page.draw_answers_key( keys_str_to_list( self.keys_model.keys ) )
         page.commit()
 
-        self._temp_file = tempfile.NamedTemporaryFile( prefix='gabarito_', suffix='.pdf' )
-        new_pdf.save( self._temp_file.name )
+        self.temp_file = tempfile.NamedTemporaryFile( prefix='gabarito_', suffix='.pdf' )
+        new_pdf.save( self.temp_file.name )
 
-        return self._temp_file.name
+        return self.temp_file.name
 
     #--------------------------------------------------------------------------#
     def get_answers_pdf(self):      
-        return self._answers_fname
+        return self.answers_fname
 
 #------------------------------------------------------------------------------#

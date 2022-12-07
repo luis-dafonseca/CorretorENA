@@ -18,8 +18,8 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QLabel, QLineEdit, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
-    QStatusBar, QVBoxLayout, QWidget)
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -78,8 +78,9 @@ class Ui_MainWindow(object):
         self.labelModelFileName.setEnabled(False)
         sizePolicy.setHeightForWidth(self.labelModelFileName.sizePolicy().hasHeightForWidth())
         self.labelModelFileName.setSizePolicy(sizePolicy)
-        self.labelModelFileName.setMinimumSize(QSize(0, 26))
-        self.labelModelFileName.setFrameShape(QFrame.Panel)
+        self.labelModelFileName.setMinimumSize(QSize(0, 0))
+        self.labelModelFileName.setBaseSize(QSize(0, 26))
+        self.labelModelFileName.setFrameShape(QFrame.NoFrame)
         self.labelModelFileName.setFrameShadow(QFrame.Plain)
         self.labelModelFileName.setWordWrap(False)
 
@@ -153,8 +154,9 @@ class Ui_MainWindow(object):
         self.labelAnswersFileName.setEnabled(False)
         sizePolicy.setHeightForWidth(self.labelAnswersFileName.sizePolicy().hasHeightForWidth())
         self.labelAnswersFileName.setSizePolicy(sizePolicy)
-        self.labelAnswersFileName.setMinimumSize(QSize(0, 26))
-        self.labelAnswersFileName.setFrameShape(QFrame.Box)
+        self.labelAnswersFileName.setMinimumSize(QSize(0, 0))
+        self.labelAnswersFileName.setBaseSize(QSize(0, 26))
+        self.labelAnswersFileName.setFrameShape(QFrame.NoFrame)
 
         self.gridLayout_14.addWidget(self.labelAnswersFileName, 1, 0, 1, 1)
 
@@ -185,8 +187,9 @@ class Ui_MainWindow(object):
         self.labelOutputGradesFileName.setEnabled(False)
         sizePolicy1.setHeightForWidth(self.labelOutputGradesFileName.sizePolicy().hasHeightForWidth())
         self.labelOutputGradesFileName.setSizePolicy(sizePolicy1)
-        self.labelOutputGradesFileName.setMinimumSize(QSize(0, 26))
-        self.labelOutputGradesFileName.setFrameShape(QFrame.Box)
+        self.labelOutputGradesFileName.setMinimumSize(QSize(0, 0))
+        self.labelOutputGradesFileName.setBaseSize(QSize(0, 26))
+        self.labelOutputGradesFileName.setFrameShape(QFrame.NoFrame)
 
         self.gridLayout_2.addWidget(self.labelOutputGradesFileName, 2, 0, 1, 1)
 
@@ -228,8 +231,9 @@ class Ui_MainWindow(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.labelNamesFileName.sizePolicy().hasHeightForWidth())
         self.labelNamesFileName.setSizePolicy(sizePolicy2)
-        self.labelNamesFileName.setMinimumSize(QSize(0, 26))
-        self.labelNamesFileName.setFrameShape(QFrame.Box)
+        self.labelNamesFileName.setMinimumSize(QSize(0, 0))
+        self.labelNamesFileName.setBaseSize(QSize(0, 26))
+        self.labelNamesFileName.setFrameShape(QFrame.NoFrame)
 
         self.gridLayout_4.addWidget(self.labelNamesFileName, 2, 0, 1, 1)
 
@@ -307,18 +311,26 @@ class Ui_MainWindow(object):
         self.gridLayout_11.setObjectName(u"gridLayout_11")
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.labelCorrection = QLabel(self.frameButtons)
+        self.labelCorrection.setObjectName(u"labelCorrection")
+        self.labelCorrection.setEnabled(False)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.labelCorrection.sizePolicy().hasHeightForWidth())
+        self.labelCorrection.setSizePolicy(sizePolicy4)
+        self.labelCorrection.setBaseSize(QSize(0, 26))
 
-        self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
+        self.horizontalLayout_2.addWidget(self.labelCorrection)
 
         self.pushButtonRun = QPushButton(self.frameButtons)
         self.pushButtonRun.setObjectName(u"pushButtonRun")
         self.pushButtonRun.setEnabled(False)
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.pushButtonRun.sizePolicy().hasHeightForWidth())
-        self.pushButtonRun.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.pushButtonRun.sizePolicy().hasHeightForWidth())
+        self.pushButtonRun.setSizePolicy(sizePolicy5)
 
         self.horizontalLayout_2.addWidget(self.pushButtonRun)
 
@@ -358,8 +370,9 @@ class Ui_MainWindow(object):
         self.labelOutputAnnotationsFileName.setEnabled(False)
         sizePolicy.setHeightForWidth(self.labelOutputAnnotationsFileName.sizePolicy().hasHeightForWidth())
         self.labelOutputAnnotationsFileName.setSizePolicy(sizePolicy)
-        self.labelOutputAnnotationsFileName.setMinimumSize(QSize(0, 26))
-        self.labelOutputAnnotationsFileName.setFrameShape(QFrame.Box)
+        self.labelOutputAnnotationsFileName.setMinimumSize(QSize(0, 0))
+        self.labelOutputAnnotationsFileName.setBaseSize(QSize(0, 26))
+        self.labelOutputAnnotationsFileName.setFrameShape(QFrame.NoFrame)
 
         self.gridLayout.addWidget(self.labelOutputAnnotationsFileName, 2, 0, 1, 1)
 
@@ -554,6 +567,7 @@ class Ui_MainWindow(object):
         self.pushButtonNamesRemove.setStatusTip(QCoreApplication.translate("MainWindow", u"Remove os nomes dos candidatos", None))
 #endif // QT_CONFIG(statustip)
         self.pushButtonNamesRemove.setText(QCoreApplication.translate("MainWindow", u"Remover", None))
+        self.labelCorrection.setText(QCoreApplication.translate("MainWindow", u"Corrigir provas", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonRun.setToolTip(QCoreApplication.translate("MainWindow", u"Executa a corre\u00e7\u00e3o", None))
 #endif // QT_CONFIG(tooltip)

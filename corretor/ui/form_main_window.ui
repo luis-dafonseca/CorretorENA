@@ -94,11 +94,17 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
            <height>26</height>
           </size>
          </property>
          <property name="frameShape">
-          <enum>QFrame::Panel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
@@ -242,11 +248,17 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
            <height>26</height>
           </size>
          </property>
          <property name="frameShape">
-          <enum>QFrame::Box</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="text">
           <string>Nome do arquivo</string>
@@ -314,11 +326,17 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
            <height>26</height>
           </size>
          </property>
          <property name="frameShape">
-          <enum>QFrame::Box</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="text">
           <string>Nome do arquivo</string>
@@ -389,11 +407,17 @@
            <property name="minimumSize">
             <size>
              <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
              <height>26</height>
             </size>
            </property>
            <property name="frameShape">
-            <enum>QFrame::Box</enum>
+            <enum>QFrame::NoFrame</enum>
            </property>
            <property name="text">
             <string>Nome do arquivo</string>
@@ -551,20 +575,26 @@
        <item row="0" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+          <widget class="QLabel" name="labelCorrection">
+           <property name="enabled">
+            <bool>false</bool>
            </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Expanding</enum>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="sizeHint" stdset="0">
+           <property name="baseSize">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>0</width>
+             <height>26</height>
             </size>
            </property>
-          </spacer>
+           <property name="text">
+            <string>Corrigir provas</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButtonRun">
@@ -652,11 +682,17 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
            <height>26</height>
           </size>
          </property>
          <property name="frameShape">
-          <enum>QFrame::Box</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="text">
           <string>Nome do arquivo</string>

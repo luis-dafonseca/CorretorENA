@@ -6,7 +6,7 @@
 #### Novas funcionalidades
 
 - Reverter o estado do pdf e xls no cancelamento da correção
-- Testas o uso de arquivos de planinha diferentes do xlsx
+- Testar o uso de arquivos de planinha diferentes do xlsx
 
 - Configurações
   - Incluir parâmetros do ajuste da imagem e da verificação de marcações no ENAParam
@@ -17,16 +17,12 @@
 
 #### Testes de consistência
 
-- Show Names: Tratar o caso em que existem menos do que 6 ou 7 candidatos
-- Testar se a quantidade de nomes é igual a quantidade de páginas de respostas
-- Perguntar que o usuário deseja abandonar o gabarito atual ao abrir um arquivo
+- Perguntar que o usuário deseja abandonar o gabarito atual ao abrir um novo
 
 #### Refinamentos
 
 - Mudar o texto dos botões dos diálogos de escolha de "Salvar" para "Escolher"
 - Incluir opções para abrir os arquivos no menu da janela principal
-- Colocar as informações de autor, links, versão em um único arquivo
-- Redesenhar o ícone
 
 - Documentação e exemplos
   - Escanear algumas folhas de respostas com o celular para criar exemplos problemáticos
@@ -46,8 +42,17 @@
 
 ### In progress...
 
+
 ### DONE
 
+2022-12-08
+- Garantir que exite pelo menos uma página de respostas e um nome na planilha de candidatos
+- Testar se a quantidade de nomes é igual a quantidade de páginas de respostas
+- Show Names: Tratar o caso em que existem menos do que 6 ou 7 candidatos
+
+2022-12-06
+- Redesenhar o ícone
+- Colocar as informações de autor, links, versão em um único arquivo
 - Escrever script para "compilar" o programa
 - Documentação e exemplos
   - Escrever a Documentação

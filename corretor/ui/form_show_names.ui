@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>527</width>
-    <height>274</height>
+    <height>280</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,75 +18,87 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="label_8">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
        <property name="text">
         <string>Arquivo: </string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="frame_2">
+      <widget class="QLabel" name="labelFileName">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>2</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+       <property name="text">
+        <string>TextLabel</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QLabel" name="labelFileName">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>2</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="label_6">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
        <property name="text">
         <string>Célula: </string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="frame_3">
+      <widget class="QLabel" name="labelFirstName">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>26</height>
+        </size>
+       </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+       <property name="text">
+        <string>TextLabel</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QLabel" name="labelFirstName">
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
       </widget>
      </item>
     </layout>
@@ -114,10 +126,22 @@
        <layout class="QFormLayout" name="formLayout">
         <item row="0" column="0">
          <widget class="QLabel" name="labelNumber_1">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>40</width>
+            <height>26</height>
            </size>
           </property>
           <property name="text">
@@ -130,6 +154,18 @@
         </item>
         <item row="0" column="1">
          <widget class="QLabel" name="labelName_1">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>26</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -137,10 +173,22 @@
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="labelNumber_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>40</width>
+            <height>26</height>
            </size>
           </property>
           <property name="text">
@@ -153,6 +201,12 @@
         </item>
         <item row="1" column="1">
          <widget class="QLabel" name="labelName_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>26</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -160,10 +214,22 @@
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="labelNumber_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>40</width>
+            <height>26</height>
            </size>
           </property>
           <property name="text">
@@ -176,6 +242,12 @@
         </item>
         <item row="2" column="1">
          <widget class="QLabel" name="labelName_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>26</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -183,10 +255,22 @@
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="labelNumber_4">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>40</width>
+            <height>26</height>
            </size>
           </property>
           <property name="text">
@@ -199,6 +283,12 @@
         </item>
         <item row="4" column="1">
          <widget class="QLabel" name="labelName_4">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>26</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -206,10 +296,22 @@
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="labelNumber_5">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>40</width>
+            <height>26</height>
            </size>
           </property>
           <property name="text">
@@ -222,6 +324,12 @@
         </item>
         <item row="5" column="1">
          <widget class="QLabel" name="labelName_5">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>26</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -229,10 +337,22 @@
         </item>
         <item row="6" column="0">
          <widget class="QLabel" name="labelNumber_6">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>40</width>
+            <height>26</height>
            </size>
           </property>
           <property name="text">
@@ -245,13 +365,19 @@
         </item>
         <item row="6" column="1">
          <widget class="QLabel" name="labelName_6">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>26</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="labelEllipsis">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -262,6 +388,12 @@
            <size>
             <width>40</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>40</width>
+            <height>26</height>
            </size>
           </property>
           <property name="text">

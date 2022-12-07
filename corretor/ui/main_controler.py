@@ -14,32 +14,10 @@ from PySide6.QtGui     import ( QRegularExpressionValidator,
 import ena_param as ep
 
 from ui.main_uimodel     import MainUIModel
-from ui.show_names       import ShowNamesWindow
 from ui.edit_keys_dialog import EditKeysDialog
 from ui.progress_dialog  import ProgressDialog
 from ui.help_window      import HelpWindow
-
-#------------------------------------------------------------------------------#
-def _get_open_fname( parent_, title_, directoty_, ext_ ):
-    fname, _ = QFileDialog.getOpenFileName( parent  = parent_, 
-                                            caption = title_, 
-                                            dir     = directoty_, 
-                                            filter  = '*.' + ext_ )
-    return fname
-
-#------------------------------------------------------------------------------#
-def _get_save_fname( parent_, title_, directoty_, ext_ ):
-    fname, _ = QFileDialog.getSaveFileName( parent  = parent_, 
-                                            caption = title_, 
-                                            dir     = directoty_, 
-                                            filter  = '*.' + ext_ )
-    if fname:
-        ee = '.' + ext_
-        nn = len(ee)
-        if len(fname) < nn or fname[-nn:] != ee:
-            fname += ee
-
-    return fname
+from ui.show_names       import show_names
 
 #------------------------------------------------------------------------------#
 class MainControler:
@@ -47,112 +25,133 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def __init__(self, window):
 
-        self._win = window
-        self._ui  = window.ui
+        self.win = window
+        self.ui  = window.ui
 
-        self._last_dir              = str(ep.HOME)
-        self._suggested_annotations = ''
-        self._suggested_grades      = ''
-        self._keys_fname            = ''
+        # self.last_dir              = str(ep.HOME)
+        self.last_dir              = '/home/luis/01-Work/03-profmat/07-Corretor_ENA/corretor-git/docs/example/'
+        self.suggested_annotations = ''
+        self.suggested_grades      = ''
+        self.keys_fname            = ''
 
-        self._uimodel = MainUIModel( )
+        self.uimodel = MainUIModel()
 
-        self._start()
-        self._connectSignalsAndSlots()
-
-    #--------------------------------------------------------------------------#
-    def _start(self):
-
-        self._ui.labelModelFileName            .setText('')
-        self._ui.labelAnswersFileName          .setText('')
-        self._ui.labelNamesFileName            .setText('')
-        self._ui.labelOutputGradesFileName     .setText('')
-        self._ui.labelOutputAnnotationsFileName.setText('')
-
-        k_model = self._uimodel.keys_model
-
-        self._ui.lineEditKeys.setFont     ( k_model.font )
-        self._ui.lineEditKeys.setInputMask( k_model.mask )
-        self._ui.lineEditKeys.setValidator( k_model.validator(self._win) )
-        self._ui.lineEditKeys.setText     ( k_model.keys )
-
-        regex     = QRegularExpression('[A-Z][1-9]')
-        validator = QRegularExpressionValidator( regex, self._win )
-        self._ui.lineEditNameFistName.setFont     ( k_model.font )
-        self._ui.lineEditNameFistName.setInputMask( '>AD' )
-        self._ui.lineEditNameFistName.setValidator( validator )
+        self.start()
+        self.connectSignalsAndSlots()
 
     #--------------------------------------------------------------------------#
-    def _connectSignalsAndSlots(self):
+    def start(self):
 
-        self._ui.action_Run   .triggered.connect( self._run )
-        self._ui.pushButtonRun.clicked  .connect( self._run )
+        k_model = self.uimodel.keys_model
 
-        self._ui.action_Exit.triggered.connect( self._exit )
+        self.ui.lineEditKeys.setFont     ( k_model.font )
+        self.ui.lineEditKeys.setInputMask( k_model.mask )
+        self.ui.lineEditKeys.setValidator( k_model.validator(self.win) )
+        self.ui.lineEditKeys.setText     ( k_model.keys )
 
-        self._ui.action_Keys_Open  .triggered.connect( self._keys_open   )
-        self._ui.action_Keys_Save  .triggered.connect( self._keys_save   )
-        self._ui.action_Keys_Saveas.triggered.connect( self._keys_saveas )
-
-        self._ui.action_About.triggered.connect( self._about )
-        self._ui.action_Help .triggered.connect( self._help  )
-
-        for yy in self._uimodel.keys_model.get_ena_years():
-            action = QAction( f'ENA {yy}', self._win )
-            action.triggered.connect( partial( self._set_ena_keys, yy ) )
-            self._ui.menuKeys.addAction( action )
-
-        self._ui.pushButtonModelOpen.clicked.connect( self._model_open )
-        self._ui.pushButtonModelShow.clicked.connect( self._model_show )
-
-        self._ui.pushButtonKeysEdit.clicked  .connect( self._keys_edit )
-        self._ui.pushButtonKeysShow.clicked  .connect( self._keys_show )
-        self._ui.lineEditKeys.editingFinished.connect( self._parse_keys_edit)
-
-        self._ui.pushButtonAnswersOpen.clicked.connect( self._answers_open )
-        self._ui.pushButtonAnswersShow.clicked.connect( self._answers_show )
-
-        self._ui.pushButtonNamesOpen  .clicked.connect( self._names_open   )
-        self._ui.pushButtonNamesShow  .clicked.connect( self._names_show   )
-        self._ui.pushButtonNamesRemove.clicked.connect( self._names_remove )
-        self._ui.lineEditNameFistName.editingFinished.connect( self._set_fisrt_name )
-
-        self._ui.pushButtonOutputGradesChoose     .clicked.connect( self._choose_grades      )
-        self._ui.pushButtonOutputAnnotationsChoose.clicked.connect( self._choose_annotations )
+        regex     = QRegularExpression           ('[A-Z][1-9]')
+        validator = QRegularExpressionValidator  ( regex, self.win )
+        self.ui.lineEditNameFistName.setFont     ( k_model.font )
+        self.ui.lineEditNameFistName.setInputMask( '>AD' )
+        self.ui.lineEditNameFistName.setValidator( validator )
 
     #--------------------------------------------------------------------------#
-    def _update(self):
+    def connectSignalsAndSlots(self):
 
-        self._ui.pushButtonModelShow.setEnabled(self._uimodel.has_model)
-        self._ui.labelModelFileName .setEnabled(self._uimodel.has_model)
-        self._ui.pushButtonKeysShow .setEnabled(self._uimodel.has_model)
+        self.ui.action_Run   .triggered.connect( self.run )
+        self.ui.pushButtonRun.clicked  .connect( self.run )
 
-        self._ui.pushButtonAnswersShow.setEnabled(self._uimodel.has_answers)
-        self._ui.labelAnswersFileName .setEnabled(self._uimodel.has_answers)
+        self.ui.action_Exit.triggered.connect( self.exit )
 
-        self._ui.pushButtonNamesShow  .setEnabled(self._uimodel.has_names)
-        self._ui.pushButtonNamesRemove.setEnabled(self._uimodel.has_names)
-        self._ui.labelNamesFileName   .setEnabled(self._uimodel.has_names)
+        self.ui.action_Keys_Open  .triggered.connect( self.keys_open   )
+        self.ui.action_Keys_Save  .triggered.connect( self.keys_save   )
+        self.ui.action_Keys_Saveas.triggered.connect( self.keys_saveas )
 
-        self._ui.labelOutputGradesFileName     .setEnabled(self._uimodel.has_grades)
-        self._ui.labelOutputAnnotationsFileName.setEnabled(self._uimodel.has_annotations)
+        self.ui.action_About.triggered.connect( self.about )
+        self.ui.action_Help .triggered.connect( self.help  )
 
-        ready = self._uimodel.ready_to_run()
-        self._ui.action_Run   .setEnabled(ready)
-        self._ui.pushButtonRun.setEnabled(ready)
+        for yy in self.uimodel.keys_model.get_ena_years():
+            action = QAction( f'ENA {yy}', self.win )
+            action.triggered.connect( partial( self.set_ena_keys, yy ) )
+            self.ui.menuKeys.addAction( action )
+
+        self.ui.pushButtonModelOpen.clicked.connect( self.model_open )
+        self.ui.pushButtonModelShow.clicked.connect( self.model_show )
+
+        self.ui.pushButtonKeysEdit.clicked  .connect( self.keys_edit )
+        self.ui.pushButtonKeysShow.clicked  .connect( self.keys_show )
+        self.ui.lineEditKeys.editingFinished.connect( self.parse_keys_edit)
+
+        self.ui.pushButtonAnswersOpen.clicked.connect( self.answers_open )
+        self.ui.pushButtonAnswersShow.clicked.connect( self.answers_show )
+
+        self.ui.pushButtonNamesOpen  .clicked.connect( self.names_open   )
+        self.ui.pushButtonNamesShow  .clicked.connect( self.names_show   )
+        self.ui.pushButtonNamesRemove.clicked.connect( self.names_remove )
+        self.ui.lineEditNameFistName.editingFinished.connect( self.set_fisrt_name )
+
+        self.ui.pushButtonOutputGradesChoose     .clicked.connect( self.choose_grades      )
+        self.ui.pushButtonOutputAnnotationsChoose.clicked.connect( self.choose_annotations )
 
     #--------------------------------------------------------------------------#
-    def _exit(self):
+    def update(self):
+
+        has_model   = self.uimodel.has_model
+        has_answers = self.uimodel.has_answers
+        has_names   = self.uimodel.has_names
+
+        self.ui.pushButtonModelShow.setEnabled(has_model)
+        self.ui.labelModelFileName .setEnabled(has_model)
+        self.ui.pushButtonKeysShow .setEnabled(has_model)
+
+        self.ui.pushButtonAnswersShow.setEnabled(has_answers)
+        self.ui.labelAnswersFileName .setEnabled(has_answers)
+
+        self.ui.pushButtonNamesShow  .setEnabled(has_names)
+        self.ui.pushButtonNamesRemove.setEnabled(has_names)
+        self.ui.labelNamesFileName   .setEnabled(has_names)
+
+        self.ui.labelOutputGradesFileName     .setEnabled(self.uimodel.has_grades)
+        self.ui.labelOutputAnnotationsFileName.setEnabled(self.uimodel.has_annotations)
+
+        ready = self.uimodel.ready_to_run()
+        self.ui.labelCorrection.setEnabled(ready)
+        self.ui.action_Run     .setEnabled(ready)
+        self.ui.pushButtonRun  .setEnabled(ready)
+
+        num_answers = self.uimodel.num_answers
+        num_names   = self.uimodel.num_names
+
+        if has_answers and has_names:
+
+            if num_names == num_answers:
+                message = f'Corrigir {num_answers} provas'
+            else:
+                message = f'Atenção: A quantidade de respostas ({num_answers}) não coincide com a quantidade de nomes ({num_names})'
+
+        elif has_answers:
+
+            nn = max( num_names, num_answers )
+            message = f'Corrigir {nn} provas'
+
+        else:
+            message = 'Corrigir provas'
+
+        self.ui.labelCorrection.setText(message)
+
+
+    #--------------------------------------------------------------------------#
+    def exit(self):
         QApplication.quit()
 
     #--------------------------------------------------------------------------#
-    def _run(self):
+    def run(self):
 
-        progress = ProgressDialog( self._win, ep.TITLE+' - Correção' )
+        progress = ProgressDialog( self.win, ep.TITLE+' - Correção' )
         
-        finished = self._uimodel.run( progress )
+        finished = self.uimodel.run( progress )
 
-        msg = QMessageBox(self._win)
+        msg = QMessageBox(self.win)
         msg.setIcon(QMessageBox.Information)
 
         if finished:
@@ -165,192 +164,249 @@ class MainControler:
         msg.show()
 
     #--------------------------------------------------------------------------#
-    def _about(self):
-        QMessageBox.about( self._win, ep.TITLE+' - Sobre', ep.ABOUT )
+    def about(self):
+        QMessageBox.about( self.win, ep.TITLE+' - Sobre', ep.ABOUT )
 
     #--------------------------------------------------------------------------#
-    def _help(self):
-        HelpWindow( self._win )
+    def help(self):
+        HelpWindow( self.win )
 
     #--------------------------------------------------------------------------#
-    def _model_open(self):
+    def model_open(self):
 
-        fname = _get_open_fname( self._win, 'Selecione o modelo da folha de respostas',
-                                 self._last_dir, 'pdf' )
+        fname = self.get_open_fname( 'Selecione o modelo da folha de respostas', 'pdf' )
 
         if fname:
-            self._last_dir = os.path.dirname(fname)
+            self.last_dir = os.path.dirname(fname)
 
             try:
-                self._uimodel.set_model( fname )
+                self.uimodel.set_model( fname )
 
-            except ValueError:
-
-                fname = os.path.basename( fname )
-                QMessageBox.critical( self._win,
-                                      'Erro lendo o modelo', 
-                                      f'O arquivo {fname} não contém um modelo!',
-                                      buttons=QMessageBox.StandardButton.Ok )
+            except ValueError as er:
+                self.error_box( 'Erro lendo o modelo', str(er) )
 
             else:
-                self._ui.labelModelFileName.setText( fname )
-                self._update()
+                self.ui.labelModelFileName.setText( fname )
+                self.update()
 
     #--------------------------------------------------------------------------#
-    def _answers_open(self):
+    def answers_open(self):
 
-        fname = _get_open_fname( self._win, 'Selecione as respostas para serem corrigidas',
-                                 self._last_dir, 'pdf' )
+        fname = self.get_open_fname( 'Selecione as respostas para serem corrigidas', 'pdf' )
 
         if fname:
+            self.last_dir = os.path.dirname(fname)
+            accept = True
 
-            self._last_dir = os.path.dirname(fname)
-            self._suggested_annotations = fname[:-4] + '-anotacoes.pdf'
-            self._suggested_grades      = fname[:-4] + '-notas.xlsx'
+            try:
+                self.uimodel.set_answers( fname  )
 
-            self._ui.labelAnswersFileName.setText( fname )
-            self._uimodel.set_answers( fname  )
-            self._update()
+            except ValueError as er:
+                self.error_box( 'Erro lendo as respostas', str(er) )
+                accept = False
+
+            except IndexError as er:
+                self.error_box( 'Erro lendo as respostas', str(er) )
+
+            if accept:
+                self.suggested_annotations = fname[:-4] + '-anotacoes.pdf'
+                self.suggested_grades      = fname[:-4] + '-notas.xlsx'
+
+                self.ui.labelAnswersFileName.setText( fname )
+                self.update()
 
     #--------------------------------------------------------------------------#
-    def _names_open(self):
+    def names_open(self):
 
-        fname = _get_open_fname( self._win, 'Selecione a lista dos nomes dos candidatos',
-                                 self._last_dir, 'xlsx' )
+        fname = self.get_open_fname( 'Selecione a lista dos nomes dos candidatos', 'xlsx' )
 
         if fname:
-            first_name = self._ui.lineEditNameFistName.text()
+            self.last_dir = os.path.dirname(fname)
+            accept = True
 
-            self._last_dir = os.path.dirname(fname)
-            self._ui.labelNamesFileName.setText( fname )
-            self._uimodel.set_names( fname, first_name )
-            self._update()
+            try:
+                first_name = self.ui.lineEditNameFistName.text()
+                self.uimodel.set_names( fname, first_name )
+
+            except ValueError as er:
+                self.error_box( 'Erro lendo as respostas', str(er) )
+                accept = False
+
+            except IndexError as er:
+                self.error_box( 'Erro lendo as respostas', str(er) )
+
+            if accept:
+                self.ui.labelNamesFileName.setText( fname )
+                self.update()
 
 #--------------------------------------------------------------------------#
-    def _names_remove(self):
-        self._ui.lineEditNameFistName.setText('A2')
-        self._ui.labelNamesFileName  .setText( '' )
-        self._uimodel.remove_names()
-        self._update()
+    def names_remove(self):
+        self.ui.lineEditNameFistName.setText('A2')
+        self.ui.labelNamesFileName  .setText( '' )
+        self.uimodel.remove_names()
+        self.update()
 
 #--------------------------------------------------------------------------#
-    def _set_fisrt_name(self):
-        if self._uimodel.has_names:
-            fname      = self._ui.labelNamesFileName  .text()
-            first_name = self._ui.lineEditNameFistName.text()
-            self._uimodel.set_names( fname, first_name )
-            self._update()
+    def set_fisrt_name(self):
+
+        if self.uimodel.has_names:
+            
+            accept = True
+            
+            try:
+                fname      = self.ui.labelNamesFileName  .text()
+                first_name = self.ui.lineEditNameFistName.text()
+                self.uimodel.set_names( fname, first_name )
+
+            except ValueError as er:
+                self.error_box( 'Erro lendo as respostas', str(er) )
+                accept = False
+
+            except IndexError as er:
+                self.error_box( 'Erro lendo as respostas', str(er) )
+
+            if accept:
+                self.ui.labelNamesFileName.setText( fname )
+                self.update()
 
     #--------------------------------------------------------------------------#
-    def _choose_grades(self):
+    def choose_grades(self):
 
-        fname = _get_save_fname( self._win, 'Arquivo para salvar as notas',
-                                 self._suggested_grades, 'xlsx' )
+        fname = self.get_save_fname( 'Arquivo para salvar as notas', 'xlsx',
+                                     self.suggested_grades )
 
         if fname:
-            self._last_dir = os.path.dirname(fname)
-            self._ui.labelOutputGradesFileName.setText( fname )
-            self._uimodel.set_grades( fname )
-            self._update()
+            self.last_dir = os.path.dirname(fname)
+            self.ui.labelOutputGradesFileName.setText( fname )
+            self.uimodel.set_grades( fname )
+            self.update()
 
     #--------------------------------------------------------------------------#
-    def _choose_annotations(self):
+    def choose_annotations(self):
 
-        fname = _get_save_fname( self._win, 'Arquivo para salvar as anotações',
-                                 self._suggested_annotations, 'pdf' )
+        fname = self.get_save_fname( 'Arquivo para salvar as anotações', 'pdf',
+                                     self.suggested_annotations )
 
         if fname:
-            self._last_dir = os.path.dirname(fname)
-            self._ui.labelOutputAnnotationsFileName.setText(fname)
-            self._uimodel.set_annotations( fname )
-            self._update()
+            self.last_dir = os.path.dirname(fname)
+            self.ui.labelOutputAnnotationsFileName.setText(fname)
+            self.uimodel.set_annotations( fname )
+            self.update()
 
     #--------------------------------------------------------------------------#
-    def _keys_open(self):
+    def keys_open(self):
 
-        new_keys_fname = _get_open_fname( self._win, 'Arquivo com o gabarito',
-                                          self._last_dir, 'txt' )
+        new_keys_fname = self.get_open_fname( 'Arquivo com o gabarito', 'txt' )
 
         if new_keys_fname:
 
             try:
-                keys = self._uimodel.keys_model.read_keys( new_keys_fname )
+                keys = self.uimodel.keys_model.read_keys( new_keys_fname )
 
             except ValueError:
 
                 fname = os.path.basename( new_keys_fname )
-                QMessageBox.critical( self._win,
+                QMessageBox.critical( self.win,
                                       'Erro lendo o gabarito', 
                                       f'O arquivo {fname} não contém um gabarito!',
                                       buttons=QMessageBox.StandardButton.Ok )
 
             else:
-                self._keys_fname = new_keys_fname
-                self._ui.lineEditKeys.setText( keys )
+                self.keys_fname = new_keys_fname
+                self.ui.lineEditKeys.setText( keys )
 
     #--------------------------------------------------------------------------#
-    def _keys_save(self):
+    def keys_save(self):
 
-        if not self._keys_fname:
-            self._keys_fname = _get_save_fname( self._win, 'Arquivo para salvar o gabarito',
-                                                self._last_dir, 'txt' )
+        if not self.keys_fname:
+            self.keys_fname = self.get_save_fname( 'Arquivo para salvar o gabarito', 'txt' )
 
-        if self._keys_fname:
-            with open( self._keys_fname, 'w' ) as f:
-                f.write( self._ui.lineEditKeys.text() )
+        if self.keys_fname:
+            with open( self.keys_fname, 'w' ) as f:
+                f.write( self.ui.lineEditKeys.text() )
 
     #--------------------------------------------------------------------------#
-    def _keys_saveas(self):
+    def keys_saveas(self):
 
-        new_keys_fname = _get_save_fname( self._win, 'Arquivo para salvar o gabarito',
-                                          self._last_dir, 'txt' )
+        new_keys_fname = self.get_save_fname( 'Arquivo para salvar o gabarito', 'txt' )
 
         if new_keys_fname:
-            self._keys_fname = new_keys_fname
-            with open( self._keys_fname, 'w' ) as f:
-                f.write( self._ui.lineEditKeys.text() )
+            self.keys_fname = new_keys_fname
+            with open( self.keys_fname, 'w' ) as f:
+                f.write( self.ui.lineEditKeys.text() )
 
     #--------------------------------------------------------------------------#
-    def _keys_edit(self):
+    def keys_edit(self):
 
-        diag = EditKeysDialog( self._win, self._uimodel.keys_model )
+        diag = EditKeysDialog( self.win, self.uimodel.keys_model )
 
         if diag.exec():
-            keys = self._uimodel.keys_model.keys
-            self._ui.lineEditKeys.setText( keys )
+            keys = self.uimodel.keys_model.keys
+            self.ui.lineEditKeys.setText( keys )
 
     #--------------------------------------------------------------------------#
-    def _parse_keys_edit(self):
-        self._uimodel.keys_model.set_keys( self._ui.lineEditKeys.text() )
-        self._uimodel.keys_model.update()
+    def parse_keys_edit(self):
+        self.uimodel.keys_model.set_keys( self.ui.lineEditKeys.text() )
+        self.uimodel.keys_model.update()
 
     #--------------------------------------------------------------------------#
-    def _set_ena_keys( self, yy ):
-        keys = self._uimodel.keys_model.set_ena_keys(yy)
-        self._ui.lineEditKeys.setText( keys )
+    def set_ena_keys( self, yy ):
+        keys = self.uimodel.keys_model.set_ena_keys(yy)
+        self.ui.lineEditKeys.setText( keys )
 
     #--------------------------------------------------------------------------#
-    def _model_show(self):
-        url = QUrl.fromLocalFile(self._uimodel.get_model_pdf())
+    def model_show(self):
+        url = QUrl.fromLocalFile(self.uimodel.get_model_pdf())
         QDesktopServices.openUrl( url )
 
     #--------------------------------------------------------------------------#
-    def _keys_show(self):
-        url = QUrl.fromLocalFile(self._uimodel.get_keys_pdf())
+    def keys_show(self):
+        url = QUrl.fromLocalFile(self.uimodel.get_keys_pdf())
         QDesktopServices.openUrl( url )
 
     #--------------------------------------------------------------------------#
-    def _answers_show(self):
-        url = QUrl.fromLocalFile(self._uimodel.get_answers_pdf())
+    def answers_show(self):
+        url = QUrl.fromLocalFile(self.uimodel.get_answers_pdf())
         QDesktopServices.openUrl( url )
 
     #-------------------------------------------------------------------------#
-    def _names_show(self):
+    def names_show(self):
 
-        filename   = self._ui.labelNamesFileName  .text()
-        first_name = self._ui.lineEditNameFistName.text()
-        names      = self._uimodel.names
+        filename   = self.ui.labelNamesFileName  .text()
+        first_name = self.ui.lineEditNameFistName.text()
+        names      = self.uimodel.names
 
-        ShowNamesWindow( self._win, filename, first_name, names )
+        show_names( self.win, filename, first_name, names )
+
+    #-------------------------------------------------------------------------#
+    def error_box( self, title, message ):
+        QMessageBox.critical( self.win, title, message,
+                              buttons=QMessageBox.StandardButton.Ok )
+
+    #--------------------------------------------------------------------------#
+    def get_open_fname( self, title, ext ):
+        fname, _ = QFileDialog.getOpenFileName( parent  = self.win, 
+                                                caption = title, 
+                                                dir     = self.last_dir, 
+                                                filter  = '*.' + ext )
+        return fname
+    
+    #--------------------------------------------------------------------------#
+    def get_save_fname( self, title, ext, suggestion = '' ):
+
+        if not suggestion:
+            suggestion = self.last_dir
+
+        fname, _ = QFileDialog.getSaveFileName( parent  = self.win, 
+                                                caption = title, 
+                                                dir     = suggestion, 
+                                                filter  = '*.' + ext )
+        if fname:
+            ee = '.' + ext
+            nn = len(ee)
+            if len(fname) < nn or fname[-nn:] != ee:
+                fname += ee
+    
+        return fname
 
 #------------------------------------------------------------------------------#

@@ -122,18 +122,12 @@ class MainControler:
         num_answers = self.uimodel.num_answers
         num_names   = self.uimodel.num_names
 
-        if has_answers and has_names:
-
-            if num_names == num_answers:
-                message = f'Corrigir {num_answers} provas'
-            else:
-                message = f'Atenção: A quantidade de respostas ({num_answers}) não coincide com a quantidade de nomes ({num_names})'
+        if self.uimodel.has_conflict():
+            message = f'Atenção: A quantidade de respostas ({num_answers}) não coincide com a quantidade de nomes ({num_names})'
 
         elif has_answers:
-
-            nn = max( num_names, num_answers )
-            message = f'Corrigir {nn} provas'
-
+            message = f'Corrigir {num_answers} provas'
+        
         else:
             message = 'Corrigir provas'
 
@@ -147,8 +141,13 @@ class MainControler:
     #--------------------------------------------------------------------------#
     def run(self):
 
+        if self.uimodel.has_conflict():
+            ans = QMessageBox.question( self.win, 'Conflito', 'A quantidade de respostas não coincide com a quantidade de nomes.\n\nCorrigir mesmo assim?' )
+
+            if ans == QMessageBox.No:
+                return
+
         progress = ProgressDialog( self.win, ep.TITLE+' - Correção' )
-        
         finished = self.uimodel.run( progress )
 
         msg = QMessageBox(self.win)

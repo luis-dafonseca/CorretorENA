@@ -228,4 +228,9 @@ class MainUIModel:
     def get_answers_pdf(self):      
         return self.answers_fname
 
+    #--------------------------------------------------------------------------#
+    def has_conflict(self):      
+
+        return self.has_answers and self.has_names and (self.num_names != self.num_answers)
+
 #------------------------------------------------------------------------------#

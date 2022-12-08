@@ -142,25 +142,32 @@ class MainControler:
     def run(self):
 
         if self.uimodel.has_conflict():
-            ans = QMessageBox.question( self.win, 'Conflito', 'A quantidade de respostas não coincide com a quantidade de nomes.\n\nCorrigir mesmo assim?' )
+            ans = QMessageBox.question( self.win, 'Conflito', 
+                                       'A quantidade de respostas não coincide com a quantidade de nomes.\n\nCorrigir mesmo assim?' )
 
             if ans == QMessageBox.No:
                 return
 
         progress = ProgressDialog( self.win, ep.TITLE+' - Correção' )
-        finished = self.uimodel.run( progress )
 
-        msg = QMessageBox(self.win)
-        msg.setIcon(QMessageBox.Information)
+        try:
+            finished = self.uimodel.run(progress)
 
-        if finished:
-            msg.setWindowTitle( ep.TITLE+' - Conclusão')
-            msg.setText(        ep.TITLE+': Correção Concluída' + ' '*25)
+        except IOError as er:
+            self.error_box( 'Erro salvando os arquivos', 'Não foi possível salvar algum arquivo!\n\n{str(er)}' )
+
         else:
-            msg.setWindowTitle( ep.TITLE+' - Conclusão')
-            msg.setText(        ep.TITLE+': Correção Cancelada' + ' '*25)
+            msg = QMessageBox(self.win)
+            msg.setIcon(QMessageBox.Information)
 
-        msg.show()
+            if finished:
+                msg.setWindowTitle( ep.TITLE+' - Conclusão')
+                msg.setText(        ep.TITLE+': Correção Concluída' + ' '*25)
+            else:
+                msg.setWindowTitle( ep.TITLE+' - Conclusão')
+                msg.setText(        ep.TITLE+': Correção Cancelada' + ' '*25)
+
+            msg.show()
 
     #--------------------------------------------------------------------------#
     def about(self):
@@ -175,98 +182,142 @@ class MainControler:
 
         fname = self.get_open_fname( 'Selecione o modelo da folha de respostas', 'pdf' )
 
-        if fname:
-            self.last_dir = os.path.dirname(fname)
+        if not fname:
+            return
 
-            try:
-                self.uimodel.set_model( fname )
+        self.last_dir = os.path.dirname(fname)
 
-            except ValueError as er:
-                self.error_box( 'Erro lendo o modelo', str(er) )
+        message = ''
 
-            else:
-                self.ui.labelModelFileName.setText( fname )
-                self.update()
+        try:
+            self.uimodel.set_model(fname)
+
+        except ValueError as er:
+            message = str(er)
+
+        except IOError as er:
+            message = f'Não foi possível ler o arquivo!\n\n{srt(er)}'
+
+        else:
+            self.ui.labelModelFileName.setText(fname)
+            self.update()
+
+        if message:
+            self.error_box( 'Erro lendo o modelo', message )
 
     #--------------------------------------------------------------------------#
     def answers_open(self):
 
         fname = self.get_open_fname( 'Selecione as respostas para serem corrigidas', 'pdf' )
 
-        if fname:
-            self.last_dir = os.path.dirname(fname)
-            accept = True
+        if not fname:
+            return
 
-            try:
-                self.uimodel.set_answers( fname  )
+        self.last_dir = os.path.dirname(fname)
 
-            except ValueError as er:
-                self.error_box( 'Erro lendo as respostas', str(er) )
-                accept = False
+        message = ''
+        accept  = True
 
-            except IndexError as er:
-                self.error_box( 'Erro lendo as respostas', str(er) )
+        try:
+            self.uimodel.set_answers(fname)
 
-            if accept:
-                self.suggested_annotations = fname[:-4] + '-anotacoes.pdf'
-                self.suggested_grades      = fname[:-4] + '-notas.xlsx'
+        except ValueError as er:
+            message = str(er)
+            accept  = False
 
-                self.ui.labelAnswersFileName.setText( fname )
-                self.update()
+        except IndexError as er:
+            message = str(er)
+
+        except IOError as er:
+            message = f'Não foi possível ler o arquivo!\n\n{srt(er)}'
+            accept  = False
+
+        if message:
+            self.error_box( 'Erro lendo as respostas', message )
+
+        if accept:
+            self.suggested_annotations = fname[:-4] + '-anotacoes.pdf'
+            self.suggested_grades      = fname[:-4] + '-notas.xlsx'
+
+            self.ui.labelAnswersFileName.setText(fname)
+            self.update()
 
     #--------------------------------------------------------------------------#
     def names_open(self):
 
         fname = self.get_open_fname( 'Selecione a lista dos nomes dos candidatos', 'xlsx' )
 
-        if fname:
-            self.last_dir = os.path.dirname(fname)
-            accept = True
+        if not fname:
+            return
 
-            try:
-                first_name = self.ui.lineEditNameFistName.text()
-                self.uimodel.set_names( fname, first_name )
+        self.last_dir = os.path.dirname(fname)
 
-            except ValueError as er:
-                self.error_box( 'Erro lendo as respostas', str(er) )
-                accept = False
+        message = ''
+        accept  = True
 
-            except IndexError as er:
-                self.error_box( 'Erro lendo as respostas', str(er) )
+        try:
+            first_name = self.ui.lineEditNameFistName.text()
+            self.uimodel.set_names( fname, first_name )
 
-            if accept:
-                self.ui.labelNamesFileName.setText( fname )
-                self.update()
+        except ValueError as er:
+            message = str(er)
+            accept  = False
+
+        except IndexError as er:
+            message = str(er)
+
+        except IOError as er:
+            message = f'Não foi possível ler o arquivo!\n\n{srt(er)}'
+            accept  = False
+
+        if message:
+            self.error_box( 'Erro lendo os nomes', message )
+
+        if accept:
+            self.ui.labelNamesFileName.setText(fname)
+            self.update()
 
 #--------------------------------------------------------------------------#
     def names_remove(self):
+
+        self.uimodel.remove_names()
+
         self.ui.lineEditNameFistName.setText('A2')
         self.ui.labelNamesFileName  .setText( '' )
-        self.uimodel.remove_names()
+        
         self.update()
 
 #--------------------------------------------------------------------------#
     def set_fisrt_name(self):
 
-        if self.uimodel.has_names:
+        if not self.uimodel.has_names:
+            return
             
-            accept = True
-            
-            try:
-                fname      = self.ui.labelNamesFileName  .text()
-                first_name = self.ui.lineEditNameFistName.text()
-                self.uimodel.set_names( fname, first_name )
+        message = ''
+        accept  = True
+        
+        try:
+            fname      = self.ui.labelNamesFileName  .text()
+            first_name = self.ui.lineEditNameFistName.text()
+            self.uimodel.set_names( fname, first_name )
 
-            except ValueError as er:
-                self.error_box( 'Erro lendo as respostas', str(er) )
-                accept = False
+        except ValueError as er:
+            message = str(er)
+            accept  = False
 
-            except IndexError as er:
-                self.error_box( 'Erro lendo as respostas', str(er) )
+        except IndexError as er:
+            message = str(er)
 
-            if accept:
-                self.ui.labelNamesFileName.setText( fname )
-                self.update()
+        except IOError as er:
+            message = f'Não foi possível ler o arquivo!\n\n{srt(er)}'
+            accept  = False
+
+        if message:
+            self.error_box( 'Erro lendo os nomes', message )
+
+        if accept:
+            self.ui.labelNamesFileName.setText(fname)
+            self.update()
 
     #--------------------------------------------------------------------------#
     def choose_grades(self):
@@ -274,10 +325,18 @@ class MainControler:
         fname = self.get_save_fname( 'Arquivo para salvar as notas', 'xlsx',
                                      self.suggested_grades )
 
-        if fname:
+        if not fname:
+            return
+
+        try:
+            self.uimodel.set_grades(fname)
+
+        except IOError as er:
+            self.error_box( 'Erro lendo o gabarito', f'Não foi possível ler o gabarito!\n\n{srt(er)}' )
+
+        else:
             self.last_dir = os.path.dirname(fname)
-            self.ui.labelOutputGradesFileName.setText( fname )
-            self.uimodel.set_grades( fname )
+            self.ui.labelOutputGradesFileName.setText(fname)
             self.update()
 
     #--------------------------------------------------------------------------#
@@ -289,30 +348,34 @@ class MainControler:
         if fname:
             self.last_dir = os.path.dirname(fname)
             self.ui.labelOutputAnnotationsFileName.setText(fname)
-            self.uimodel.set_annotations( fname )
+            self.uimodel.set_annotations(fname)
             self.update()
 
     #--------------------------------------------------------------------------#
     def keys_open(self):
 
-        new_keys_fname = self.get_open_fname( 'Arquivo com o gabarito', 'txt' )
+        fname = self.get_open_fname( 'Arquivo com o gabarito', 'txt' )
 
-        if new_keys_fname:
+        if not fname:
+            return
 
-            try:
-                keys = self.uimodel.keys_model.read_keys( new_keys_fname )
+        message = ''
 
-            except ValueError:
+        try:
+            keys = self.uimodel.keys_model.read_keys(fname)
 
-                fname = os.path.basename( new_keys_fname )
-                QMessageBox.critical( self.win,
-                                      'Erro lendo o gabarito', 
-                                      f'O arquivo {fname} não contém um gabarito!',
-                                      buttons=QMessageBox.StandardButton.Ok )
+        except ValueError as er:
+            message = str(er)
 
-            else:
-                self.keys_fname = new_keys_fname
-                self.ui.lineEditKeys.setText( keys )
+        except IOError as er:
+            message = f'Não foi possível ler o arquivo!\n\n{srt(er)}'
+
+        else:
+            self.keys_fname = fname
+            self.ui.lineEditKeys.setText(keys)
+
+        if message:
+            self.error_box( 'Erro lendo o gabarito', message )
 
     #--------------------------------------------------------------------------#
     def keys_save(self):
@@ -321,18 +384,21 @@ class MainControler:
             self.keys_fname = self.get_save_fname( 'Arquivo para salvar o gabarito', 'txt' )
 
         if self.keys_fname:
-            with open( self.keys_fname, 'w' ) as f:
-                f.write( self.ui.lineEditKeys.text() )
+            try:
+                self.uimodel.keys_model.write_keys( self.keys_fname )
+
+            except IOError as er:
+                self.error_box( 'Erro salvando o gabarito', 
+                               f'Não foi possível salvar o gabarito!\n\n{str(er)}' )
 
     #--------------------------------------------------------------------------#
     def keys_saveas(self):
 
-        new_keys_fname = self.get_save_fname( 'Arquivo para salvar o gabarito', 'txt' )
+        fname = self.get_save_fname( 'Arquivo para salvar o gabarito', 'txt' )
 
-        if new_keys_fname:
-            self.keys_fname = new_keys_fname
-            with open( self.keys_fname, 'w' ) as f:
-                f.write( self.ui.lineEditKeys.text() )
+        if fname:
+            self.keys_fname = fname
+            self.keys_save()
 
     #--------------------------------------------------------------------------#
     def keys_edit(self):

@@ -2,6 +2,7 @@
 
 from openpyxl            import Workbook, load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
+from openpyxl.styles     import Font, Alignment
 
 import ena_param as ep
 
@@ -20,13 +21,32 @@ class XLSGrades:
         self.sheet['B1'] = 'Nota'
         self.sheet['C1'] = 'Status'
 
+        self.sheet['A1'].alignment = Alignment(horizontal='center')
+        self.sheet['B1'].alignment = Alignment(horizontal='center')
+        self.sheet['C1'].alignment = Alignment(horizontal='center')
+
+        self.sheet['A1'].font = Font(bold=True)
+        self.sheet['B1'].font = Font(bold=True)
+        self.sheet['C1'].font = Font(bold=True)
+
+        self.sheet.column_dimensions['A'].width = 16
+        self.sheet.column_dimensions['C'].width = 12
+
+        self.min_score = ep.MIN_SCORE
+
         self.has_names = False
 
     #--------------------------------------------------------------------------#
-    def add_names(self, names):
+    def write_names(self, names):
+
+        ww = 4
         
         for rr, name in enumerate(names):
-            self.sheet.cell(row=rr+2,column=1).value = name.strip()
+            name = name.strip()
+            ww = max( ww, len(name) )
+            self.sheet.cell(row=rr+2,column=1).value = name
+
+        self.sheet.column_dimensions['A'].width = ww * 1.6
 
         self.has_names = True
 
@@ -58,21 +78,32 @@ class XLSGrades:
     #--------------------------------------------------------------------------#
     def add_grade(self, ii, eliminated, absent, grade ):
 
-        if not self.has_names:
-            self.sheet.cell(row=ii+2, column=1).value = str(f'Candidato {ii+1}')
+        aa = self.sheet.cell( ii+2, 1 )
+        bb = self.sheet.cell( ii+2, 2 )
+        cc = self.sheet.cell( ii+2, 3 )
 
-        self.sheet.cell(row=ii+2, column=2).value = grade
+        if not self.has_names:
+            aa.value = str(f'Candidato {ii+1}')
+
+        bb.value     = grade
+        bb.alignment = Alignment(horizontal='center')
 
         if eliminated:
-            status = 'Eliminado'
+            cc.value = 'Eliminado'
         elif absent:
-            status = 'Ausente'
-        elif grade >= ep.MIN_SCORE:
-            status = 'Aprovado'
+            cc.value = 'Ausente'
+        elif grade >= self.min_score:
+            cc.value = 'Aprovado'
         else:
-            status = 'Reprovado'
-
-        self.sheet.cell(row=ii+2, column=3).value = status
+            cc.value = 'Reprovado'
+    
+    #--------------------------------------------------------------------------#
+    def reset(self):
+        '''Remove all names, grades and status.'''
+        
+        for row in self.sheet.iter_rows( min_row=1 ):
+            for cell in row:
+                cell.value = None
 
     #--------------------------------------------------------------------------#
     def save(self):

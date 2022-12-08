@@ -15,7 +15,7 @@ from grading.xls_grades import XLSGrades
 from grading.page_ena   import PageENA
 from grading.grades     import keys_str_to_list
 
-from ui.keys_model      import KeysModel
+from ui.keys_model import KeysModel
 
 #------------------------------------------------------------------------------#
 class MainUIModel:
@@ -34,7 +34,7 @@ class MainUIModel:
         self.model       = None
         self.answers     = None
         self.annotations = None
-        self.grades      = None
+        self.xls_grades  = None
 
         self.num_answers = 0
         self.num_names   = 0
@@ -56,18 +56,22 @@ class MainUIModel:
     def run( self, progress ):
 
         if self.has_names:
-            self.grades.add_names(self.names)
+            self.xls_grades.write_names(self.names)
+
+        self.annotations = fitz.open()
 
         finished = grade_exam( self.model, 
                                self.keys_model.keys, 
                                self.answers, 
                                self.annotations, 
-                               self.grades,
+                               self.xls_grades,
                                progress )
        
         if finished:
             self.annotations.save( self.fname_annotations )
-            self.grades     .save()
+            self.xls_grades .save()
+        else:
+            self.xls_grades.reset()
 
         return finished
 
@@ -81,14 +85,10 @@ class MainUIModel:
     #--------------------------------------------------------------------------#
     def set_model( self, fname ):       
 
-        name = Path(fname).name
-
-        try:
-            new_model = fitz.open( fname )
-        except:
-            raise ValueError( f'O arquivo {name} não pôde ser aberto!\n' )
+        new_model = fitz.open(fname)
         
-        nn = new_model.page_count
+        nn   = new_model.page_count
+        name = Path(fname).name
 
         if nn == 0:
             raise ValueError( f'O arquivo {name} não é um modelo!\n\nEle não contém nenhuma página.\n' )
@@ -104,16 +104,12 @@ class MainUIModel:
     #--------------------------------------------------------------------------#
     def set_answers( self, fname ):     
 
-        name = Path(fname).name
-
-        try:
-            new_answers = fitz.open( fname )
-        except:
-            raise ValueError( f'O arquivo {name} não pôde ser aberto!\n' )
+        new_answers = fitz.open(fname)
 
         nn = new_answers.page_count
         
         if nn == 0:
+            name = Path(fname).name
             raise ValueError( f'O arquivo {name} não contém nenhuma página.\n' )
         
         if self.has_answers:
@@ -121,7 +117,7 @@ class MainUIModel:
 
         self.num_answers   = nn
         self.answers       = new_answers
-        self.answers_fname = os.path.abspath( fname )
+        self.answers_fname = os.path.abspath(fname)
         self.has_answers   = True
 
         if self.has_names and ( self.num_answers != self.num_names ):
@@ -130,12 +126,9 @@ class MainUIModel:
     #--------------------------------------------------------------------------#
     def set_names( self, fname, first_name ):       
 
-        name = Path(fname).name
+        xls = load_workbook(fname)
 
-        try:
-            xls = load_workbook(fname)
-        except:
-            raise ValueError( f'O arquivo {name} não pôde ser aberto!\n' )
+        name = Path(fname).name
 
         try:
             sheet = xls.active
@@ -151,9 +144,9 @@ class MainUIModel:
 
             xls.close()
 
-        except:
+        except IOError as er:
             self.names = []
-            raise ValueError( f'Não foi possível ler os nomes do arquivo {name}!\n' )
+            raise IOError( f'Não foi possível ler os nomes do arquivo {name}!\n\n{str(er)}' )
 
         self.num_names = len(self.names)
         self.has_names = True
@@ -170,22 +163,13 @@ class MainUIModel:
     #--------------------------------------------------------------------------#
     def set_annotations( self, fname ): 
 
-        try:
-            self.annotations = fitz.open()
-        except:
-            raise ValueError( f'O arquivo {Path(fname).name} não pôde ser aberto!\n' )
-
         self.fname_annotations = fname
         self.has_annotations   = True
 
     #--------------------------------------------------------------------------#
     def set_grades( self, fname ):      
 
-        try:
-            self.grades = XLSGrades( fname )
-        except:
-            raise ValueError( f'O arquivo {Path(fname).name} não pôde ser aberto!\n' )
-
+        self.xls_grades = XLSGrades(fname)
         self.has_grades = True
 
     #--------------------------------------------------------------------------#

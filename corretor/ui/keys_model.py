@@ -3,6 +3,7 @@
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui  import QRegularExpressionValidator, QFontDatabase
 
+import os
 import ena_param as ep
 
 #------------------------------------------------------------------------------#
@@ -59,24 +60,32 @@ class KeysModel:
 
         with open(filename) as f:
             contents = f.readlines()
+
+        name    = os.path.basename(filename)
+        message = f'O arquivo {name} não contém um gabarito!'
         
         if len(contents) != 1:
-            raise ValueError( f'{filename} não contém um gabarito' )
+            raise ValueError( message )
         
         str_keys = str_to_key( contents[0] )
         
         if len(str_keys) != 30:
-            raise ValueError( f'{filename} não contém um gabarito' )
+            raise ValueError( message )
 
         aa = set( 'ABCDEX' )
         ss = set( str_keys )
         
-        if not ss.issubset(ss):
-            raise ValueError( f'{filename} não contém um gabarito' )
+        if not ss.issubset(aa):
+            raise ValueError( message )
 
         self.keys      = str_keys
         self.keys_next = str_keys
 
         return str_keys
+
+    #--------------------------------------------------------------------------#
+    def write_keys( self, filename ):
+        with open( filename, 'w' ) as f:
+             f.write( self.keys )
 
 #------------------------------------------------------------------------------#

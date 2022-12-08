@@ -5,7 +5,6 @@
 
 #### Novas funcionalidades
 
-- Reverter o estado do pdf e xls no cancelamento da correção
 - Testar o uso de arquivos de planinha diferentes do xlsx
 
 - Configurações
@@ -44,6 +43,9 @@
 
 
 ### DONE
+
+2022-12-08
+- Reverter o estado do pdf e xls no cancelamento da correção
 
 2022-12-08
 - Garantir que exite pelo menos uma página de respostas e um nome na planilha de candidatos

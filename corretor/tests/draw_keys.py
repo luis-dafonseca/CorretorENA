@@ -1,5 +1,11 @@
 #------------------------------------------------------------------------------#
 
+"""
+Test script that reads a model and the answers keys to draw the answers on the mark positions.
+"""
+
+#------------------------------------------------------------------------------#
+
 import sys
 import fitz
 import argparse

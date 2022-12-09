@@ -1,5 +1,11 @@
 #------------------------------------------------------------------------------#
 
+"""
+Command line version of the Corretor ENA
+"""
+
+#------------------------------------------------------------------------------#
+
 import sys
 import fitz
 import argparse
@@ -11,6 +17,9 @@ from grading.xls_grades import XLSGrades
 
 #------------------------------------------------------------------------------#
 class CLIProgressBar:
+    '''
+    Class to produce a text progress bar on terminal
+    '''
 
     #--------------------------------------------------------------------------#
     def __init__(self):

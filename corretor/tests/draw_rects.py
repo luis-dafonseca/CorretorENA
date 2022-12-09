@@ -1,5 +1,11 @@
 #------------------------------------------------------------------------------#
 
+"""
+Test script that reads a model and draw all rectangles on it.
+"""
+
+#------------------------------------------------------------------------------#
+
 import sys
 import fitz
 import argparse

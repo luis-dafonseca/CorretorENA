@@ -5,53 +5,103 @@ This script replaces a Makefile to avoid dependencies
 As the project is very simple it is possible to manage all building tasks manually.
 
 Targets:
-    default: Build py files from resources and ui 
-    clean:   Remove temporary files
-    help:    Show this message
-    dist:    Create ditribution package using PyInstaller
+    default:   Build py files from resources and ui 
+    help:      Show this message
+    dist:      Create ditribution package using PyInstaller
+    clean:     Remove temporary files
+    distclean: Remove all files that can be rebuild by mahe.py
 """
 
 #------------------------------------------------------------------------------#
 
 import sys
-import glob
 import os
+import argparse
+import shutil
 import PyInstaller.__main__ as installer
+
+from pathlib import Path
+
+import tests.make as tests_make
+
+#------------------------------------------------------------------------------#
+
+here = Path(__file__).parent
+
+path_app       = here           / 'corretor.py'
+path_resources = here           / 'resources'
+path_icon      = path_resources / 'icon.ico'
+
+path_spec = here.parent / 'packaging'
+path_work = path_spec   / 'work'
+path_dist = path_spec   / 'dist'
+
+#------------------------------------------------------------------------------#
+def remove_dir(path):
+    '''Recurcively removes a directory'''
+
+    if path.is_dir():
+        print(f'Removing directory {path}')
+        shutil.rmtree(path)
+    else:
+        print(f'{path} não existe')
+
+#------------------------------------------------------------------------------#
+def remove_files( path, glob ):
+    '''Removes a list of files'''
+
+    for file in Path(path).glob(glob):
+        print(f'Removing {file}')
+        file.unlink()
+
+#------------------------------------------------------------------------------#
+def make_clean():
+    '''Remove temporary files'''
+
+    print('Cleaning...')
+
+    tests_make.make_clean()
+
+    print('Done')
+
+#------------------------------------------------------------------------------#
+def make_distclean():
+    '''Remove all files that can be rebuild by mahe.py'''
+
+    print('Hard cleaning...')
+
+    make_clean()
+
+    remove_files( path_spec, '*.spec' )
+    remove_dir( path_work )
+    remove_dir( path_dist )
+
+    print('Done')
 
 #------------------------------------------------------------------------------#
 def run(cmd):
+    '''Runs a system command'''
+
     print(cmd)
     os.system(cmd)
 
 #------------------------------------------------------------------------------#
-def remove(file):
-    print(f'Removing {file}')
-    os.remove(file)
-
-#------------------------------------------------------------------------------#
 def make_default():
+    '''Build the default target'''
+
     print('Making default target...')
 
-    for ui_file in glob.glob('./ui/*.ui'):
-        py_file = ui_file[:-2] + 'py'
-        run(f'pyside6-uic --g python {ui_file} -o {py_file}')
+    for ui_file in (here/'ui').glob('*.ui'):
+
+        py_file = ui_file.with_suffix('.py')
+
+        run( f'pyside6-uic -g python {ui_file} -o {py_file}' )
     
     print('Done')
 
 #------------------------------------------------------------------------------#
-def make_clean():
-    print('Cleaning...')
-
-    clean_files =       glob.glob('./tests/*.pdf' ) 
-    clean_files.extend( glob.glob('./tests/*.xlsx') )
-
-    for file in clean_files:
-        remove(file)
-
-    print('Done')
-
-#------------------------------------------------------------------------------#
 def make_dist():
+    '''Execute PyInstaller to build a distribution'''
 
     if sys.platform.startswith('linux'):
         os_name = 'Linux'
@@ -67,36 +117,42 @@ def make_dist():
 
     print(f'Creating a distribution package for {os_name}...')
 
-    installer.run([ '../corretor/corretor.py',
+    installer.run([ str(path_app),
                     '--name=CorretorENA',
-                    '--icon=../corretor/resources/icon.ico',
+                   f'--icon={path_icon}',
+                   f'--add-data={path_resources}{sep}resources',
+                   f'--specpath={path_spec}',
+                   f'--distpath={path_dist}',
+                   f'--workpath={path_work}',
                     '--noconfirm',
-                   f'--add-data=../corretor/resources{sep}resources',
-                   f'--specpath=../packaging',
-                   f'--distpath=../packaging/dist',
-                   f'--workpath=../packaging/work',
                     '--windowed' ])
 
     print('Done')
 
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':
+    '''Main function'''
 
-    target = 'default' if len(sys.argv) == 1 else sys.argv[1]
+    parser = argparse.ArgumentParser()
+    parser.add_argument( 'target', nargs='?', default='default', help='Make target' )
+    args = parser.parse_args()
 
-    if target == 'default':
+    if args.target == 'default':
         make_default()
 
-    elif target == 'clean':
+    elif args.target == 'clean':
         make_clean()
 
-    elif target == 'dist':
+    elif args.target == 'distclean':
+        make_distclean()
+
+    elif args.target == 'dist':
         make_dist()
 
-    elif target == 'help':
+    elif args.target == 'help':
         print(__doc__)
 
     else:
-        print(f'Unkown target {target}!')
+        print(f'Error: Unkown target {args.target}!')
 
 #------------------------------------------------------------------------------#

@@ -1,8 +1,8 @@
 #------------------------------------------------------------------------------#
 
-import os
 import sys
 import fitz
+import argparse
 
 sys.path.append('..')
 
@@ -13,14 +13,36 @@ from grading.xls_grades import XLSGrades
 class CLIProgressBar:
 
     #--------------------------------------------------------------------------#
-    def _print( iteration, 
-                total, 
-                prefix = '', 
-                suffix = '', 
-                decimals = 1, 
-                length = 100, 
-                fill = '█', 
-                printEnd = '\r'):
+    def __init__(self):
+
+        self.total = 0
+        self.iter  = 0
+
+    #--------------------------------------------------------------------------#
+    def start(self,N):
+
+        self.total = N
+        self.iter  = 0
+        self.show( self.iter, self.total )
+
+    #--------------------------------------------------------------------------#
+    def step(self):
+
+        self.iter += 1
+        self.show( self.iter, self.total )
+
+        return True
+
+    #--------------------------------------------------------------------------#
+    def show( self,
+              iteration, 
+              total, 
+              prefix   = '', 
+              suffix   = '', 
+              decimals = 1, 
+              length   = 100, 
+              fill     = '*', 
+              printEnd = '\r'):
         """
         Call in a loop to create terminal progress bar
         @params:
@@ -46,60 +68,40 @@ class CLIProgressBar:
         if iteration == total: 
             print()
 
-    #--------------------------------------------------------------------------#
-    def __init__(self):
-
-        self.total = 0
-        self.iter  = 0
-
-    #--------------------------------------------------------------------------#
-    def start(self,N):
-
-        self.total = N
-        self.iter  = 0
-        CLIProgressBar._print( self.iter, self.total, fill='*' )
-
-    #--------------------------------------------------------------------------#
-    def step(self):
-
-        self.iter += 1
-        CLIProgressBar._print( self.iter, self.total, fill='*' )
-
-        return True
-
 #------------------------------------------------------------------------------#
+if __name__ == '__main__':
 
-example_dir = '../../docs/example/'
+    parser = argparse.ArgumentParser(description='automatic grading ENA tests')
+    parser.add_argument( 'model',       help='PDF file with answers page model' )
+    parser.add_argument( 'keys',        help='TXT file with answers keys' )
+    parser.add_argument( 'answers',     help='PDF file with answers' )
+    parser.add_argument( 'names',       help='XLS file with names' )
+    parser.add_argument( 'cell',        help='Cell address of the fist name' )
+    parser.add_argument( 'grades',      help='XLS output file with grades' )
+    parser.add_argument( 'annotations', help='PDF output file with annotations' )
+    args = parser.parse_args()
+    
+    #--------------------------------------------------------------------------#
 
-answers_name = example_dir + 'exemplo-respostas.pdf'
-model_name   = example_dir + 'exemplo-modelo.pdf'
-input_names  = example_dir + 'exemplo-dados.xlsx'
-first_name   = 'A2'
+    with open( args.keys, 'r') as file:
+        keys = file.read().replace('\n', '')
 
-name = os.path.basename(answers_name)
-name = os.path.splitext(name)[0]
-
-grades_name      = f'{name}-notas.xlsx'
-annotations_name = f'{name}-anotacoes.pdf'
-
-#------------------------------------------------------------------------------#
-
-model_pdf       = fitz.open(model_name)
-answers_pdf     = fitz.open(answers_name)
-annotations_pdf = fitz.open()
-grades_xls      = XLSGrades(grades_name)
-
-grades_xls.read_names( input_names, first_name )
-
-key = 'DEBBEAAXBDDCDBCCBEEBAAAEEBEBDD'
-
-progress_bar = CLIProgressBar()
-
-grade_exam( model_pdf, key, answers_pdf, annotations_pdf, grades_xls, progress_bar )
-
-model_pdf.close()
-answers_pdf.close()
-annotations_pdf.save(annotations_name)
-grades_xls.save()
+    #------------------------------------------------------------------------------#
+    
+    model_pdf       = fitz.open(args.model)
+    answers_pdf     = fitz.open(args.answers)
+    annotations_pdf = fitz.open()
+    grades_xls      = XLSGrades(args.grades)
+    
+    grades_xls.read_names( args.names, args.cell )
+    
+    progress_bar = CLIProgressBar()
+    
+    grade_exam( model_pdf, keys, answers_pdf, annotations_pdf, grades_xls, progress_bar )
+    
+    model_pdf.close()
+    answers_pdf.close()
+    annotations_pdf.save(args.annotations)
+    grades_xls.save()
 
 #------------------------------------------------------------------------------#

@@ -1,8 +1,8 @@
 #------------------------------------------------------------------------------#
 
-import os
 import sys
 import fitz
+import argparse
 
 sys.path.append('..')
 
@@ -15,49 +15,51 @@ from grading.marks        import collect_marks
 from grading.page_ena     import PageENA
 
 #------------------------------------------------------------------------------#
+if __name__ == '__main__':
 
-example_dir = '../../docs/example/'
+    parser = argparse.ArgumentParser()
+    parser.add_argument( 'model',   help='PDF file with the answers page model' )
+    parser.add_argument( 'keys',    help='TXT file with the answers keys' )
+    parser.add_argument( 'answers', help='PDF file with the answers' )
+    parser.add_argument( 'output',  help='Output file' )
+    parser.add_argument( '-p', '--page', help='Page number to be graded', type=int, default=0 )
+    args = parser.parse_args()
+    
+    #--------------------------------------------------------------------------#
+    
+    model_pdf       = fitz.open(args.model)
+    answers_pdf     = fitz.open(args.answers)
+    annotations_pdf = fitz.open()
 
-model_name       = example_dir + 'exemplo-modelo.pdf'
-answers_name     = example_dir + 'exemplo-respostas.pdf'
-annotations_name = 'grading.pdf'
+    with open( args.keys, 'r') as file:
+        keys = file.read().replace('\n', '')
 
-n_page = 0 if len(sys.argv) < 2 else int(sys.argv[1])-1
-
-#------------------------------------------------------------------------------#
-
-model_pdf       = fitz.open(model_name)
-answers_pdf     = fitz.open(answers_name)
-annotations_pdf = fitz.open()
-
-keys = 'DEBBEAAXBDDCDBXXXEEBAAAEEBEBDD'
-
-#------------------------------------------------------------------------------#
-
-page  = model_pdf[0]
-pix   = page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
-image = pix_to_gray_image( pix )
-reg   = Registration( image )
-
-original_page = answers_pdf[n_page]
-original_pix  = original_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE ) 
-original_img  = pix_to_gray_image( original_pix )
-
-k_lst = keys_str_to_list( keys )
-
-image  = reg.transform( original_img )
-marks  = collect_marks( image )
-grades = check_answers( marks, k_lst )
-
-page = PageENA( annotations_pdf )
-page.create_page  ()
-page.insert_image ( image )
-page.insert_marks ( marks, grades, k_lst )
-page.insert_grades( marks, grades )
-page.commit()
-
-model_pdf.close()
-answers_pdf.close()
-annotations_pdf.save(annotations_name)
+    k_lst = keys_str_to_list( keys )
+    
+    #------------------------------------------------------------------------------#
+    
+    page  = model_pdf[0]
+    pix   = page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
+    image = pix_to_gray_image( pix )
+    reg   = Registration( image )
+    
+    original_page = answers_pdf[args.page]
+    original_pix  = original_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE ) 
+    original_img  = pix_to_gray_image( original_pix )
+    
+    image  = reg.transform( original_img )
+    marks  = collect_marks( image )
+    grades = check_answers( marks, k_lst )
+    
+    page = PageENA( annotations_pdf )
+    page.create_page  ()
+    page.insert_image ( image )
+    page.insert_marks ( marks, grades, k_lst )
+    page.insert_grades( marks, grades )
+    page.commit()
+    
+    model_pdf.close()
+    answers_pdf.close()
+    annotations_pdf.save(args.output)
 
 #------------------------------------------------------------------------------#

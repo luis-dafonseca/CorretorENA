@@ -1,7 +1,15 @@
 #------------------------------------------------------------------------------#
 
+'''
+Corretor ENA
+'''
+
+#------------------------------------------------------------------------------#
+
 import sys
-sys.path.append('.')
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).parent))
 
 from PySide6.QtGui     import QIcon
 from PySide6.QtWidgets import QApplication
@@ -24,13 +32,14 @@ def main( argv ):
 
     app = QApplication(argv)
     app.setStyle('fusion')
-    app.setWindowIcon(QIcon( str(icon_file) ))
+    app.setWindowIcon(QIcon(str(icon_file)))
     
     window = MainWindow()
     window.resize( 539, 658 )
-    window.show()
 
-    main_controler = MainControler( window )
+    main_controler = MainControler(window)
+
+    window.show()
 
     return app.exec()
 

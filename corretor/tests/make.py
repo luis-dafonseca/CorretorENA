@@ -5,9 +5,10 @@ This script replaces a Makefile to avoid dependencies
 As the project is very simple it is possible to manage all building tasks manually.
 
 Targets:
-    default: Does nothing
-    clean:   Remove temporary files
-    help:    Show this message
+    help:      Show this message
+    clean:     Remove temporary files
+    distclean: Remove all files that can be rebuild by make.py
+    default:   Build necessary files to execute the program
 
     draw_keys:    Run test draw_keys.py
     draw_rects:   Run test draw_rects.py
@@ -21,11 +22,26 @@ Targets:
 import sys
 import os
 import argparse
+import shutil
 import PyInstaller.__main__ as installer
 
 from pathlib import Path
 
+#------------------------------------------------------------------------------#
+# Common functions and variables
+#------------------------------------------------------------------------------#
+
 here = Path(__file__).parent
+
+#------------------------------------------------------------------------------#
+def remove_dir(path):
+    '''Recurcively removes a directory'''
+
+    if path.is_dir():
+        print(f'Removing directory {path}')
+        shutil.rmtree(path)
+    else:
+        print(f'{path} não existe')
 
 #------------------------------------------------------------------------------#
 def remove_files( path, glob ):
@@ -34,21 +50,6 @@ def remove_files( path, glob ):
     for file in Path(path).glob(glob):
         print(f'Removing {file}')
         file.unlink()
-
-#------------------------------------------------------------------------------#
-def make_clean():
-    '''Remove temporary files'''
-
-    print('Cleaning...')
-
-    remove_files( here, '*.pdf'  )
-    remove_files( here, '*.xlsx' )
-
-    remove_files( here / 'data' / 'example', 'exemplo-respostas-anotacoes.pdf' )
-    remove_files( here / 'data' / 'example', 'exemplo-respostas-notas.xlsx'    )
-
-
-    print('Done')
 
 #------------------------------------------------------------------------------#
 def run(cmd):
@@ -64,17 +65,43 @@ def run_python(cmd):
     run( f'{sys.executable} {cmd}' )
 
 #------------------------------------------------------------------------------#
+# Targets
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+def make_clean():
+    '''Remove temporary files'''
+
+    print('Cleaning...')
+
+    remove_files( here, '*.pdf'  )
+    remove_files( here, '*.xlsx' )
+    remove_files( here / 'data' / 'example', 'exemplo-respostas-anotacoes.pdf' )
+    remove_files( here / 'data' / 'example', 'exemplo-respostas-notas.xlsx'    )
+
+    print('Done')
+#------------------------------------------------------------------------------#
+def make_distclean():
+    '''Remove all files that can be rebuild by make.py'''
+
+    print('Hard cleaning...')
+    make_clean()
+    print('Done')
+
+#------------------------------------------------------------------------------#
 def make_default():
     '''Build the default target'''
-    # print('Making default target...')
-    # print('Done')
+
+    print('Nothing to be done')
 
 #------------------------------------------------------------------------------#
 
-model   = here / 'data' / 'example' / 'exemplo-modelo.pdf'
-keys    = here / 'data' / 'example' / 'exemplo-gabarito.txt'
-answers = here / 'data' / 'example' / 'exemplo-respostas.pdf'
-names   = here / 'data' / 'example' / 'exemplo-dados.xlsx'
+example = here / 'data' / 'example'
+
+model   = example / 'exemplo-modelo.pdf'
+keys    = example / 'exemplo-gabarito.txt'
+answers = example / 'exemplo-respostas.pdf'
+names   = example / 'exemplo-dados.xlsx'
 cell    = 'A2'
 
 #------------------------------------------------------------------------------#
@@ -105,6 +132,8 @@ def make_cli_corretor():
     run_python(f'cli_corretor.py {model} {keys} {answers} {names} {cell} {grades} {annotations}')
 
 #------------------------------------------------------------------------------#
+# Main function
+#------------------------------------------------------------------------------#
 if __name__ == '__main__':
     '''Main function'''
 
@@ -115,11 +144,14 @@ if __name__ == '__main__':
     if args.target == 'default':
         make_default()
 
+    elif args.target == 'help':
+        print(__doc__)
+
     elif args.target == 'clean':
         make_clean()
 
-    elif args.target == 'help':
-        print(__doc__)
+    elif args.target == 'distclean':
+        make_distclean()
 
     elif args.target in [ 'draw_keys', 'draw_keys.py' ]:
         make_draw_keys()

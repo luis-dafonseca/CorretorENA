@@ -1,9 +1,9 @@
 
 # Corretor ENA
 
-### TODO
+## TODO
 
-#### Novas funcionalidades
+### Novas funcionalidades
 
 - Testar o uso de arquivos de planinha diferentes do xlsx
 
@@ -14,11 +14,11 @@
   - Criar quadro de diálogo de configurações
   - Implementar parsing de parâmetros nos programas de linha de comando
 
-#### Testes de consistência
+### Testes de consistência
 
 - Perguntar que o usuário deseja abandonar o gabarito atual ao abrir um novo
 
-#### Refinamentos
+### Refinamentos
 
 - Mudar o texto dos botões dos diálogos de escolha de "Salvar" para "Escolher"
 - Incluir opções para abrir os arquivos no menu da janela principal
@@ -34,15 +34,15 @@
 
 - Renomear o ena_param para algo como configuration
 
-#### Windows
+### Windows
 
 - Implementar o tema escuro
 - Verficar Microsoft Version Information Structures https://pyinstaller.org/en/stable/usage.html
 
-### In progress...
+## In progress...
 
 
-### DONE
+## DONE
 
 2022-12-08
 - Reverter o estado do pdf e xls no cancelamento da correção
@@ -100,7 +100,7 @@
   - Testar se a string digitada é um gabarito
   - Exibir o modelo com as respostas do gabarito
 
-### GAVE UP
+## GAVE UP
 
 - Escrever o número total de provas, de ausentes e eliminados no quadro de finalização da correção
 - ProgressDialog

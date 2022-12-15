@@ -9,8 +9,9 @@ Command line version of the Corretor ENA
 import sys
 import fitz
 import argparse
+from pathlib import Path
 
-sys.path.append('..')
+sys.path.append(str(Path(__file__).parents[1]))
 
 from grading.grade_exam import grade_exam
 from grading.xls_grades import XLSGrades

@@ -9,8 +9,9 @@ Test script that reads a model and the answers keys to draw the answers on the m
 import sys
 import fitz
 import argparse
+from pathlib import Path
 
-sys.path.append('..')
+sys.path.append(str(Path(__file__).parents[1]))
 
 import ena_param as ep
 

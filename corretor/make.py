@@ -5,11 +5,12 @@ This script replaces a Makefile to avoid dependencies
 As the project is very simple it is possible to manage all building tasks manually.
 
 Targets:
-    default:   Build py files from resources and ui 
     help:      Show this message
-    dist:      Create ditribution package using PyInstaller
     clean:     Remove temporary files
-    distclean: Remove all files that can be rebuild by mahe.py
+    distclean: Remove all files that can be rebuild by make.py
+    default:   Build necessary files to execute the program
+
+    dist:      Create ditribution package using PyInstaller
 """
 
 #------------------------------------------------------------------------------#
@@ -22,19 +23,11 @@ import PyInstaller.__main__ as installer
 
 from pathlib import Path
 
-import tests.make as tests_make
-
 #------------------------------------------------------------------------------#
-
+# Common functions and variables
+#------------------------------------------------------------------------------#
+    
 here = Path(__file__).parent
-
-path_app       = here           / 'corretor.py'
-path_resources = here           / 'resources'
-path_icon      = path_resources / 'icon.ico'
-
-path_spec = here.parent / 'packaging'
-path_work = path_spec   / 'work'
-path_dist = path_spec   / 'dist'
 
 #------------------------------------------------------------------------------#
 def remove_dir(path):
@@ -55,6 +48,25 @@ def remove_files( path, glob ):
         file.unlink()
 
 #------------------------------------------------------------------------------#
+def run(cmd):
+    '''Runs a system command'''
+
+    print(cmd)
+    os.system(cmd)
+
+#------------------------------------------------------------------------------#
+def run_python(cmd):
+    '''Runs python script by system call'''
+
+    run( f'{sys.executable} {cmd}' )
+
+#------------------------------------------------------------------------------#
+# Targets
+#------------------------------------------------------------------------------#
+
+import tests.make as tests_make
+
+#------------------------------------------------------------------------------#
 def make_clean():
     '''Remove temporary files'''
 
@@ -66,24 +78,18 @@ def make_clean():
 
 #------------------------------------------------------------------------------#
 def make_distclean():
-    '''Remove all files that can be rebuild by mahe.py'''
+    '''Remove all files that can be rebuild by make.py'''
 
     print('Hard cleaning...')
 
     make_clean()
+    tests_make.make_distclean()
 
     remove_files( path_spec, '*.spec' )
     remove_dir( path_work )
     remove_dir( path_dist )
 
     print('Done')
-
-#------------------------------------------------------------------------------#
-def run(cmd):
-    '''Runs a system command'''
-
-    print(cmd)
-    os.system(cmd)
 
 #------------------------------------------------------------------------------#
 def make_default():
@@ -117,6 +123,14 @@ def make_dist():
 
     print(f'Creating a distribution package for {os_name}...')
 
+    path_app       = here           / 'corretor.py'
+    path_resources = here           / 'resources'
+    path_icon      = path_resources / 'icon.ico'
+    
+    path_spec = here.parent / 'packaging'
+    path_work = path_spec   / 'work'
+    path_dist = path_spec   / 'dist'
+
     installer.run([ str(path_app),
                     '--name=CorretorENA',
                    f'--icon={path_icon}',
@@ -130,6 +144,8 @@ def make_dist():
     print('Done')
 
 #------------------------------------------------------------------------------#
+# Main function
+#------------------------------------------------------------------------------#
 if __name__ == '__main__':
     '''Main function'''
 
@@ -140,6 +156,9 @@ if __name__ == '__main__':
     if args.target == 'default':
         make_default()
 
+    elif args.target == 'help':
+        print(__doc__)
+
     elif args.target == 'clean':
         make_clean()
 
@@ -148,9 +167,6 @@ if __name__ == '__main__':
 
     elif args.target == 'dist':
         make_dist()
-
-    elif args.target == 'help':
-        print(__doc__)
 
     else:
         print(f'Error: Unkown target {args.target}!')

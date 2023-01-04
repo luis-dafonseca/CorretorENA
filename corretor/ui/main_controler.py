@@ -28,8 +28,7 @@ class MainControler:
         self.win = window
         self.ui  = window.ui
 
-        # self.last_dir              = str(ep.HOME)
-        self.last_dir              = '/home/luis/01-Work/03-profmat/07-Corretor_ENA/corretor-git/docs/example/'
+        self.last_dir              = str(ep.HOME)
         self.suggested_annotations = ''
         self.suggested_grades      = ''
         self.keys_fname            = ''

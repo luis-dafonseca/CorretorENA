@@ -80,6 +80,7 @@ class Ui_MainWindow(object):
         self.labelModelFileName.setSizePolicy(sizePolicy)
         self.labelModelFileName.setMinimumSize(QSize(0, 0))
         self.labelModelFileName.setBaseSize(QSize(0, 26))
+        self.labelModelFileName.setAutoFillBackground(True)
         self.labelModelFileName.setFrameShape(QFrame.NoFrame)
         self.labelModelFileName.setFrameShadow(QFrame.Plain)
         self.labelModelFileName.setWordWrap(False)
@@ -156,6 +157,7 @@ class Ui_MainWindow(object):
         self.labelAnswersFileName.setSizePolicy(sizePolicy)
         self.labelAnswersFileName.setMinimumSize(QSize(0, 0))
         self.labelAnswersFileName.setBaseSize(QSize(0, 26))
+        self.labelAnswersFileName.setAutoFillBackground(True)
         self.labelAnswersFileName.setFrameShape(QFrame.NoFrame)
 
         self.gridLayout_14.addWidget(self.labelAnswersFileName, 1, 0, 1, 1)
@@ -189,6 +191,7 @@ class Ui_MainWindow(object):
         self.labelOutputGradesFileName.setSizePolicy(sizePolicy1)
         self.labelOutputGradesFileName.setMinimumSize(QSize(0, 0))
         self.labelOutputGradesFileName.setBaseSize(QSize(0, 26))
+        self.labelOutputGradesFileName.setAutoFillBackground(True)
         self.labelOutputGradesFileName.setFrameShape(QFrame.NoFrame)
 
         self.gridLayout_2.addWidget(self.labelOutputGradesFileName, 2, 0, 1, 1)
@@ -233,6 +236,7 @@ class Ui_MainWindow(object):
         self.labelNamesFileName.setSizePolicy(sizePolicy2)
         self.labelNamesFileName.setMinimumSize(QSize(0, 0))
         self.labelNamesFileName.setBaseSize(QSize(0, 26))
+        self.labelNamesFileName.setAutoFillBackground(True)
         self.labelNamesFileName.setFrameShape(QFrame.NoFrame)
 
         self.gridLayout_4.addWidget(self.labelNamesFileName, 2, 0, 1, 1)
@@ -372,6 +376,7 @@ class Ui_MainWindow(object):
         self.labelOutputAnnotationsFileName.setSizePolicy(sizePolicy)
         self.labelOutputAnnotationsFileName.setMinimumSize(QSize(0, 0))
         self.labelOutputAnnotationsFileName.setBaseSize(QSize(0, 26))
+        self.labelOutputAnnotationsFileName.setAutoFillBackground(True)
         self.labelOutputAnnotationsFileName.setFrameShape(QFrame.NoFrame)
 
         self.gridLayout.addWidget(self.labelOutputAnnotationsFileName, 2, 0, 1, 1)

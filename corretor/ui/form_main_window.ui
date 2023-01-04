@@ -103,6 +103,9 @@
            <height>26</height>
           </size>
          </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -257,6 +260,9 @@
            <height>26</height>
           </size>
          </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -334,6 +340,9 @@
            <width>0</width>
            <height>26</height>
           </size>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -415,6 +424,9 @@
              <width>0</width>
              <height>26</height>
             </size>
+           </property>
+           <property name="autoFillBackground">
+            <bool>true</bool>
            </property>
            <property name="frameShape">
             <enum>QFrame::NoFrame</enum>
@@ -690,6 +702,9 @@
            <width>0</width>
            <height>26</height>
           </size>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>

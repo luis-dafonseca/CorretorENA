@@ -26,7 +26,7 @@ from pathlib import Path
 #------------------------------------------------------------------------------#
 # Common functions and variables
 #------------------------------------------------------------------------------#
-    
+
 here = Path(__file__).parent
 
 #------------------------------------------------------------------------------#
@@ -102,8 +102,39 @@ def make_default():
         py_file = ui_file.with_suffix('.py')
 
         run( f'pyside6-uic -g python {ui_file} -o {py_file}' )
-    
+
     print('Done')
+
+#------------------------------------------------------------------------------#
+def run_pyinstaller(os_name, sep, one_file=False):
+
+    path_app       = here          /'corretor.py'
+    path_resources = here          /'resources'
+    path_icon      = path_resources/'icon.ico'
+    path_packaging = here.parent   /'packaging'/os_name
+
+    if one_file:
+        path_spec = path_packaging/'onefile'
+    else:
+        path_spec = path_packaging/'multifile'
+
+    path_work = path_spec/'work'
+    path_dist = path_spec/'dist'
+
+    parameters = [str(path_app),
+                  '--name=CorretorENA',
+                 f'--icon={path_icon}',
+                 f'--add-data={path_resources}{sep}resources',
+                 f'--specpath={path_spec}',
+                 f'--distpath={path_dist}',
+                 f'--workpath={path_work}',
+                  '--noconfirm',
+                  '--windowed' ]
+
+    if one_file:
+        parameters.append('--onefile')
+
+    installer.run(parameters)
 
 #------------------------------------------------------------------------------#
 def make_dist():
@@ -118,28 +149,14 @@ def make_dist():
         sep = ';'
 
     else:
-        print(f'Unkown platform {sys.platform}!')
+        print(f'ERROR: Unkown platform {sys.platform}!')
         return
 
     print(f'Creating a distribution package for {os_name}...')
+    run_pyinstaller(os_name, sep, False)
 
-    path_app       = here           / 'corretor.py'
-    path_resources = here           / 'resources'
-    path_icon      = path_resources / 'icon.ico'
-    
-    path_spec = here.parent / 'packaging'
-    path_work = path_spec   / 'work'
-    path_dist = path_spec   / 'dist'
-
-    installer.run([ str(path_app),
-                    '--name=CorretorENA',
-                   f'--icon={path_icon}',
-                   f'--add-data={path_resources}{sep}resources',
-                   f'--specpath={path_spec}',
-                   f'--distpath={path_dist}',
-                   f'--workpath={path_work}',
-                    '--noconfirm',
-                    '--windowed' ])
+    print(f'Creating an one file distribution for {os_name}...')
+    run_pyinstaller(os_name, sep, True)
 
     print('Done')
 

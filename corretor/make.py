@@ -115,14 +115,16 @@ def run_pyinstaller(os_name, sep, one_file=False):
 
     if one_file:
         path_spec = path_packaging/'onefile'
+        name      = 'CorretorENA_Standalone'
     else:
         path_spec = path_packaging/'multifile'
+        name      = 'CorretorENA'
 
     path_work = path_spec/'work'
     path_dist = path_spec/'dist'
 
     parameters = [str(path_app),
-                  '--name=CorretorENA',
+                 f'--name={name}',
                  f'--icon={path_icon}',
                  f'--add-data={path_resources}{sep}resources',
                  f'--specpath={path_spec}',

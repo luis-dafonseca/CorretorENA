@@ -26,7 +26,7 @@ RESOURCES = Path(__file__).resolve().parent / 'resources'
 #------------------------------------------------------------------------------#
 
 AUTHOR  = "Luis A. D'Afonseca"
-VERSION = '0.0.1 - alpha'
+VERSION = '0.0.1 - beta'
 TITLE   = 'Corretor ENA'
 MYAPPID = 'Prof_Luis_A_DAfonseca.Corretor_ENA'
 

@@ -1,15 +1,15 @@
 #------------------------------------------------------------------------------#
 
 from PySide6.QtCore    import Qt
-from PySide6.QtGui     import QAction, QActionGroup 
-from PySide6.QtWidgets import ( QDialog, 
-                                QToolButton, 
-                                QVBoxLayout, 
-                                QHBoxLayout, 
-                                QGridLayout, 
-                                QLabel,      
-                                QLineEdit,   
-                                QFrame,   
+from PySide6.QtGui     import QAction, QActionGroup
+from PySide6.QtWidgets import ( QDialog,
+                                QToolButton,
+                                QVBoxLayout,
+                                QHBoxLayout,
+                                QGridLayout,
+                                QLabel,
+                                QLineEdit,
+                                QFrame,
                                 QDialogButtonBox )
 
 #------------------------------------------------------------------------------#
@@ -80,7 +80,7 @@ class EditKeysDialog(QDialog):
     def init_keys_form(self):
 
         self.groups = [None]*30
- 
+
         layout = QHBoxLayout()
         layout.addWidget( self.init_keys_semi_form( 0) )
         layout.addWidget( self.init_keys_semi_form(15) )

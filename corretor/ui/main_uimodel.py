@@ -28,7 +28,7 @@ class MainUIModel:
         self.has_annotations = False
         self.has_grades      = False
         self.has_names       = False
-        
+
         self.names = []
 
         self.model       = None
@@ -60,13 +60,13 @@ class MainUIModel:
 
         self.annotations = fitz.open()
 
-        finished = grade_exam( self.model, 
-                               self.keys_model.keys, 
-                               self.answers, 
-                               self.annotations, 
+        finished = grade_exam( self.model,
+                               self.keys_model.keys,
+                               self.answers,
+                               self.annotations,
                                self.xls_grades,
                                progress )
-       
+
         if finished:
             self.annotations.save( self.fname_annotations )
             self.xls_grades .save()
@@ -83,10 +83,10 @@ class MainUIModel:
                self.has_grades
 
     #--------------------------------------------------------------------------#
-    def set_model( self, fname ):       
+    def set_model( self, fname ):
 
         new_model = fitz.open(fname)
-        
+
         nn   = new_model.page_count
         name = Path(fname).name
 
@@ -102,16 +102,16 @@ class MainUIModel:
         self.has_model = True
 
     #--------------------------------------------------------------------------#
-    def set_answers( self, fname ):     
+    def set_answers( self, fname ):
 
         new_answers = fitz.open(fname)
 
         nn = new_answers.page_count
-        
+
         if nn == 0:
             name = Path(fname).name
             raise ValueError( f'O arquivo {name} não contém nenhuma página.\n' )
-        
+
         if self.has_answers:
             self.answers.close()
 
@@ -124,7 +124,7 @@ class MainUIModel:
             raise IndexError( f'Cuidado: A quantidade de respostas ({self.num_answers}) não coincide com a quantidade de nomes ({self.num_names}).\n' )
 
     #--------------------------------------------------------------------------#
-    def set_names( self, fname, first_name ):       
+    def set_names( self, fname, first_name ):
 
         xls = load_workbook(fname)
 
@@ -133,7 +133,7 @@ class MainUIModel:
         try:
             sheet = xls.active
 
-            xy = coordinate_from_string(first_name) 
+            xy = coordinate_from_string(first_name)
             cc = column_index_from_string(xy[0]) - 1
             ll = xy[1]
 
@@ -155,29 +155,29 @@ class MainUIModel:
             raise IndexError( f'Cuidado: A quantidade de respostas ({self.num_answers}) não coincide com a quantidade de nomes ({self.num_names}).\n' )
 
     #--------------------------------------------------------------------------#
-    def remove_names( self ):       
+    def remove_names( self ):
         self.names     = []
         self.num_names = 0
         self.has_names = False
 
     #--------------------------------------------------------------------------#
-    def set_annotations( self, fname ): 
+    def set_annotations( self, fname ):
 
         self.fname_annotations = fname
         self.has_annotations   = True
 
     #--------------------------------------------------------------------------#
-    def set_grades( self, fname ):      
+    def set_grades( self, fname ):
 
         self.xls_grades = XLSGrades(fname)
         self.has_grades = True
 
     #--------------------------------------------------------------------------#
-    def get_model_pdf(self):      
+    def get_model_pdf(self):
 
         pixmap = self.model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
 
-        new_pdf = fitz.open() 
+        new_pdf = fitz.open()
 
         page = PageENA( new_pdf )
         page.create_page()
@@ -191,11 +191,11 @@ class MainUIModel:
         return self.temp_file.name
 
     #--------------------------------------------------------------------------#
-    def get_keys_pdf(self):      
+    def get_keys_pdf(self):
 
         pixmap = self.model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
 
-        new_pdf = fitz.open() 
+        new_pdf = fitz.open()
 
         page = PageENA( new_pdf )
         page.create_page()
@@ -209,11 +209,11 @@ class MainUIModel:
         return self.temp_file.name
 
     #--------------------------------------------------------------------------#
-    def get_answers_pdf(self):      
+    def get_answers_pdf(self):
         return self.answers_fname
 
     #--------------------------------------------------------------------------#
-    def has_conflict(self):      
+    def has_conflict(self):
 
         return self.has_answers and self.has_names and (self.num_names != self.num_answers)
 

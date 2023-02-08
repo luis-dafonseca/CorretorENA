@@ -12,7 +12,7 @@ def show_names( parent, filename, first_name, names ):
 
     dialog.ui.labelFileName .setText( filename   )
     dialog.ui.labelFirstName.setText( first_name )
-    
+
     label_name = [ dialog.ui.labelName_1,
                    dialog.ui.labelName_2,
                    dialog.ui.labelName_3,
@@ -37,7 +37,7 @@ def show_names( parent, filename, first_name, names ):
         for nn in range(N,6):
             label_name  [nn].hide()
             label_number[nn].hide()
-        
+
         dialog.ui.labelEllipsis.hide()
 
     else:

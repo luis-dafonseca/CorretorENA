@@ -34,7 +34,7 @@ ABOUT = f"""{TITLE} é um programa para corrigir as provas do ENA {' '*8}
 
 Desenvolvedor: {AUTHOR}
 Versão: {VERSION}
-Licença: GNU General Public License - Version 3""" 
+Licença: GNU General Public License - Version 3"""
 
 # Registration and grading parameters
 #------------------------------------------------------------------------------#
@@ -45,7 +45,7 @@ COLORSPACE = 'GRAY'
 N_QUESTIONS = 30
 MIN_SCORE   = 15
 
-ENA_KEYS = { 
+ENA_KEYS = {
     '2018': 'CECDXDDABDBCBCAAEACCEAEEEABBDD',
     '2022': 'CEBBEEDEDDBCDBCAEDECAACEBBACAD',
     '2023': 'CBEACBEDCBEEADCCDBADADACDEAEBD' }

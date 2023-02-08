@@ -33,7 +33,7 @@ def main( argv ):
     app = QApplication(argv)
     app.setStyle('fusion')
     app.setWindowIcon(QIcon(str(icon_file)))
-    
+
     window = MainWindow()
     window.resize( 539, 658 )
 

@@ -131,24 +131,24 @@ def _calc_grades() -> tuple[list[IRect]]:
 
     grade_box  = []
     grade_text = []
-    
+
     box_height  = 53
     cell_height = 83.6
     cell_base   =  2
     text_base   = -6
-    
+
     for nn in range(30):
-    
+
         if nn < 15:
             rect = GRADES_BOX_LEFT.rect
             ii = nn
         else:
             rect = GRADES_BOX_RIGHT.rect
             ii = nn - 15
-    
+
         rect.y0 += ii * cell_height + cell_base
         rect.y1  = rect.y0 + box_height
-    
+
         grade_box .append(rect.irect)
 
         rect.y0 += text_base

@@ -7,7 +7,7 @@ class Grades:
 
     #--------------------------------------------------------------------------#
     def __init__(self):
-        
+
         self.question = [0] * ep.N_QUESTIONS
         self.total    = 0
 
@@ -29,7 +29,7 @@ def check_answers( marks, k_lst ):
 
     for ii, mm in enumerate( marks.question ):
 
-        kk = k_lst[ii] 
+        kk = k_lst[ii]
         nn = int( kk == -1 or ( len(mm) == 1 and mm[0] == kk ) )
 
         grades.question[ii] = nn

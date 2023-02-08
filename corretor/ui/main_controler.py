@@ -4,10 +4,10 @@ import os
 
 from functools         import partial
 from PySide6.QtCore    import QRegularExpression, QUrl
-from PySide6.QtWidgets import ( QApplication, 
-                                QFileDialog, 
+from PySide6.QtWidgets import ( QApplication,
+                                QFileDialog,
                                 QMessageBox )
-from PySide6.QtGui     import ( QRegularExpressionValidator, 
+from PySide6.QtGui     import ( QRegularExpressionValidator,
                                 QAction,
                                 QDesktopServices )
 
@@ -126,7 +126,7 @@ class MainControler:
 
         elif has_answers:
             message = f'Corrigir {num_answers} provas'
-        
+
         else:
             message = 'Corrigir provas'
 
@@ -141,7 +141,7 @@ class MainControler:
     def run(self):
 
         if self.uimodel.has_conflict():
-            ans = QMessageBox.question( self.win, 'Conflito', 
+            ans = QMessageBox.question( self.win, 'Conflito',
                                        'A quantidade de respostas não coincide com a quantidade de nomes.\n\nCorrigir mesmo assim?' )
 
             if ans == QMessageBox.No:
@@ -283,7 +283,7 @@ class MainControler:
 
         self.ui.lineEditNameFistName.setText('A2')
         self.ui.labelNamesFileName  .setText( '' )
-        
+
         self.update()
 
 #--------------------------------------------------------------------------#
@@ -291,10 +291,10 @@ class MainControler:
 
         if not self.uimodel.has_names:
             return
-            
+
         message = ''
         accept  = True
-        
+
         try:
             fname      = self.ui.labelNamesFileName  .text()
             first_name = self.ui.lineEditNameFistName.text()
@@ -387,7 +387,7 @@ class MainControler:
                 self.uimodel.keys_model.write_keys( self.keys_fname )
 
             except IOError as er:
-                self.error_box( 'Erro salvando o gabarito', 
+                self.error_box( 'Erro salvando o gabarito',
                                f'Não foi possível salvar o gabarito!\n\n{str(er)}' )
 
     #--------------------------------------------------------------------------#
@@ -449,28 +449,28 @@ class MainControler:
 
     #--------------------------------------------------------------------------#
     def get_open_fname( self, title, ext ):
-        fname, _ = QFileDialog.getOpenFileName( parent  = self.win, 
-                                                caption = title, 
-                                                dir     = self.last_dir, 
+        fname, _ = QFileDialog.getOpenFileName( parent  = self.win,
+                                                caption = title,
+                                                dir     = self.last_dir,
                                                 filter  = '*.' + ext )
         return fname
-    
+
     #--------------------------------------------------------------------------#
     def get_save_fname( self, title, ext, suggestion = '' ):
 
         if not suggestion:
             suggestion = self.last_dir
 
-        fname, _ = QFileDialog.getSaveFileName( parent  = self.win, 
-                                                caption = title, 
-                                                dir     = suggestion, 
+        fname, _ = QFileDialog.getSaveFileName( parent  = self.win,
+                                                caption = title,
+                                                dir     = suggestion,
                                                 filter  = '*.' + ext )
         if fname:
             ee = '.' + ext
             nn = len(ee)
             if len(fname) < nn or fname[-nn:] != ee:
                 fname += ee
-    
+
         return fname
 
 #------------------------------------------------------------------------------#

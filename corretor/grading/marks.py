@@ -57,7 +57,7 @@ def collect_marks( image ):
         for ii in range(ep.N_QUESTIONS):
             M = [ jj for jj in range(5) if _is_entry_marked(array,ii,jj) ]
             marks.question.append( M )
-    
+
     return marks
 
 #------------------------------------------------------------------------------#

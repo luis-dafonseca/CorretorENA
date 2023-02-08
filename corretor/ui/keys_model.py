@@ -63,18 +63,18 @@ class KeysModel:
 
         name    = os.path.basename(filename)
         message = f'O arquivo {name} não contém um gabarito!'
-        
+
         if len(contents) != 1:
             raise ValueError( message )
-        
+
         str_keys = str_to_key( contents[0] )
-        
+
         if len(str_keys) != 30:
             raise ValueError( message )
 
         aa = set( 'ABCDEX' )
         ss = set( str_keys )
-        
+
         if not ss.issubset(aa):
             raise ValueError( message )
 

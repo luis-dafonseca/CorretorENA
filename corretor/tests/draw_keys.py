@@ -27,9 +27,9 @@ if __name__ == '__main__':
     parser.add_argument( 'keys',   help='TXT file with the answers keys' )
     parser.add_argument( 'output', help='Output file' )
     args = parser.parse_args()
-    
+
     #--------------------------------------------------------------------------#
-    
+
     mod_pdf = fitz.open(args.model)
     out_pdf = fitz.open()
 
@@ -37,19 +37,19 @@ if __name__ == '__main__':
         keys = file.read().replace('\n', '')
 
     k_lst = keys_str_to_list( keys )
-    
+
     model_page = mod_pdf[0]
     model_pix  = model_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
     image      = pix_to_gray_image( model_pix )
-    
+
     page = PageENA( out_pdf )
-    
+
     page.create_page()
     page.insert_image(image)
     page.draw_answers_key(k_lst)
-    
+
     page.commit()
-    
+
     mod_pdf.close()
     out_pdf.save(args.output)
 

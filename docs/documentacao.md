@@ -1,9 +1,9 @@
 
-# Corretor ENA
+# CorretorENA
 
-Esse é um programa para corrigir automaticamente as provas do Exame Nacional de Acesso ao Profmat - ENA. Ele foi desenvolvido por Luis A. D'Afonseca, professor do CEFET-MG e ex coordenador local do Profmat.
+Esse é um programa para corrigir automaticamente as provas do Exame Nacional de Acesso ao Profmat - ENA. Ele foi desenvolvido por Luis A. D'Afonseca, professor do CEFET-MG e ex-coordenador local do Profmat.
 
-Este documento descreve como instalar e usar o programa, além de descrever como o programa realiza a correção das provas.
+Este documento descreve como instalar e usar o programa. No final existe uma explicação sucinta sobre como o programa realiza a correção das provas.
 
 -------------------------------------------------------------------------------
 ## Licença e Ausência Garantia
@@ -88,7 +88,7 @@ Essa opção está disponível para qualquer sistema compatível com Python e Qt
 
 Explicamos aqui os arquivos e informações necessárias para executar o programa em seguida apresentamos um passo a passo para realizar a correção automaticamente. Depois apresentamos alguns cuidados que devem ser tomados para evitar possíveis erros na correção. Por fim apresentamos os métodos e algoritmos implementados.
 
-Para usar o Corretor do ENA é necessário:
+Para usar o CorretorENA é necessário:
 
 1. O modelo da folha de respostas;
 2. O gabarito;
@@ -102,7 +102,7 @@ O programa vai produzir:
 
 O **modelo** é o arquivo `pdf` com a folha de respostas sem identificação de candidato. Esse arquivo é sempre distribuído pela SBM junto com os demais arquivos usados em cada ENA. Ele vai ser usado como base para alinhar as folhas de respostas antes de correção.
 
-As **respostas** dos candidatos precisam ser escaneadas em um único arquivo PDF. Não faz diferença se elas forem escaneadas em cores ou tons de cinza, durante o processamento cada página é convertida resolução de 300pdis em tons de cinza. Por isso, o ideal é que o escaneamento seja em 300dpis. Especial atenção deve ser data a ordem das folhas de respostas, ela deve ser a mesma da lista de nome da planilha fornecida pela SBM. Cuidado para não deixar nenhuma página invertida ou de ponta cabeça.
+As **respostas** dos candidatos precisam ser escaneadas em um único arquivo PDF. Não faz diferença se elas forem escaneadas em cores ou tons de cinza, durante o processamento cada página é convertida para a resolução de 300pdis em tons de cinza. Por isso, o ideal é que o escaneamento seja em 300dpis. Especial atenção deve ser data a ordem das folhas de respostas, ela deve ser a mesma da lista de nome da planilha fornecida pela SBM. Cuidado para não deixar nenhuma página invertida ou de ponta cabeça.
 
 Para facilitar a verificação da ordem das folhas de respostas é possível fornecer uma planilha `xlsx` com os **nomes dos candidatos**. Esses nomes serão escritos nas folhas de respostas acima do local onde os nomes vêm previamente impressos. Assim se alguma página não estiver na ordem correta os nomes não vão coincidir. O programa não tenta extrair os nomes do `pdf` escaneado. Dessa forma ele não tem como identificar automaticamente se houver alguma discrepância. Esses nomes serão também escritos na planilha final com as notas dos candidatos.
 
@@ -112,7 +112,7 @@ O **gabarito** pode ser digitado no campo correspondente ou usando o quadro de d
 
 1. Escanear todas as folhas de respostas em um arquivo `pdf`
 
-2. No Corretor, clicar o botão `Abrir` do campo "Arquivo PDF com o modelo da folha de respostas" e selecionar o `pdf` fornecido pela SBM com a folha de respostas sem identificação de candidato.
+2. No CorretorENA, clicar o botão `Abrir` do campo "Arquivo PDF com o modelo da folha de respostas" e selecionar o `pdf` fornecido pela SBM com a folha de respostas sem identificação de candidato.
 
 3. Entrar com o gabarito. Isso pode ser feito selecionando uma opção do menu `Gabaritos`; digitando as respostas no campo correspondente ou clicando no botão `Editar` para abir um editor dedicado.
 
@@ -142,20 +142,18 @@ O resultado produzido pelo programa sempre deve ser verificado antes de divulgad
 -------------------------------------------------------------------------------
 ## Como o programa corrige as provas
 
-Para corrigir as provas o programa precisa identificar quais foram as respostas marcadas por candidato. Para isso foram implementados os seguintes passos.
+Para corrigir as provas o programa precisa identificar quais foram as respostas marcadas por cada candidato. Para isso foram implementados os seguintes passos.
 
-O programa usa a biblioteca [PyMuPDF](https://pymupdf.readthedocs.io/) para ler os arquivos `pdf` com o modelo e com as respostas dos candidatos e converter cada página dos `pdf` para o formato de imagem com 300pdi. Essa biblioteca também é usada para criar as marcações no `pdf` de anotações que é usado para conferir a correção gerada pelo programa.
+O programa usa a biblioteca [PyMuPDF](https://pymupdf.readthedocs.io/) para ler os arquivos `pdf` com o modelo e com as respostas dos candidatos e converter cada página para o formato de imagem com 300pdi. Essa biblioteca também é usada para criar as marcações no `pdf` de anotações que é usado para conferir a correção gerada pelo programa.
 
-Como no processo de escaneamento as páginas não são rigidamente alinhadas, os campos das respostas não coincidem perfeitamente. Para resolver esse problema o programa alinha cada página com o modelo antes de iniciar a busca pelas marcações. Essa é a razão pelo qual o modelo é necessário.
+Como no escaneamento as páginas não são rigidamente alinhadas, os campos das respostas não coincidem perfeitamente. Para resolver esse problema o programa alinha cada página com o modelo antes de iniciar a busca pelas marcações. Isso é realizado por um algoritmo de _registration_ implementado na biblioteca de visão computacional [OpenCV](https://opencv.org/). Uma descrição do algoritmo pode ser encontrado nesta [página](https://pyimagesearch.com/2020/08/31/image-alignment-and-registration-with-opencv/).
 
-Assim, o primeiro passo necessário é usar um algoritmo de _registration_ para alinhar os elementos de cada página com a página modelo. Nessa etapa usamos a biblioteca de visão computacional [OpenCV](https://opencv.org/). O algoritmo implemento é descrito nessa [página](https://pyimagesearch.com/2020/08/31/image-alignment-and-registration-with-opencv/).
-
-Assim que a imagem da página com as respostas foi alinhada com o modelo, ela é convertida para um `array` numérico da biblioteca [NumPy](https://numpy.org/). Nessa etapa o programa conta o número de _pixels_ de cor diferente de brando nos retângulos correspondentes a cada marcação. O algoritmo não tem como distinguir marcações intencionais de rabiscos, sombras ou a própria moldura que indica onde o candidato deve marcar sua resposta. Todo _pixel_ não branco é contado. Se o número de _pixels_ não brancos dento do retângulo ultrapassar 50% a entrada é considerada marcada. O programa não analisa marcações fora dos retângulos predeterminados, isso é, o programa não vai identificar se algo foi escrito indevidamente fora dos retângulos. Para ver os retângulos que o programa usa como referência basta clicar no botão `Ver` após carregar o modelo.
+Assim que a imagem da página com as respostas foi alinhada com o modelo, ela é convertida para um `array` numérico da biblioteca [NumPy](https://numpy.org/). Nessa etapa o programa conta o número de _pixels_ de cor diferente de branco nos retângulos correspondentes a cada marcação. O algoritmo não tem como distinguir marcações intencionais de rabiscos, sombras ou a própria moldura que indica onde o candidato deve marcar sua resposta. Todo _pixel_ não branco é contado. Se o número de _pixels_ não brancos dento do retângulo ultrapassar 50% a entrada é considerada marcada. O programa não analisa marcações fora dos retângulos predeterminados, isso é, o programa não vai identificar se algo foi escrito indevidamente fora dos retângulos. Para ver os retângulos que o programa usa como referência basta clicar no botão `Ver` após carregar o modelo.
 
 Tendo identificado quais entradas foram marcadas pelo candidato a etapa final é simplesmente verificar se existem mais do que uma marcação por questão e se a resposta coincide com o gabarito.
 
 A nota de cada candidato é salva em um arquivo `xlsx`, assim como se ele foi eliminado ou ausente. Um `pdf` com marcações indicando a correção gerada pelo programa também é gerado. Esse arquivo é fundamental para que seja possível conferir com facilidade a correção realizada e identificar possíveis erros.
 
-O arquivo `xlsx` com os nomes dos candidatos é usado apenas para escrever o nome de cada candidato junto com o nome originalmente impresso na folha de questões. Isso é importante para que seja possível conferir que nas páginas estão na mesma ordem que os nomes da planilha.
+O arquivo `xlsx` fornecido com os nomes dos candidatos é usado apenas para escrever o nome de cada candidato junto com o nome originalmente impresso na folha de questões. Isso é importante para que seja possível conferir que nas páginas estão na mesma ordem que os nomes da planilha.
 
 -------------------------------------------------------------------------------

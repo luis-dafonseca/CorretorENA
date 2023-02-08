@@ -1,148 +1,205 @@
 #------------------------------------------------------------------------------#
+'''Define rectangles pointing to field positions on the ENA form
 
-import fitz
+This module defines the following constants:
+    PDI
+    PAGE
+    REGISTRATION_MASK
+    NAME
+    NAME_TEXT
+    ABSENT
+    ELIMINATED
+    ABSENT_AREA
+    FINAL_GRADE
+    MARKS_BOX_LEFT
+    MARKS_BOX_RIGHT
+    GRADES_BOX_LEFT
+    GRADES_BOX_RIGHT
+    GRADE
+    GRADE_TEXT
+    MARK
+    MARK_AREA
+'''
+
+from fitz import IRect
 
 #------------------------------------------------------------------------------#
-class Rects:
 
-    #--------------------------------------------------------------------------#
-    def __init__(self):
-        pass
+PDI  = 300
+PAGE = IRect(0, 0, 2481, 3508)
 
-    #--------------------------------------------------------------------------#
-    def full_page():
-        x =    0
-        y =    0
-        w = 2481
-        h = 3508
-        return fitz.IRect( x, y, x+w, y+h )
+#------------------------------------------------------------------------------#
 
-    #--------------------------------------------------------------------------#
-    def masks():
+def _calc_registration_mask() -> IRect:
 
-        rects = []
+    x0 =   90
+    y0 = 1700
+    x1 = x0 + 2305
+    y1 = y0 + 1580
 
-        x =   90
-        y = 1700
-        w = 2305
-        h = 1580
-        rects.append( fitz.IRect( x, y, x+w, y+h ) )
+    return IRect(x0, y0, x1, y1)
 
-        return rects
+REGISTRATION_MASK = _calc_registration_mask()
 
-    #--------------------------------------------------------------------------#
-    def marks_box_left():
-        x =  300
-        y = 1840
-        w =  698
-        h = 1226
-        return fitz.IRect( x, y, x+w, y+h )
+#------------------------------------------------------------------------------#
+
+def _calc_name() -> tuple[IRect]:
+
+    x0 =  115
+    y0 =  300
+    x1 = x0 + 2200
+    y1 = y0 +  114
+
+    yt = (y0+y1) // 2
+
+    return (
+        IRect(x0, y0, x1, y1),
+        IRect(x0, yt, x1, y1)
+    )
+
+NAME, NAME_TEXT = _calc_name()
+
+#------------------------------------------------------------------------------#
+
+def _calc_absent_eliminated() -> tuple[IRect]:
+
+    x_absent     =  102
+    x_eliminated = 2135
+    y = 558
+    w = 176
+    h = 104
+
+    return (
+        IRect(x_absent,     y, x_absent    +w, y+h),
+        IRect(x_eliminated, y, x_eliminated+w, y+h)
+    )
+
+ABSENT, ELIMINATED = _calc_absent_eliminated()
+
+ABSENT_AREA = ABSENT.get_area()
+
+#------------------------------------------------------------------------------#
+
+def _calc_full_grade() -> IRect:
+
+    x = 1780
+    y = 3110
+    w =  580
+    h =   80
+
+    return IRect(x, y, x+w, y+h)
+
+FINAL_GRADE = _calc_full_grade()
+
+#------------------------------------------------------------------------------#
+
+def _calc_mark_boxes() -> tuple[IRect]:
+
+    x_left  =  300
+    x_right = 1483
+    y = 1840
+    w =  698
+    h = 1226
+
+    return (
+        IRect(x_left,  y, x_left +w, y+h),
+        IRect(x_right, y, x_right+w, y+h)
+    )
+
+MARKS_BOX_LEFT, MARKS_BOX_RIGHT = _calc_mark_boxes()
+
+#------------------------------------------------------------------------------#
+
+def _calc_grades_boxes() -> tuple[IRect]:
+
+    x_left  = 1040
+    x_right = 2222
+    y = 1840
+    w =  106
+    h = 1226
+
+    return (
+        IRect(x_left,  y, x_left +w, y+h),
+        IRect(x_right, y, x_right+w, y+h)
+    )
+
+GRADES_BOX_LEFT, GRADES_BOX_RIGHT = _calc_grades_boxes()
+
+#------------------------------------------------------------------------------#
+
+def _calc_grades() -> tuple[list[IRect]]:
+
+    grade_box  = []
+    grade_text = []
     
-    #--------------------------------------------------------------------------#
-    def marks_box_right():
-        x = 1483
-        y = 1840
-        w =  698
-        h = 1226
-        return fitz.IRect( x, y, x+w, y+h )
+    box_height  = 53
+    cell_height = 83.6
+    cell_base   =  2
+    text_base   = -6
     
-    #--------------------------------------------------------------------------#
-    def grades_box_left():
-        x = 1040
-        y = 1840
-        w =  106
-        h = 1226
-        return fitz.IRect( x, y, x+w, y+h )
+    for nn in range(30):
     
-    #--------------------------------------------------------------------------#
-    def grades_box_right():
-        x = 2222
-        y = 1840
-        w =  106
-        h = 1226
-        return fitz.IRect( x, y, x+w, y+h )
-    
-    #--------------------------------------------------------------------------#
-    def grade_entry( N ):
-
-        H = 53
-        L = 83.6
-        B = 2
-
-        if N <=14:
-            box = Rects.grades_box_left()
-            ii = N
+        if nn < 15:
+            rect = GRADES_BOX_LEFT.rect
+            ii = nn
         else:
-            box = Rects.grades_box_right()
-            ii = N - 15 
-
-        rect = box
-
-
-        y = rect.y0 + ii * L + B
-
-        rect.y0 = int( round( y,     0 ) )
-        rect.y1 = int( round( y + H, 0 ) )
-
-        return rect
+            rect = GRADES_BOX_RIGHT.rect
+            ii = nn - 15
     
-    #--------------------------------------------------------------------------#
-    def mark_entry( N, jj ):
+        rect.y0 += ii * cell_height + cell_base
+        rect.y1  = rect.y0 + box_height
+    
+        grade_box .append(rect.irect)
 
-        he = 56
-        hl = 83.6
-        we = 106
-        wc = 148
+        rect.y0 += text_base
+        rect.y1 += text_base
 
-        if N <=14:
-            box = Rects.marks_box_left()
-            ii = N
+        grade_text.append(rect.irect)
+
+    return (grade_box, grade_text)
+
+
+GRADE, GRADE_TEXT = _calc_grades()
+
+#------------------------------------------------------------------------------#
+
+def _calc_marks() -> tuple[list[list[IRect]],int]:
+
+    marks = []
+
+    mark_height =  56
+    mark_width  = 106
+
+    cell_height =  83.6
+    cell_width  = 148
+
+    for nn in range(30):
+
+        if nn < 15:
+            rect = MARKS_BOX_LEFT
+            ii = nn
         else:
-            box = Rects.marks_box_right()
-            ii = N - 15 
+            rect = MARKS_BOX_RIGHT
+            ii = nn - 15
 
-        rect = box
+        y0 = rect.y0 + cell_height * ii
+        y1 =      y0 + mark_height
 
-        x = rect.x0 + jj * wc
-        y = rect.y0 + ii * hl
+        line = []
 
-        rect.x0 = int( round( x,      0 ) )
-        rect.y0 = int( round( y,      0 ) )
-        rect.x1 = int( round( x + we, 0 ) )
-        rect.y1 = int( round( y + he, 0 ) )
+        xx = rect.x0
 
-        return rect
-    
-    #--------------------------------------------------------------------------#
-    def name():
-        x =  115
-        y =  300
-        w = 2200
-        h =  114
-        return fitz.IRect( x, y, x+w, y+h )
-    
-    #--------------------------------------------------------------------------#
-    def absent():
-        x = 102
-        y = 558
-        w = 176
-        h = 104
-        return fitz.IRect( x, y, x+w, y+h )
-    
-    #--------------------------------------------------------------------------#
-    def eliminated():
-        x = 2135
-        y =  558
-        w =  176
-        h =  104
-        return fitz.IRect( x, y, x+w, y+h )
-    
-    #--------------------------------------------------------------------------#
-    def full_grade():
-        x = 1780
-        y = 3110
-        w =  580
-        h =   80
-        return fitz.IRect( x, y, x+w, y+h )
+        for jj in range(5):
+
+            x0 = xx + cell_width * jj
+            x1 = x0 + mark_width
+
+            line.append(IRect(x0,y0,x1,y1))
+
+        marks.append(line.copy())
+
+    return (marks, mark_width*mark_height)
+
+MARK, MARK_AREA = _calc_marks()
 
 #------------------------------------------------------------------------------#

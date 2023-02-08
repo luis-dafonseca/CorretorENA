@@ -3,9 +3,7 @@
 import numpy     as np
 import ena_param as ep
 
-from grading.rects import Rects
-
-_AREA = Rects.mark_entry(0,0).get_area()
+import grading.rects as rects
 
 #------------------------------------------------------------------------------#
 class Marks:
@@ -19,27 +17,27 @@ class Marks:
 #--------------------------------------------------------------------------#
 def _is_entry_marked( array, ii, jj ):
 
-    rect = Rects.mark_entry( ii, jj )
+    rect = rects.MARK[ii][jj]
 
-    aa = np.sum( array[ rect.y0:rect.y1, rect.x0:rect.x1 ] ) / _AREA
+    aa = np.sum( array[ rect.y0:rect.y1, rect.x0:rect.x1 ] ) / rects.MARK_AREA
 
     return aa >= 0.5
 
 #--------------------------------------------------------------------------#
 def _is_absent( array ):
 
-    rect = Rects.absent()
+    rect = rects.ABSENT
 
-    aa = np.sum( array[ rect.y0:rect.y1, rect.x0:rect.x1 ] ) / rect.get_area()
+    aa = np.sum( array[ rect.y0:rect.y1, rect.x0:rect.x1 ] ) / rects.ABSENT_AREA
 
     return aa >= 0.5
 
 #--------------------------------------------------------------------------#
 def _is_eliminated( array ):
 
-    rect = Rects.eliminated()
+    rect = rects.ELIMINATED
 
-    aa = np.sum( array[ rect.y0:rect.y1, rect.x0:rect.x1 ] ) / rect.get_area()
+    aa = np.sum( array[ rect.y0:rect.y1, rect.x0:rect.x1 ] ) / rects.ABSENT_AREA
 
     return aa >= 0.5
 

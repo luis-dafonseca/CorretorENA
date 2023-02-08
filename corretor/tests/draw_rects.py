@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------#
 
 """
-Test script that reads a model and draw all rectangles on it.
+Test script that reads a model and draw all rectangles on it
 """
 
 #------------------------------------------------------------------------------#
@@ -33,14 +33,12 @@ if __name__ == '__main__':
 
     model_page = mod_pdf[0]
     model_pix  = model_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
-    image      = pix_to_gray_image( model_pix )
     
     page = PageENA( out_pdf )
     
     page.create_page()
-    page.insert_image(image)
+    page.insert_pixmap(model_pix)
     page.draw_all_rects()
-    
     page.commit()
     
     mod_pdf.close()

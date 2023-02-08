@@ -3,19 +3,20 @@
 import cv2
 import numpy as np
 
-from grading.rects import Rects
+import grading.rects as rects
 
 #------------------------------------------------------------------------------#
 def create_mask():
 
-    R = Rects.full_page()
-    w = R.x1
-    h = R.y1
+    mask = np.zeros((
+            rects.PAGE.height,
+            rects.PAGE.width
+        ),
+        dtype=np.uint8
+    )
 
-    mask = np.zeros( (h,w), dtype=np.uint8 )
-
-    for R in Rects.masks():
-        mask[ R.y0:R.y1, R.x0:R.x1 ] = 255
+    rect = rects.REGISTRATION_MASK
+    mask[rect.y0:rect.y1, rect.x0:rect.x1] = 255
 
     return mask
 

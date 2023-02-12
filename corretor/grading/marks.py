@@ -3,7 +3,7 @@
 import numpy     as np
 import ena_param as ep
 
-import grading.rects as rects
+import grading.rectangles as rects
 
 #------------------------------------------------------------------------------#
 class Marks:

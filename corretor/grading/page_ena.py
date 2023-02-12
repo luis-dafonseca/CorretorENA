@@ -4,8 +4,8 @@ import fitz
 import cv2
 import io
 
-import ena_param     as ep
-import grading.rects as rects
+import ena_param          as ep
+import grading.rectangles as rects
 
 from grading.grades import Grades
 

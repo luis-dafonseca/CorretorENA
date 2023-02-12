@@ -19,6 +19,9 @@ This module defines the following constants:
     GRADE_TEXT
     MARK
     MARK_AREA
+
+
+WARNING: Never edit the rectangles from this module!
 '''
 
 from fitz import IRect

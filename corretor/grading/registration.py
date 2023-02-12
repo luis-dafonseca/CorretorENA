@@ -5,6 +5,7 @@ import numpy as np
 
 import grading.rectangles as rects
 
+
 #------------------------------------------------------------------------------#
 def create_mask():
 
@@ -24,7 +25,7 @@ def create_mask():
 class Registration:
 
     #--------------------------------------------------------------------------#
-    def __init__( self, model ):
+    def __init__(self, model) -> None:
 
         (height, width) = model.shape
         self.warp_shape = ( width, height )
@@ -40,13 +41,12 @@ class Registration:
         self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck = True)
 
     #--------------------------------------------------------------------------#
-    def transform( self, image ):
+    def transform(self, image):
 
         (self.kps_image, self.descs_image) = self.detect(image, self.mask)
 
         matches = self.matcher.match(self.descs_image, self.descs_model)
-
-        matches = sorted( matches, key=lambda x: x.distance )
+        matches = sorted(matches, key=lambda x: x.distance)
 
         KEEP_PERCENT = 0.9
         keep = int( len(matches) * KEEP_PERCENT )
@@ -61,8 +61,8 @@ class Registration:
             pts_image[ii,:] = self.kps_image[m.queryIdx].pt
             pts_model[ii,:] = self.kps_model[m.trainIdx].pt
 
-        (H,_) = cv2.findHomography( pts_image, pts_model, cv2.RANSAC )
+        (H, _) = cv2.findHomography(pts_image, pts_model, cv2.RANSAC)
 
-        return cv2.warpPerspective( image, H, self.warp_shape )
+        return cv2.warpPerspective(image, H, self.warp_shape)
 
 #------------------------------------------------------------------------------#

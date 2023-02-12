@@ -124,7 +124,9 @@ cell    = 'A2'
 def make_draw_keys() -> None:
     '''Run test draw_keys.py'''
 
-    run_python(f'draw_keys.py {model} {keys} draw_keys.pdf')
+    out_file = output / 'draw_keys.pdf'
+
+    run_python(f'draw_keys.py {model} {keys} {out_file}')
 
 tests['draw_keys'] = make_draw_keys
 
@@ -132,7 +134,9 @@ tests['draw_keys'] = make_draw_keys
 def make_draw_rects() -> None:
     '''Run test draw_rects.py'''
 
-    run_python(f'draw_rects.py {model} draw_rects.pdf')
+    out_file = output / 'draw_rects.pdf'
+
+    run_python(f'draw_rects.py {model} {out_file}')
 
 tests['draw_rects'] = make_draw_rects
 
@@ -140,7 +144,10 @@ tests['draw_rects'] = make_draw_rects
 def make_test_grading() -> None:
     '''Run test test_grading.py'''
 
-    run_python(f'test_grading.py {model} {keys} {answers} test_grading.pdf --page 2')
+    out_file = output / 'test_grading.pdf'
+    page = 2
+
+    run_python(f'test_grading.py {model} {keys} {answers} {out_file} --page {page}')
 
 tests['test_grading'] = make_test_grading
 

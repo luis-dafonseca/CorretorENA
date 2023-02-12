@@ -2,14 +2,15 @@
 '''Define rectangles pointing to field positions on the ENA form
 
 This module defines the following constants:
-    PDI
+    DPI
     PAGE
+    N_QUESTIONS
     REGISTRATION_MASK
     NAME
     NAME_TEXT
     ABSENT
-    ELIMINATED
     ABSENT_AREA
+    ELIMINATED
     FINAL_GRADE
     MARKS_BOX_LEFT
     MARKS_BOX_RIGHT
@@ -20,7 +21,6 @@ This module defines the following constants:
     MARK
     MARK_AREA
 
-
 WARNING: Never edit the rectangles from this module!
 '''
 
@@ -28,8 +28,9 @@ from fitz import IRect
 
 #------------------------------------------------------------------------------#
 
-PDI  = 300
+DPI  = 300
 PAGE = IRect(0, 0, 2481, 3508)
+N_QUESTIONS = 30
 
 #------------------------------------------------------------------------------#
 
@@ -49,16 +50,21 @@ REGISTRATION_MASK = _calc_registration_mask()
 def _calc_name() -> tuple[IRect]:
 
     x0 =  115
-    y0 =  300
-    x1 = x0 + 2200
-    y1 = y0 +  114
+    y0 =  320
+    w  = 2184
+    h  =  100
+    x1 = x0 + w
+    y1 = y0 + h
 
-    yt = (y0+y1) // 2
+    name = IRect(x0, y0, x1, y1)
 
-    return (
-        IRect(x0, y0, x1, y1),
-        IRect(x0, yt, x1, y1)
-    )
+    x0 = x0 + 10
+    y0 = y0 + 12
+    y1 = y1 - 27
+
+    text = IRect(x0, y0, x1, y1)
+
+    return (name, text)
 
 NAME, NAME_TEXT = _calc_name()
 

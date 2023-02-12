@@ -1,31 +1,30 @@
 #------------------------------------------------------------------------------#
-
 """
-Test script that reads a model and the answers keys to draw the answers on the mark positions.
+Test script to draw keys to a model PDF file
 """
 
 #------------------------------------------------------------------------------#
 
 import sys
-import fitz
-import argparse
 from pathlib import Path
-
 sys.path.append(str(Path(__file__).parents[1]))
 
-import ena_param as ep
+import argparse
+import fitz
 
+import grading.rectangles as rects
+
+from grading.ena_form import ENAForm
+from grading.answers  import keys_str_to_list
 from grading.tools    import pix_to_gray_image
-from grading.page_ena import PageENA
-from grading.grades   import keys_str_to_list
 
-#------------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument( 'model',  help='PDF file with the answers page model' )
-    parser.add_argument( 'keys',   help='TXT file with the answers keys' )
-    parser.add_argument( 'output', help='Output file' )
+    parser.add_argument('model',  help='PDF file with the answers page model')
+    parser.add_argument('keys',   help='TXT file with the answers keys')
+    parser.add_argument('output', help='Output file')
     args = parser.parse_args()
 
     #--------------------------------------------------------------------------#
@@ -36,19 +35,21 @@ if __name__ == '__main__':
     with open( args.keys, 'r') as file:
         keys = file.read().replace('\n', '')
 
-    k_lst = keys_str_to_list( keys )
+    keys_lst = keys_str_to_list(keys)
 
     model_page = mod_pdf[0]
-    model_pix  = model_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
-    image      = pix_to_gray_image( model_pix )
+    model_pix  = model_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
+    image      = pix_to_gray_image(model_pix)
 
-    page = PageENA( out_pdf )
+    page = out_pdf.new_page(
+        width  = rects.PAGE.width,
+        height = rects.PAGE.height
+    )
 
-    page.create_page()
-    page.insert_image(image)
-    page.draw_answers_key(k_lst)
-
-    page.commit()
+    form = ENAForm(page)
+    form.insert_image(image)
+    form.insert_keys (keys_lst)
+    form.commit()
 
     mod_pdf.close()
     out_pdf.save(args.output)

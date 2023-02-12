@@ -1,9 +1,8 @@
 #------------------------------------------------------------------------------#
 
-import numpy     as np
-import ena_param as ep
-
+import numpy as np
 import grading.rectangles as rects
+
 
 #------------------------------------------------------------------------------#
 class Marks:
@@ -54,7 +53,7 @@ def collect_marks( image ):
         marks.absent = True
 
     else:
-        for ii in range(ep.N_QUESTIONS):
+        for ii in range(rects.N_QUESTIONS):
             M = [ jj for jj in range(5) if _is_entry_marked(array,ii,jj) ]
             marks.question.append( M )
 

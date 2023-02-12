@@ -1,19 +1,17 @@
 #------------------------------------------------------------------------------#
 
-import os
 import fitz
 import tempfile
 from pathlib import Path
 
-from openpyxl            import Workbook, load_workbook
+from openpyxl            import load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
-
-import ena_param as ep
 
 from grading.grade_exam import grade_exam
 from grading.xls_grades import XLSGrades
-from grading.page_ena   import PageENA
-from grading.grades     import keys_str_to_list
+from grading.ena_form   import ENAForm
+
+import grading.rectangles as rects
 
 from ui.keys_model import KeysModel
 
@@ -21,7 +19,7 @@ from ui.keys_model import KeysModel
 class MainUIModel:
 
     #--------------------------------------------------------------------------#
-    def __init__( self ):
+    def __init__(self) -> None:
 
         self.has_model       = False
         self.has_answers     = False
@@ -44,7 +42,7 @@ class MainUIModel:
         self.keys_model = KeysModel()
 
     #--------------------------------------------------------------------------#
-    def __del__(self):
+    def __del__(self) -> None:
 
         if self.has_model:
             self.model.close()
@@ -53,22 +51,24 @@ class MainUIModel:
             self.answers.close()
 
     #--------------------------------------------------------------------------#
-    def run( self, progress ):
+    def run(self, progress) -> bool:
 
         if self.has_names:
             self.xls_grades.write_names(self.names)
 
         self.annotations = fitz.open()
 
-        finished = grade_exam( self.model,
-                               self.keys_model.keys,
-                               self.answers,
-                               self.annotations,
-                               self.xls_grades,
-                               progress )
+        finished = grade_exam(
+            self.model,
+            self.keys_model.keys,
+            self.answers,
+            self.annotations,
+            self.xls_grades,
+            progress
+        )
 
         if finished:
-            self.annotations.save( self.fname_annotations )
+            self.annotations.save(self.fname_annotations)
             self.xls_grades .save()
         else:
             self.xls_grades.reset()
@@ -76,14 +76,16 @@ class MainUIModel:
         return finished
 
     #--------------------------------------------------------------------------#
-    def ready_to_run(self):
-        return self.has_model       and \
-               self.has_answers     and \
-               self.has_annotations and \
-               self.has_grades
+    def ready_to_run(self) -> bool:
+        return (
+            self.has_model       and
+            self.has_answers     and
+            self.has_annotations and
+            self.has_grades
+        )
 
     #--------------------------------------------------------------------------#
-    def set_model( self, fname ):
+    def set_model(self, fname) -> None:
 
         new_model = fitz.open(fname)
 
@@ -91,9 +93,15 @@ class MainUIModel:
         name = Path(fname).name
 
         if nn == 0:
-            raise ValueError( f'O arquivo {name} não é um modelo!\n\nEle não contém nenhuma página.\n' )
+            raise ValueError((
+                f'O arquivo {name} não é um modelo!\n\n'
+                'Ele não contém nenhuma página.\n'
+            ))
         elif nn > 1:
-            raise ValueError( f'O arquivo {name} não é um modelo!\n\nEle contém mais do que uma página.\n' )
+            raise ValueError((
+                f'O arquivo {name} não é um modelo!\n\n'
+                'Ele contém mais do que uma página.\n'
+            ))
 
         if self.has_model:
             self.model.close()
@@ -102,33 +110,37 @@ class MainUIModel:
         self.has_model = True
 
     #--------------------------------------------------------------------------#
-    def set_answers( self, fname ):
+    def set_answers(self, fname: str) -> None:
+
+        fpath = Path(fname).resolve()
 
         new_answers = fitz.open(fname)
 
         nn = new_answers.page_count
 
         if nn == 0:
-            name = Path(fname).name
-            raise ValueError( f'O arquivo {name} não contém nenhuma página.\n' )
+            raise ValueError( f'O arquivo {fpath.name} não contém nenhuma página.\n' )
 
         if self.has_answers:
             self.answers.close()
 
         self.num_answers   = nn
         self.answers       = new_answers
-        self.answers_fname = os.path.abspath(fname)
+        self.answers_fname = str(fname)
         self.has_answers   = True
 
-        if self.has_names and ( self.num_answers != self.num_names ):
-            raise IndexError( f'Cuidado: A quantidade de respostas ({self.num_answers}) não coincide com a quantidade de nomes ({self.num_names}).\n' )
+        if self.has_names and (self.num_answers != self.num_names):
+            raise IndexError((
+                f'Cuidado: A quantidade de respostas ({self.num_answers})'
+                f'não coincide com a quantidade de nomes ({self.num_names}).\n'
+            ))
 
     #--------------------------------------------------------------------------#
-    def set_names( self, fname, first_name ):
+    def set_names(self, fname:str, first_name:str) -> None:
 
         xls = load_workbook(fname)
 
-        name = Path(fname).name
+        fpath = Path(fname).resolve()
 
         try:
             sheet = xls.active
@@ -139,82 +151,105 @@ class MainUIModel:
 
             self.names = []
 
-            for rr, row in enumerate( sheet.iter_rows(min_row=ll, values_only=True) ):
-                self.names.append( str(row[cc]).strip() )
+            for row in sheet.iter_rows(min_row=ll, values_only=True):
+                self.names.append(str(row[cc]).strip().upper())
 
             xls.close()
 
         except IOError as er:
             self.names = []
-            raise IOError( f'Não foi possível ler os nomes do arquivo {name}!\n\n{str(er)}' )
+            raise IOError(
+                f'Não foi possível ler os nomes do arquivo {fpath.name}!\n\n{str(er)}'
+            )
 
         self.num_names = len(self.names)
         self.has_names = True
 
-        if self.has_answers and ( self.num_answers != self.num_names ):
-            raise IndexError( f'Cuidado: A quantidade de respostas ({self.num_answers}) não coincide com a quantidade de nomes ({self.num_names}).\n' )
+        if self.has_answers and (self.num_answers != self.num_names):
+            raise IndexError((
+                f'Cuidado: A quantidade de respostas ({self.num_answers})'
+                f' não coincide com a quantidade de nomes ({self.num_names}).\n'
+            ))
 
     #--------------------------------------------------------------------------#
-    def remove_names( self ):
+    def remove_names(self) -> None:
         self.names     = []
         self.num_names = 0
         self.has_names = False
 
     #--------------------------------------------------------------------------#
-    def set_annotations( self, fname ):
+    def set_annotations(self, fname: str) -> None:
 
         self.fname_annotations = fname
         self.has_annotations   = True
 
     #--------------------------------------------------------------------------#
-    def set_grades( self, fname ):
+    def set_grades(self, fname: str) -> None:
 
         self.xls_grades = XLSGrades(fname)
         self.has_grades = True
 
     #--------------------------------------------------------------------------#
-    def get_model_pdf(self):
+    def get_model_pdf(self) -> str:
 
-        pixmap = self.model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
+        pixmap = self.model[0].get_pixmap(dpi=rects.DPI, colorspace='GRAY')
 
         new_pdf = fitz.open()
 
-        page = PageENA( new_pdf )
-        page.create_page()
-        page.insert_pixmap( pixmap )
-        page.draw_all_rects()
-        page.commit()
+        page = new_pdf.new_page(
+            width  = rects.PAGE.width,
+            height = rects.PAGE.height
+        )
 
-        self.temp_file = tempfile.NamedTemporaryFile( prefix='modelo_', suffix='.pdf' )
+        form = ENAForm(page)
+        form.insert_pixmap(pixmap)
+        form.insert_rects()
+        form.commit()
+
+        self.temp_file = tempfile.NamedTemporaryFile(
+            prefix='modelo_',
+            suffix='.pdf'
+        )
+        new_pdf.save(self.temp_file.name)
+
+        return self.temp_file.name
+
+    #--------------------------------------------------------------------------#
+    def get_keys_pdf(self) -> str:
+
+        pixmap = self.model[0].get_pixmap(dpi=rects.DPI, colorspace='GRAY')
+
+        new_pdf = fitz.open()
+
+        page = new_pdf.new_page(
+            width  = rects.PAGE.width,
+            height = rects.PAGE.height
+        )
+
+        form = ENAForm(page)
+        form.insert_pixmap(pixmap)
+        form.insert_keys(self.keys_model.keys)
+        form.commit()
+
+        self.temp_file = tempfile.NamedTemporaryFile(
+            prefix = 'gabarito_',
+            suffix = '.pdf'
+        )
         new_pdf.save( self.temp_file.name )
 
         return self.temp_file.name
 
     #--------------------------------------------------------------------------#
-    def get_keys_pdf(self):
-
-        pixmap = self.model[0].get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
-
-        new_pdf = fitz.open()
-
-        page = PageENA( new_pdf )
-        page.create_page()
-        page.insert_pixmap( pixmap )
-        page.draw_answers_key( keys_str_to_list( self.keys_model.keys ) )
-        page.commit()
-
-        self.temp_file = tempfile.NamedTemporaryFile( prefix='gabarito_', suffix='.pdf' )
-        new_pdf.save( self.temp_file.name )
-
-        return self.temp_file.name
-
-    #--------------------------------------------------------------------------#
-    def get_answers_pdf(self):
+    def get_answers_pdf(self) -> str:
         return self.answers_fname
 
     #--------------------------------------------------------------------------#
-    def has_conflict(self):
+    def has_conflict(self) -> bool:
 
-        return self.has_answers and self.has_names and (self.num_names != self.num_answers)
+        return (
+            self.has_answers and
+            self.has_names   and
+            self.num_names != self.num_answers
+        )
 
 #------------------------------------------------------------------------------#

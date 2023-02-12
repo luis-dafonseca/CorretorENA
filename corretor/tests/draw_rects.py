@@ -7,23 +7,23 @@ Test script that reads a model and draw all rectangles on it
 #------------------------------------------------------------------------------#
 
 import sys
-import fitz
-import argparse
 from pathlib import Path
-
 sys.path.append(str(Path(__file__).parents[1]))
 
-import ena_param as ep
+import argparse
+import fitz
 
+import grading.rectangles as rects
+
+from grading.ena_form import ENAForm
 from grading.tools    import pix_to_gray_image
-from grading.page_ena import PageENA
 
-#------------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument( 'model',  help='PDF file with the answers page model' )
-    parser.add_argument( 'output', help='Output file' )
+    parser.add_argument('model',  help='PDF file with the answers page model')
+    parser.add_argument('output', help='Output file')
     args = parser.parse_args()
 
     #--------------------------------------------------------------------------#
@@ -32,14 +32,17 @@ if __name__ == '__main__':
     out_pdf = fitz.open()
 
     model_page = mod_pdf[0]
-    model_pix  = model_page.get_pixmap( dpi=ep.DPI, colorspace=ep.COLORSPACE )
+    model_pix  = model_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
 
-    page = PageENA( out_pdf )
+    page = out_pdf.new_page(
+        width  = rects.PAGE.width,
+        height = rects.PAGE.height
+    )
 
-    page.create_page()
-    page.insert_pixmap(model_pix)
-    page.draw_all_rects()
-    page.commit()
+    form = ENAForm(page)
+    form.insert_pixmap(model_pix)
+    form.insert_rects ()
+    form.commit()
 
     mod_pdf.close()
     out_pdf.save(args.output)

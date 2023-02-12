@@ -23,7 +23,6 @@ import sys
 import os
 import argparse
 import shutil
-import PyInstaller.__main__ as installer
 
 from pathlib import Path
 
@@ -31,20 +30,23 @@ from pathlib import Path
 # Common functions and variables
 #------------------------------------------------------------------------------#
 
-here = Path(__file__).parent
+here   = Path(__file__).parent
+
+output = here / 'output'
+output.mkdir(parents=True, exist_ok=True)
 
 #------------------------------------------------------------------------------#
-def remove_dir(path):
-    '''Recurcively removes a directory'''
+def remove_dir(path: Path) -> None:
+    '''Recursively removes a directory'''
 
     if path.is_dir():
         print(f'Removing directory {path}')
         shutil.rmtree(path)
     else:
-        print(f'{path} não existe')
+        print(f"{path} don't exists")
 
 #------------------------------------------------------------------------------#
-def remove_files( path, glob ):
+def remove_files(path: Path, glob: str) -> None:
     '''Removes a list of files'''
 
     for file in Path(path).glob(glob):
@@ -52,14 +54,14 @@ def remove_files( path, glob ):
         file.unlink()
 
 #------------------------------------------------------------------------------#
-def run(cmd):
+def run(cmd: str) -> None:
     '''Runs a system command'''
 
     print(cmd)
     os.system(cmd)
 
 #------------------------------------------------------------------------------#
-def run_python(cmd):
+def run_python(cmd: str) -> None:
     '''Runs python script by system call'''
 
     run( f'{sys.executable} {cmd}' )
@@ -68,33 +70,47 @@ def run_python(cmd):
 # Targets
 #------------------------------------------------------------------------------#
 
+rules = {}
+rules['help'] = lambda: print(__doc__)
+
 #------------------------------------------------------------------------------#
-def make_clean():
+def make_clean() -> None:
     '''Remove temporary files'''
 
-    print('Cleaning...')
+    print(f'Cleaning {here}...')
 
-    remove_files( here, '*.pdf'  )
-    remove_files( here, '*.xlsx' )
+    remove_files( output, '*.pdf'  )
+    remove_files( output, '*.xlsx' )
     remove_files( here / 'data' / 'example', 'exemplo-respostas-anotacoes.pdf' )
     remove_files( here / 'data' / 'example', 'exemplo-respostas-notas.xlsx'    )
 
     print('Done')
+
+rules['clean'] = make_clean
+
 #------------------------------------------------------------------------------#
-def make_distclean():
+def make_distclean() -> None:
     '''Remove all files that can be rebuild by make.py'''
 
-    print('Hard cleaning...')
+    print(f'Hard cleaning {here}...')
     make_clean()
     print('Done')
 
+rules['distclean'] = make_distclean
+
 #------------------------------------------------------------------------------#
-def make_default():
+def make_default() -> None:
     '''Build the default target'''
 
     print('Nothing to be done')
 
+rules['default'] = make_default
+
 #------------------------------------------------------------------------------#
+# Tests
+#------------------------------------------------------------------------------#
+
+tests = {}
 
 example = here / 'data' / 'example'
 
@@ -105,73 +121,70 @@ names   = example / 'exemplo-dados.xlsx'
 cell    = 'A2'
 
 #------------------------------------------------------------------------------#
-def make_draw_keys():
+def make_draw_keys() -> None:
     '''Run test draw_keys.py'''
 
     run_python(f'draw_keys.py {model} {keys} draw_keys.pdf')
 
+tests['draw_keys'] = make_draw_keys
+
 #------------------------------------------------------------------------------#
-def make_draw_rects():
+def make_draw_rects() -> None:
     '''Run test draw_rects.py'''
 
     run_python(f'draw_rects.py {model} draw_rects.pdf')
 
+tests['draw_rects'] = make_draw_rects
+
 #------------------------------------------------------------------------------#
-def make_test_grading():
+def make_test_grading() -> None:
     '''Run test test_grading.py'''
 
     run_python(f'test_grading.py {model} {keys} {answers} test_grading.pdf --page 2')
 
+tests['test_grading'] = make_test_grading
+
 #------------------------------------------------------------------------------#
-def make_cli_corretor():
+def make_cli_corretor() -> None:
     '''Run test cli_corretor.py'''
 
-    grades      = here / 'cli_corretor-grades.xlsx'
-    annotations = here / 'cli_corretor-annotations.pdf'
+    grades      = output / 'cli_corretor-notas.xlsx'
+    annotations = output / 'cli_corretor-anotacoes.pdf'
 
     run_python(f'cli_corretor.py {model} {keys} {answers} {names} {cell} {grades} {annotations}')
+
+tests['cli_corretor'] = make_cli_corretor
 
 #------------------------------------------------------------------------------#
 # Main function
 #------------------------------------------------------------------------------#
-if __name__ == '__main__':
+def main(target: str) -> None:
     '''Main function'''
+
+    if target in rules:
+        rules[target]()
+        return
+
+    target = target.replace('.py','')
+
+    if target in tests:
+        tests[target]()
+        return
+
+    if target == 'all':
+        for test in tests.values():
+            test()
+        return
+
+    print(f'Error: Unknown target {target}!')
+
+#------------------------------------------------------------------------------#
+if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument( 'target', nargs='?', default='default', help='Make target' )
     args = parser.parse_args()
 
-    if args.target == 'default':
-        make_default()
-
-    elif args.target == 'help':
-        print(__doc__)
-
-    elif args.target == 'clean':
-        make_clean()
-
-    elif args.target == 'distclean':
-        make_distclean()
-
-    elif args.target in [ 'draw_keys', 'draw_keys.py' ]:
-        make_draw_keys()
-
-    elif args.target in [ 'draw_rects', 'draw_rects.py' ]:
-        make_draw_rects()
-
-    elif args.target in [ 'test_grading', 'test_grading.py' ]:
-        make_test_grading()
-
-    elif args.target in [ 'cli_corretor', 'cli_corretor.py' ]:
-        make_cli_corretor()
-
-    elif args.target == 'all':
-        make_draw_keys()
-        make_draw_rects()
-        make_test_grading()
-        make_cli_corretor()
-
-    else:
-        print(f'Error: Unkown target {args.target}!')
+    main(args.target)
 
 #------------------------------------------------------------------------------#

@@ -10,7 +10,7 @@ Targets:
     distclean: Remove all files that can be rebuild by make.py
     default:   Build necessary files to execute the program
 
-    dist:      Create ditribution package using PyInstaller
+    dist:      Create distribution package using PyInstaller
 """
 
 #------------------------------------------------------------------------------#
@@ -30,17 +30,17 @@ from pathlib import Path
 here = Path(__file__).parent
 
 #------------------------------------------------------------------------------#
-def remove_dir(path):
-    '''Recurcively removes a directory'''
+def remove_dir(path: Path) -> None:
+    '''Recursively removes a directory'''
 
     if path.is_dir():
         print(f'Removing directory {path}')
         shutil.rmtree(path)
     else:
-        print(f'{path} não existe')
+        print(f"{path} don't exists")
 
 #------------------------------------------------------------------------------#
-def remove_files( path, glob ):
+def remove_files(path: Path, glob: str) -> None:
     '''Removes a list of files'''
 
     for file in Path(path).glob(glob):
@@ -48,14 +48,14 @@ def remove_files( path, glob ):
         file.unlink()
 
 #------------------------------------------------------------------------------#
-def run(cmd):
+def run(cmd: str) -> None:
     '''Runs a system command'''
 
     print(cmd)
     os.system(cmd)
 
 #------------------------------------------------------------------------------#
-def run_python(cmd):
+def run_python(cmd: str) -> None:
     '''Runs python script by system call'''
 
     run( f'{sys.executable} {cmd}' )
@@ -64,35 +64,40 @@ def run_python(cmd):
 # Targets
 #------------------------------------------------------------------------------#
 
+rules = {}
+rules['help'] = lambda: print(__doc__)
+
 import tests.make as tests_make
 
 #------------------------------------------------------------------------------#
-def make_clean():
+def make_clean() -> None:
     '''Remove temporary files'''
 
-    print('Cleaning...')
+    print(f'Cleaning {here}...')
 
     tests_make.make_clean()
 
     print('Done')
 
+rules['clean'] = make_clean
+
 #------------------------------------------------------------------------------#
-def make_distclean():
+def make_distclean() -> None:
     '''Remove all files that can be rebuild by make.py'''
 
-    print('Hard cleaning...')
+    print(f'Hard cleaning {here}...')
 
     make_clean()
     tests_make.make_distclean()
 
-    remove_files( path_spec, '*.spec' )
-    remove_dir( path_work )
-    remove_dir( path_dist )
+    remove_dir( here.parent / 'packaging' )
 
     print('Done')
 
+rules['distclean'] = make_distclean
+
 #------------------------------------------------------------------------------#
-def make_default():
+def make_default() -> None:
     '''Build the default target'''
 
     print('Making default target...')
@@ -105,8 +110,10 @@ def make_default():
 
     print('Done')
 
+rules['default'] = make_default
+
 #------------------------------------------------------------------------------#
-def run_pyinstaller(os_name, sep, one_file=False):
+def run_pyinstaller(os_name: str, sep: str, one_file: bool = False) -> None:
 
     path_app       = here          /'corretor.py'
     path_resources = here          /'resources'
@@ -139,7 +146,7 @@ def run_pyinstaller(os_name, sep, one_file=False):
     installer.run(parameters)
 
 #------------------------------------------------------------------------------#
-def make_dist():
+def make_dist() -> None:
     '''Execute PyInstaller to build a distribution'''
 
     if sys.platform.startswith('linux'):
@@ -151,7 +158,7 @@ def make_dist():
         sep = ';'
 
     else:
-        print(f'ERROR: Unkown platform {sys.platform}!')
+        print(f'ERROR: Unknown platform {sys.platform}!')
         return
 
     print(f'Creating a distribution package for {os_name}...')
@@ -162,8 +169,20 @@ def make_dist():
 
     print('Done')
 
+rules['dist'] = make_dist
+
 #------------------------------------------------------------------------------#
 # Main function
+#------------------------------------------------------------------------------#
+def main(target: str) -> None:
+    '''Main function'''
+
+    if target in rules:
+        rules[target]()
+        return
+
+    print(f'Error: Unknown target {target}!')
+
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':
     '''Main function'''
@@ -172,22 +191,6 @@ if __name__ == '__main__':
     parser.add_argument( 'target', nargs='?', default='default', help='Make target' )
     args = parser.parse_args()
 
-    if args.target == 'default':
-        make_default()
-
-    elif args.target == 'help':
-        print(__doc__)
-
-    elif args.target == 'clean':
-        make_clean()
-
-    elif args.target == 'distclean':
-        make_distclean()
-
-    elif args.target == 'dist':
-        make_dist()
-
-    else:
-        print(f'Error: Unkown target {args.target}!')
+    main(args.target)
 
 #------------------------------------------------------------------------------#

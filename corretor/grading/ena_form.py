@@ -2,8 +2,6 @@
 '''Define class ENAForm to draw annotations to PDF pages'''
 
 import io
-
-import cv2
 import fitz
 
 import grading.rectangles as rects
@@ -47,12 +45,10 @@ class ENAForm:
         self.page.insert_image(rects.PAGE, pixmap=pixmap)
 
     # --------------------------------------------------------------------------#
-    def insert_image(self, image) -> None:
+    def insert_image(self, image_buffer) -> None:
         '''Insert an image as page background'''
 
-        _, buffer = cv2.imencode('.jpg', image)
-
-        self.page.insert_image(rects.PAGE, stream=io.BytesIO(buffer))
+        self.page.insert_image(rects.PAGE, stream=io.BytesIO(image_buffer))
 
     # --------------------------------------------------------------------------#
     def insert_name(self, name: str, bg_gray: float = 1) -> None:

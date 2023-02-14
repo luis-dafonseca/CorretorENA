@@ -1,9 +1,5 @@
 #------------------------------------------------------------------------------#
-"""
-Test script that grades one page
-"""
-
-#------------------------------------------------------------------------------#
+'''Test script that grades one page'''
 
 import sys
 from pathlib import Path
@@ -14,11 +10,10 @@ import argparse
 
 import grading.rectangles as rects
 
-from grading.answers      import Answers
-from grading.tools        import pix_to_gray_image
-from grading.registration import Registration
-from grading.marks        import collect_marks
-from grading.ena_form     import ENAForm
+from grading.image_manip import ImageManipulation
+from grading.answers     import Answers
+from grading.marks       import collect_marks
+from grading.ena_form    import ENAForm
 
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':
@@ -44,18 +39,18 @@ if __name__ == '__main__':
 
     #------------------------------------------------------------------------------#
 
-    model = model_pdf[0]
-    pix   = model.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
-    image = pix_to_gray_image(pix)
-    reg   = Registration(image)
+    model_page   = model_pdf[0]
+    model_pixmap = model_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
 
-    original_page = answers_pdf[args.page]
-    original_pix  = original_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
-    original_img  = pix_to_gray_image(original_pix)
+    imag_manip = ImageManipulation()
+    imag_manip.set_model(model_pixmap)
 
-    image  = reg.transform(original_img)
-    marks  = collect_marks(image)
-    answers.check_answers(marks)
+    original_page   = answers_pdf[args.page]
+    original_pixmap = original_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
+
+    imag_manip.register_image(original_pixmap)
+    eliminated, absent, marks = collect_marks(imag_manip.get_binary())
+    answers.check_answers(eliminated, absent, marks)
 
     page = annotations_pdf.new_page(
         width  = rects.PAGE.width,
@@ -63,8 +58,8 @@ if __name__ == '__main__':
     )
 
     form = ENAForm(page)
-    form.insert_image (image)
-    form.insert_name('TESTE', 0.9)
+    form.insert_image(imag_manip.get_jpg())
+    form.insert_name('TEST', imag_manip.bg_gray())
     form.insert_grades(answers)
     form.commit()
 

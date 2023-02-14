@@ -1,62 +1,51 @@
-#------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+'''Defines the function collect_marks'''
 
 import numpy as np
 import grading.rectangles as rects
 
-
-#------------------------------------------------------------------------------#
-class Marks:
-
-    #--------------------------------------------------------------------------#
-    def __init__(self):
-        self.eliminated = False
-        self.absent     = False
-        self.question   = []
-
 #--------------------------------------------------------------------------#
-def _is_entry_marked( array, ii, jj ):
+def collect_marks(image: np.array) -> tuple[bool, bool, list[list[int]]]:
+    '''Collect all marks from image
 
-    rect = rects.MARK[ii][jj]
+    Args:
+        image (np.array): NumPy array with binary image information
 
-    aa = np.sum( array[ rect.y0:rect.y1, rect.x0:rect.x1 ] ) / rects.MARK_AREA
+    Return:
+        tuple(eliminated, absent, marks)
+    '''
 
-    return aa >= 0.5
+    #----------------------------------------------------------------------#
+    def is_marked(image: np.array, rect, area: int) -> bool:
+        '''Check if given rectangle is marked'''
 
-#--------------------------------------------------------------------------#
-def _is_absent( array ):
+        MIN_FILL = 0.7
 
-    rect = rects.ABSENT
+        aa = np.sum(image[rect.y0:rect.y1, rect.x0:rect.x1]) / area
 
-    aa = np.sum( array[ rect.y0:rect.y1, rect.x0:rect.x1 ] ) / rects.ABSENT_AREA
+        return aa >= MIN_FILL
 
-    return aa >= 0.5
+    #----------------------------------------------------------------------#
+    def is_entry_marked(image: np.array, ii: int, jj: int) -> bool:
+        '''Check if option jj of question ii is marked'''
 
-#--------------------------------------------------------------------------#
-def _is_eliminated( array ):
+        return is_marked(image, rects.MARK[ii][jj], rects.MARK_AREA)
 
-    rect = rects.ELIMINATED
+    #----------------------------------------------------------------------#
 
-    aa = np.sum( array[ rect.y0:rect.y1, rect.x0:rect.x1 ] ) / rects.ABSENT_AREA
+    eliminated = is_marked(image, rects.ELIMINATED, rects.ABSENT_AREA)
+    absent     = is_marked(image, rects.ABSENT,     rects.ABSENT_AREA)
 
-    return aa >= 0.5
+    marks = []
 
-#--------------------------------------------------------------------------#
-def collect_marks( image ):
+    if not eliminated and not absent:
 
-    array = image < 220
-    marks = Marks()
-
-    if _is_eliminated( array ):
-        marks.eliminated = True
-
-    elif _is_absent( array ):
-        marks.absent = True
-
-    else:
         for ii in range(rects.N_QUESTIONS):
-            M = [ jj for jj in range(5) if _is_entry_marked(array,ii,jj) ]
-            marks.question.append( M )
 
-    return marks
+            M = [jj for jj in range(5) if is_entry_marked(image, ii, jj)]
+
+            marks.append(M)
+
+    return (eliminated, absent, marks)
 
 #------------------------------------------------------------------------------#

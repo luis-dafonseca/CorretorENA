@@ -1,40 +1,30 @@
 #------------------------------------------------------------------------------#
+'''Create the function grade_exam'''
 
 import fitz
 
-import ena_param as ep
 import grading.rectangles as rects
 
-from grading.answers      import Answers
-from grading.ena_form     import ENAForm
-from grading.marks        import collect_marks
-from grading.registration import Registration
-from grading.tools        import pix_to_gray_image
-
+from grading.answers     import Answers
+from grading.ena_form    import ENAForm
+from grading.marks       import collect_marks
+from grading.image_manip import ImageManipulation
 
 #------------------------------------------------------------------------------#
-def create_model_registration(model_pdf):
+def grade_exam(
+    model_pdf: fitz.Document,
+    keys: str,
+    answers_pdf: fitz.Document,
+    annotations_pdf: fitz.Document,
+    grades_xls,
+    progress
+) -> bool:
 
-    page = model_pdf[0]
+    model_page   = model_pdf[0]
+    model_pixmap = model_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
 
-    pix = page.get_pixmap(
-        dpi=rects.DPI,
-        colorspace='GRAY'
-    )
-
-    image = pix_to_gray_image(pix)
-
-    return Registration(image)
-
-#------------------------------------------------------------------------------#
-def grade_exam(model_pdf: fitz.Document,
-               keys: str,
-               answers_pdf: fitz.Document,
-               annotations_pdf: fitz.Document,
-               grades_xls,
-               progress ) -> bool:
-
-    reg = create_model_registration(model_pdf)
+    imag_manip = ImageManipulation()
+    imag_manip.set_model(model_pixmap)
 
     answers = Answers(keys)
 
@@ -42,15 +32,11 @@ def grade_exam(model_pdf: fitz.Document,
 
     for ii, original_page in enumerate(answers_pdf):
 
-        original_pix = original_page.get_pixmap(
-            dpi        = rects.DPI,
-            colorspace ='GRAY'
-            )
-        original_img = pix_to_gray_image(original_pix)
+        pixmap = original_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
 
-        image = reg.transform(original_img)
-        marks = collect_marks(image)
-        answers.check_answers(marks)
+        imag_manip.register_image(pixmap)
+        eliminated, absent, marks = collect_marks(imag_manip.get_binary())
+        answers.check_answers(eliminated, absent, marks)
 
         grades_xls.add_grade(
             ii,
@@ -65,8 +51,8 @@ def grade_exam(model_pdf: fitz.Document,
         )
 
         form = ENAForm(page)
-        form.insert_image (image)
-        form.insert_name  (grades_xls.get_name(ii))
+        form.insert_image (imag_manip.get_jpg())
+        form.insert_name  (grades_xls.get_name(ii), imag_manip.bg_gray())
         form.insert_marks (answers)
         form.insert_grades(answers)
         form.commit()

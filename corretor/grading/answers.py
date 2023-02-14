@@ -4,9 +4,6 @@
 This class checks the marks and collect the grades
 '''
 
-from grading.marks import Marks
-
-
 #------------------------------------------------------------------------------#
 def keys_str_to_list(keys: list[int] | str) -> list[int]:
 
@@ -37,16 +34,21 @@ class Answers:
         self.keys       = keys_str_to_list(keys)
 
     #--------------------------------------------------------------------------#
-    def check_answers(self, marks: Marks) -> None:
+    def check_answers(
+        self,
+        eliminated: bool,
+        absent: bool,
+        marks: list[list[int]]
+    ) -> None:
         '''Check candidate marks and compute its score'''
 
-        self.eliminated = marks.eliminated
-        self.absent     = marks.absent
+        self.eliminated = eliminated
+        self.absent     = absent
 
         if self.eliminated or self.absent:
             return
 
-        self.answers = marks.question.copy()
+        self.answers = marks
 
         for ii, ans in enumerate(self.answers):
 

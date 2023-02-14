@@ -13,10 +13,7 @@ import argparse
 import fitz
 
 import grading.rectangles as rects
-
 from grading.ena_form import ENAForm
-from grading.answers  import keys_str_to_list
-from grading.tools    import pix_to_gray_image
 
 #-----------------------------------------------------------------------------#
 if __name__ == '__main__':
@@ -29,17 +26,14 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------#
 
+    with open(args.keys, 'r') as file:
+        keys = file.read().replace('\n', '')
+
     mod_pdf = fitz.open(args.model)
     out_pdf = fitz.open()
 
-    with open( args.keys, 'r') as file:
-        keys = file.read().replace('\n', '')
-
-    keys_lst = keys_str_to_list(keys)
-
-    model_page = mod_pdf[0]
-    model_pix  = model_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
-    image      = pix_to_gray_image(model_pix)
+    model_page   = mod_pdf[0]
+    model_pixmap = model_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
 
     page = out_pdf.new_page(
         width  = rects.PAGE.width,
@@ -47,8 +41,8 @@ if __name__ == '__main__':
     )
 
     form = ENAForm(page)
-    form.insert_image(image)
-    form.insert_keys (keys_lst)
+    form.insert_pixmap(model_pixmap)
+    form.insert_keys  (keys)
     form.commit()
 
     mod_pdf.close()

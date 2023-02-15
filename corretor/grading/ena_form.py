@@ -5,7 +5,9 @@ import io
 import fitz
 
 import grading.rectangles as rects
+
 from grading.answers import Answers, keys_str_to_list
+from grading.pdfs    import InputPDF, OutputPDF
 
 COLOR_CORRECT       = (0,0,1)
 COLOR_INCORRECT     = (1,0,0)
@@ -20,7 +22,38 @@ COLOR_KEY_INCORRECT = (1,0,1)
 COLOR_NAME          = (0,0,1)
 
 # ------------------------------------------------------------------------------#
+def create_keys_page(model: InputPDF, output:OutputPDF, keys: str) -> None:
 
+    form = ENAForm(output.new_page())
+
+    form.insert_pixmap(model.get_pixmap(0))
+
+    form.insert_name('GABARITO', 1)
+    form.insert_keys(keys)
+
+    form.commit()
+
+# ------------------------------------------------------------------------------#
+def create_fields_page(
+    model:  InputPDF,
+    output: OutputPDF,
+    extra:  bool = False
+) -> None:
+
+    form = ENAForm(output.new_page())
+
+    form.insert_pixmap(model.get_pixmap(0))
+
+    form.insert_name('CAMPOS', 1)
+
+    if extra:
+        form.insert_extra_rects()
+
+    form.insert_rects()
+
+    form.commit()
+
+# ------------------------------------------------------------------------------#
 class ENAForm:
     '''Draw annotations to PDF page'''
 
@@ -162,30 +195,11 @@ class ENAForm:
 
     #--------------------------------------------------------------------------#
     def insert_rects(self) -> None:
-        '''Draw all rectangles to page'''
-
-        # Mask
-        self.shape.draw_rect(rects.REGISTRATION_MASK)
-        self.shape.finish(width=5, color=COLOR_MASK, dashes='[20] 0')
-
-        # Name
-        self.shape.draw_rect(rects.NAME)
-        self.shape.finish(width=5, color=COLOR_ENTRY)
-
-        # Answers box
-        self.shape.draw_rect(rects.MARKS_BOX_LEFT)
-        self.shape.draw_rect(rects.MARKS_BOX_RIGHT)
-        self.shape.finish(width=1, color=COLOR_MASK)
-
-        # Scores box
-        self.shape.draw_rect(rects.GRADES_BOX_LEFT)
-        self.shape.draw_rect(rects.GRADES_BOX_RIGHT)
-        self.shape.finish(width=1, color=COLOR_MASK)
+        '''Draw main rectangles to page'''
 
         # Score entries
         for ii in range(rects.N_QUESTIONS):
             self.shape.draw_rect(rects.GRADE[ii])
-        self.shape.draw_rect(rects.FINAL_GRADE)
         self.shape.finish(width=5, color=COLOR_SCORE)
 
         # Answer entries
@@ -198,6 +212,35 @@ class ENAForm:
         self.shape.draw_rect(rects.ABSENT)
         self.shape.draw_rect(rects.ELIMINATED)
         self.shape.finish(width=5, color=COLOR_ENTRY)
+
+
+    #--------------------------------------------------------------------------#
+    def insert_extra_rects(self) -> None:
+        '''Draw extra rectangles to page'''
+
+        # Mask
+        self.shape.draw_rect(rects.REGISTRATION_MASK)
+        self.shape.finish(width=5, color=COLOR_MASK, dashes='[20] 0')
+
+        # Name
+        self.shape.draw_rect(rects.NAME)
+        self.shape.finish(width=5, color=COLOR_ENTRY)
+
+        # Answers and Scores box
+        self.shape.draw_rect(rects.MARKS_BOX_LEFT  )
+        self.shape.draw_rect(rects.MARKS_BOX_RIGHT )
+        self.shape.draw_rect(rects.GRADES_BOX_LEFT )
+        self.shape.draw_rect(rects.GRADES_BOX_RIGHT)
+
+        self.shape.finish(
+            width = 1,
+            color = COLOR_MASK,
+            fill  = COLOR_MASK,
+            fill_opacity = 0.05
+        )
+
+        self.shape.draw_rect(rects.FINAL_GRADE)
+        self.shape.finish(width=5, color=COLOR_SCORE)
 
     #--------------------------------------------------------------------------#
     # Raw drawing functions

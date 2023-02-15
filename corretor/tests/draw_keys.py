@@ -7,7 +7,7 @@ sys.path.append(str(Path(__file__).parents[1]))
 
 import argparse
 
-from grading.ena_form import ENAForm
+from grading.ena_form import create_keys_page
 from grading.pdfs     import InputPDF, OutputPDF
 
 #-----------------------------------------------------------------------------#
@@ -27,15 +27,7 @@ if __name__ == '__main__':
     model  = InputPDF(args.model)
     output = OutputPDF()
 
-    pixmap = model.get_pixmap(0)
-
-    page = output.new_page()
-
-    form = ENAForm(page)
-    form.insert_pixmap(pixmap)
-    form.insert_name  ('GABARITO', 1)
-    form.insert_keys  (keys)
-    form.commit()
+    create_keys_page(model, output, keys)
 
     output.save(args.output)
 

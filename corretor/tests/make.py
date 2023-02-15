@@ -163,6 +163,18 @@ def make_cli_corretor() -> None:
 tests['cli_corretor'] = make_cli_corretor
 
 #------------------------------------------------------------------------------#
+def make_test_texture() -> None:
+    '''Run test cli_corretor.py with texture background pdf'''
+
+    answers     = here   / 'data' / 'tests' / 'test_texture.pdf'
+    grades      = output / 'texture-notas.xlsx'
+    annotations = output / 'texture-anotacoes.pdf'
+
+    run_python(f'cli_corretor.py {model} {keys} {answers} {names} {cell} {grades} {annotations}')
+
+tests['texture'] = make_test_texture
+
+#------------------------------------------------------------------------------#
 # Main function
 #------------------------------------------------------------------------------#
 def main(target: str) -> None:

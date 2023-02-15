@@ -1,22 +1,14 @@
 #------------------------------------------------------------------------------#
-
-"""
-Test script that reads a model and draw all rectangles on it
-"""
-
-#------------------------------------------------------------------------------#
+'''Test script that reads a model and draw all rectangles on it'''
 
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parents[1]))
 
 import argparse
-import fitz
-
-import grading.rectangles as rects
 
 from grading.ena_form import ENAForm
-from grading.tools    import pix_to_gray_image
+from grading.pdfs     import InputPDF, OutputPDF
 
 #-----------------------------------------------------------------------------#
 if __name__ == '__main__':
@@ -28,23 +20,22 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------#
 
-    mod_pdf = fitz.open(args.model)
-    out_pdf = fitz.open()
+    model  = InputPDF(args.model)
+    output = OutputPDF()
 
-    model_page = mod_pdf[0]
-    model_pix  = model_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
+    pixmap = model.get_pixmap(0)
 
-    page = out_pdf.new_page(
-        width  = rects.PAGE.width,
-        height = rects.PAGE.height
-    )
+    page = output.new_page()
 
     form = ENAForm(page)
-    form.insert_pixmap(model_pix)
+    form.insert_pixmap(pixmap)
+    form.insert_name('RETÂNGULOS', 1)
     form.insert_rects ()
     form.commit()
 
-    mod_pdf.close()
-    out_pdf.save(args.output)
+    output.save(args.output)
+
+    model .close()
+    output.close()
 
 #------------------------------------------------------------------------------#

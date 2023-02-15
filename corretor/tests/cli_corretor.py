@@ -1,32 +1,29 @@
 #------------------------------------------------------------------------------#
-"""
-Command line version of the CorretorENA
-"""
-
-#------------------------------------------------------------------------------#
+'''Command line version of the CorretorENA'''
 
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parents[1]))
 
-import fitz
 import argparse
 
-from tests.cli_progress   import CLIProgressBar
 from grading.spreadsheets import ResultsSheet, DataSheet
-from grading.grade_exam   import grade_exam
+from grading.pdfs         import InputPDF, OutputPDF
+from grading.eval_grades  import eval_grades
+
+from tests.cli_progress import CLIProgressBar
 
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='automatic grading ENA tests')
-    parser.add_argument('model',       help='PDF file with answers page model')
-    parser.add_argument('keys',        help='TXT file with answers keys')
-    parser.add_argument('answers',     help='PDF file with answers')
-    parser.add_argument('names',       help='XLS file with names')
-    parser.add_argument('cell',        help='Cell address of the fist name')
-    parser.add_argument('grades',      help='XLS output file with grades')
-    parser.add_argument('annotations', help='PDF output file with annotations')
+    parser.add_argument('model',   help='PDF file with answers page model')
+    parser.add_argument('keys',    help='TXT file with answers keys')
+    parser.add_argument('exam',    help='PDF file with answers')
+    parser.add_argument('names',   help='XLS file with names')
+    parser.add_argument('cell',    help='Cell address of the fist name')
+    parser.add_argument('results', help='XLS output file with results')
+    parser.add_argument('annot',   help='PDF output file with annotations')
     args = parser.parse_args()
 
     #--------------------------------------------------------------------------#
@@ -36,9 +33,9 @@ if __name__ == '__main__':
 
     #------------------------------------------------------------------------------#
 
-    model       = fitz.open(args.model)
-    answers     = fitz.open(args.answers)
-    annotations = fitz.open()
+    model = InputPDF(args.model)
+    exam  = InputPDF(args.exam)
+    annot = OutputPDF()
 
     sheet = DataSheet()
     names = sheet.read_names(args.names, args.cell)
@@ -48,18 +45,20 @@ if __name__ == '__main__':
 
     progress_bar = CLIProgressBar()
 
-    grade_exam(
+    _ = eval_grades(
         model,
         keys,
-        answers,
-        annotations,
+        exam,
+        annot,
         results,
         progress_bar
     )
 
-    model      .close()
-    answers    .close()
-    annotations.save(args.annotations)
-    results    .save(args.grades)
+    results.save(args.results)
+    annot  .save(args.annot)
+
+    model.close()
+    exam .close()
+    annot.close()
 
 #------------------------------------------------------------------------------#

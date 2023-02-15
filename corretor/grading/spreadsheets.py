@@ -9,21 +9,47 @@ from openpyxl.utils.cell import (column_index_from_string,
 from grading.answers import Answers
 
 #------------------------------------------------------------------------------#
-class XLSGrades:
+class DataSheet:
+    '''Class to wrap the spreadsheet with candidates names'''
+
+    #--------------------------------------------------------------------------#
+    def __init__(self) -> None:
+        '''Initialize class instance'''
+        pass
+
+    #--------------------------------------------------------------------------#
+    def read_names(self, fname: str, first_cell: str) -> list[str]:
+        '''Read names from spreadsheet'''
+
+        xy = coordinate_from_string(first_cell)
+        cc = column_index_from_string(xy[0]) - 1
+        ll = xy[1]
+
+        input = load_workbook(fname)
+        sheet = input.active
+
+        names = [row[cc] for row in sheet.iter_rows(min_row=ll, values_only=True)]
+
+        input.close()
+
+        return names
+
+#------------------------------------------------------------------------------#
+class ResultsSheet:
     '''Class to wrap the spreadsheet to store and save the results'''
 
     #--------------------------------------------------------------------------#
-    def __init__(self, fname: str) -> None:
+    def __init__(self) -> None:
         '''Initialize class instance'''
 
-        self.fname = fname
+        self.has_names = False
 
         self.wb    = Workbook()
         self.sheet = self.wb.active
 
         self.sheet['A1'] = 'Nome'
         self.sheet['B1'] = 'Nota'
-        self.sheet['C1'] = 'Status'
+        self.sheet['C1'] = 'Resultado'
 
         self.sheet['A1'].alignment = Alignment(horizontal='center')
         self.sheet['B1'].alignment = Alignment(horizontal='center')
@@ -36,38 +62,21 @@ class XLSGrades:
         self.sheet.column_dimensions['A'].width = 16
         self.sheet.column_dimensions['C'].width = 12
 
-        self.has_names = False
-
     #--------------------------------------------------------------------------#
     def write_names(self, names: list[str]) -> None:
         '''Write names to spreadsheet'''
 
-        ww = 4
+        max_chars = 10
 
         for rr, name in enumerate(names):
+
             name = name.strip()
-            ww = max(ww, len(name))
+
+            max_chars = max(max_chars, len(name))
+
             self.sheet.cell(row=rr+2, column=1).value = name
 
-        self.sheet.column_dimensions['A'].width = ww * 1.6
-
-        self.has_names = True
-
-    #--------------------------------------------------------------------------#
-    def read_names(self, fname: str, first_name: str) -> None:
-        '''Copy names to spreadsheet'''
-
-        xls   = load_workbook(fname)
-        sheet = xls.active
-
-        xy = coordinate_from_string(first_name)
-        cc = column_index_from_string(xy[0]) - 1
-        ll = xy[1]
-
-        for rr, row in enumerate(sheet.iter_rows(min_row=ll, values_only=True)):
-            self.sheet.cell(row=rr+2,column=1).value = row[cc]
-
-        xls.close()
+        self.sheet.column_dimensions['A'].width = max_chars * 1.6
 
         self.has_names = True
 
@@ -100,18 +109,10 @@ class XLSGrades:
         else:                         cc.value = 'Reprovado'
 
     #--------------------------------------------------------------------------#
-    def reset(self) -> None:
-        '''Remove all names, grades and status'''
+    def save(self, fname: str) -> None:
+        '''Save spreadsheet to file'''
 
-        for row in self.sheet.iter_rows(min_row=1):
-            for cell in row:
-                cell.value = None
-
-    #--------------------------------------------------------------------------#
-    def save(self) -> None:
-        '''Save spreadsheet'''
-
-        self.wb.save(self.fname)
+        self.wb.save(fname)
 
 #------------------------------------------------------------------------------#
 

@@ -12,9 +12,9 @@ sys.path.append(str(Path(__file__).parents[1]))
 import fitz
 import argparse
 
-from grading.grade_exam import grade_exam
-from grading.xls_grades import XLSGrades
-from tests.cli_progress import CLIProgressBar
+from tests.cli_progress   import CLIProgressBar
+from grading.spreadsheets import ResultsSheet, DataSheet
+from grading.grade_exam   import grade_exam
 
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':
@@ -36,27 +36,30 @@ if __name__ == '__main__':
 
     #------------------------------------------------------------------------------#
 
-    model_pdf       = fitz.open(args.model)
-    answers_pdf     = fitz.open(args.answers)
-    annotations_pdf = fitz.open()
+    model       = fitz.open(args.model)
+    answers     = fitz.open(args.answers)
+    annotations = fitz.open()
 
-    grades_xls = XLSGrades(args.grades)
-    grades_xls.read_names(args.names, args.cell)
+    sheet = DataSheet()
+    names = sheet.read_names(args.names, args.cell)
+
+    results = ResultsSheet()
+    results.write_names(names)
 
     progress_bar = CLIProgressBar()
 
     grade_exam(
-        model_pdf,
+        model,
         keys,
-        answers_pdf,
-        annotations_pdf,
-        grades_xls,
+        answers,
+        annotations,
+        results,
         progress_bar
     )
 
-    model_pdf.close()
-    answers_pdf.close()
-    annotations_pdf.save(args.annotations)
-    grades_xls.save()
+    model      .close()
+    answers    .close()
+    annotations.save(args.annotations)
+    results    .save(args.grades)
 
 #------------------------------------------------------------------------------#

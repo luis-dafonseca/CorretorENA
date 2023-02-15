@@ -5,10 +5,10 @@ import fitz
 
 import grading.rectangles as rects
 
-from grading.answers     import Answers
-from grading.ena_form    import ENAForm
-from grading.image_manip import ImageManipulation
-from grading.xls_grades  import XLSGrades
+from grading.answers      import Answers
+from grading.ena_form     import ENAForm
+from grading.image_manip  import ImageManipulation
+from grading.spreadsheets import ResultsSheet
 
 #------------------------------------------------------------------------------#
 def grade_exam(
@@ -16,7 +16,7 @@ def grade_exam(
     keys:            str,
     answers_pdf:     fitz.Document,
     annotations_pdf: fitz.Document,
-    grades_xls:      XLSGrades,
+    results:         ResultsSheet,
     progress
 ) -> bool:
 
@@ -38,7 +38,7 @@ def grade_exam(
 
         answers.check_answers(imag_manip.get_binary())
 
-        grades_xls.add_grade(ii, answers)
+        results.add_grade(ii, answers)
 
         page = annotations_pdf.new_page(
             width  = rects.PAGE.width,
@@ -47,7 +47,7 @@ def grade_exam(
 
         form = ENAForm(page)
         form.insert_image (imag_manip.get_jpg())
-        form.insert_name  (grades_xls.get_name(ii), imag_manip.bg_gray())
+        form.insert_name  (results.get_name(ii), imag_manip.bg_gray())
         form.insert_marks (answers)
         form.insert_grades(answers)
         form.commit()

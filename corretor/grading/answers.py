@@ -4,6 +4,11 @@
 This class checks the marks and collect the grades
 '''
 
+import numpy as np
+import grading.rectangles as rects
+
+MIN_FILL = 0.7
+
 #------------------------------------------------------------------------------#
 def keys_str_to_list(keys: list[int] | str) -> list[int]:
 
@@ -18,9 +23,6 @@ def keys_str_to_list(keys: list[int] | str) -> list[int]:
 #------------------------------------------------------------------------------#
 class Answers:
 
-    N_QUESTIONS = 30
-    MIN_SCORE   = 15
-
     #--------------------------------------------------------------------------#
     def __init__(self, keys: list[int] | str) -> None:
         '''Initialize an Answers object'''
@@ -28,27 +30,69 @@ class Answers:
         self.eliminated = False
         self.absent     = False
         self.approved   = False
-        self.answers    = [[]]    * Answers.N_QUESTIONS
-        self.correct    = [False] * Answers.N_QUESTIONS
+        self.answers    = [[]]    * rects.N_QUESTIONS
+        self.correct    = [False] * rects.N_QUESTIONS
         self.total      = 0
         self.keys       = keys_str_to_list(keys)
+        self.min_score  = 15
 
     #--------------------------------------------------------------------------#
-    def check_answers(
-        self,
-        eliminated: bool,
-        absent: bool,
-        marks: list[list[int]]
-    ) -> None:
-        '''Check candidate marks and compute its score'''
+    def get_score(self) -> int:
+        return self.total
 
-        self.eliminated = eliminated
-        self.absent     = absent
+    #--------------------------------------------------------------------------#
+    def is_eliminated(self) -> bool:
+        return self.eliminated
+
+    #--------------------------------------------------------------------------#
+    def is_absent(self) -> bool:
+        return self.absent
+
+    #--------------------------------------------------------------------------#
+    def is_approved(self) -> bool:
+        return self.approved
+
+    #--------------------------------------------------------------------------#
+    def collect_marks(self, image: np.array) -> None:
+
+        #----------------------------------------------------------------------#
+        def is_marked(image: np.array, rect, area: int) -> bool:
+            '''Check if given rectangle is marked'''
+
+            aa = np.sum(image[rect.y0:rect.y1, rect.x0:rect.x1]) / area
+
+            return aa >= MIN_FILL
+
+        #----------------------------------------------------------------------#
+        def is_entry_marked(image: np.array, ii: int, jj: int) -> bool:
+            '''Check if option jj of question ii is marked'''
+
+            return is_marked(image, rects.MARK[ii][jj], rects.MARK_AREA)
+
+        #----------------------------------------------------------------------#
+
+        self.eliminated = is_marked(image, rects.ELIMINATED, rects.ABSENT_AREA)
+        self.absent     = is_marked(image, rects.ABSENT,     rects.ABSENT_AREA)
+
+        self.answers = []
 
         if self.eliminated or self.absent:
             return
 
-        self.answers = marks
+        for ii in range(rects.N_QUESTIONS):
+
+            mm = [jj for jj in range(5) if is_entry_marked(image, ii, jj)]
+
+            self.answers.append(mm)
+
+    #--------------------------------------------------------------------------#
+    def check_answers(self, image: np.array) -> None:
+        '''Check candidate marks and compute its score'''
+
+        self.collect_marks(image)
+
+        if self.eliminated or self.absent:
+            return
 
         for ii, ans in enumerate(self.answers):
 
@@ -56,7 +100,8 @@ class Answers:
             self.correct[ii] = int(key == -1 or (len(ans) == 1 and ans[0] == key))
 
         self.total    = self.correct.count(True)
-        self.approved = self.total >= Answers.MIN_SCORE
+        self.approved = self.total >= self.min_score
+
 
 #------------------------------------------------------------------------------#
 

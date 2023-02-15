@@ -12,7 +12,6 @@ import grading.rectangles as rects
 
 from grading.image_manip import ImageManipulation
 from grading.answers     import Answers
-from grading.marks       import collect_marks
 from grading.ena_form    import ENAForm
 
 #------------------------------------------------------------------------------#
@@ -49,8 +48,8 @@ if __name__ == '__main__':
     original_pixmap = original_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
 
     imag_manip.register_image(original_pixmap)
-    eliminated, absent, marks = collect_marks(imag_manip.get_binary())
-    answers.check_answers(eliminated, absent, marks)
+
+    answers.check_answers(imag_manip.get_binary())
 
     page = annotations_pdf.new_page(
         width  = rects.PAGE.width,

@@ -7,16 +7,16 @@ import grading.rectangles as rects
 
 from grading.answers     import Answers
 from grading.ena_form    import ENAForm
-from grading.marks       import collect_marks
 from grading.image_manip import ImageManipulation
+from grading.xls_grades  import XLSGrades
 
 #------------------------------------------------------------------------------#
 def grade_exam(
-    model_pdf: fitz.Document,
-    keys: str,
-    answers_pdf: fitz.Document,
+    model_pdf:       fitz.Document,
+    keys:            str,
+    answers_pdf:     fitz.Document,
     annotations_pdf: fitz.Document,
-    grades_xls,
+    grades_xls:      XLSGrades,
     progress
 ) -> bool:
 
@@ -35,15 +35,10 @@ def grade_exam(
         pixmap = original_page.get_pixmap(dpi=rects.DPI, colorspace='GRAY')
 
         imag_manip.register_image(pixmap)
-        eliminated, absent, marks = collect_marks(imag_manip.get_binary())
-        answers.check_answers(eliminated, absent, marks)
 
-        grades_xls.add_grade(
-            ii,
-            answers.eliminated,
-            answers.absent,
-            answers.total
-        )
+        answers.check_answers(imag_manip.get_binary())
+
+        grades_xls.add_grade(ii, answers)
 
         page = annotations_pdf.new_page(
             width  = rects.PAGE.width,

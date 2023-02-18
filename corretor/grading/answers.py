@@ -24,7 +24,7 @@ def keys_str_to_list(keys: list[int] | str) -> list[int]:
 class Answers:
 
     #--------------------------------------------------------------------------#
-    def __init__(self, keys: list[int] | str) -> None:
+    def __init__(self, keys: list[int] | str, minimum: int) -> None:
         '''Initialize an Answers object'''
 
         self.eliminated = False
@@ -34,7 +34,7 @@ class Answers:
         self.correct    = [False] * rects.N_QUESTIONS
         self.total      = 0
         self.keys       = keys_str_to_list(keys)
-        self.min_score  = 15
+        self.min_score  = minimum
 
     #--------------------------------------------------------------------------#
     def get_score(self) -> int:

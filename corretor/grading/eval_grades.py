@@ -27,6 +27,7 @@ class ProgressBar(Protocol):
 def eval_grades(
     model:   InputPDF,
     keys:    str,
+    minimum: int,
     exam:    InputPDF,
     annot:   OutputPDF,
     results: ResultsSheet,
@@ -38,7 +39,7 @@ def eval_grades(
     imag_manip = ImageManipulation()
     imag_manip.set_model(model_pixmap)
 
-    answers = Answers(keys)
+    answers = Answers(keys, minimum)
 
     n_pages = exam.page_count()
 

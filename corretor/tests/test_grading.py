@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     #------------------------------------------------------------------------------#
 
-    answers = Answers(keys)
+    answers = Answers(keys, 15)
 
     model_pixmap = model.get_pixmap(0)
 

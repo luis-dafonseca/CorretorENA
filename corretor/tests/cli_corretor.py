@@ -24,6 +24,7 @@ if __name__ == '__main__':
     parser.add_argument('cell',    help='Cell address of the fist name')
     parser.add_argument('results', help='XLS output file with results')
     parser.add_argument('annot',   help='PDF output file with annotations')
+    parser.add_argument('--min',   help='Minimum number of correct answers', type=int, default=15)
     args = parser.parse_args()
 
     #--------------------------------------------------------------------------#
@@ -47,6 +48,7 @@ if __name__ == '__main__':
     _ = eval_grades(
         model,
         keys,
+        args.min,
         exam,
         annot,
         results,

@@ -1,5 +1,33 @@
 #------------------------------------------------------------------------------#
-'''Wraper to OpenPyXL'''
+'''Wrapper to OpenPyXL
+
+Classes:
+
+DataSheet: Class to wrap the spreadsheet with candidates names
+
+    def __init__(self) -> None
+        Initialize class instance
+
+    def read_names(self, fname: str, first_cell: str) -> list[str]
+        Open spreadsheet, read names and close the spreadsheet
+
+ResultsSheet: Class to wrap the spreadsheet to store and save the results
+
+    def __init__(self) -> None
+        Initialize class instance
+
+    def write_names(self, names: list[str]) -> None
+        Write names to spreadsheet
+
+    def get_name(self, ii: int) -> str
+        Return a candidate name from spreadsheet
+
+    def add_grade(self, ii: int, answers: Answers) -> None
+        Write grade and status of candidate to spreadsheet
+
+    def save(self, fname: str) -> None
+        Save spreadsheet to file
+'''
 
 from openpyxl            import Workbook, load_workbook
 from openpyxl.styles     import Alignment, Font

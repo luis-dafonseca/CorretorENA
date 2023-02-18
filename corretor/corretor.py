@@ -1,14 +1,9 @@
 #------------------------------------------------------------------------------#
+'''CorretorENA main module'''
 
-'''
-Corretor ENA
-'''
-
-#------------------------------------------------------------------------------#
 
 import sys
 from pathlib import Path
-
 sys.path.append(str(Path(__file__).parent))
 
 from PySide6.QtGui     import QIcon
@@ -16,15 +11,15 @@ from PySide6.QtWidgets import QApplication
 
 import ena_param as ep
 
-from ui.main_window    import MainWindow
-from ui.main_controler import MainControler
+from ui.main_window     import MainWindow
+from ui.main_controller import MainController
 
 #------------------------------------------------------------------------------#
-def main( argv ):
+def main(argv):
 
     try:
         from ctypes import windll
-        windll.shell32.SetCurrentProcessExplicitAppUserModelID(ep.MYAPPID)
+        windll.shell32.SetCurrentProcessExplicitAppUserModelID(ep.MY_APP_ID)
     except ImportError:
         pass
 
@@ -35,9 +30,9 @@ def main( argv ):
     app.setWindowIcon(QIcon(str(icon_file)))
 
     window = MainWindow()
-    window.resize( 539, 658 )
+    window.resize(539, 658)
 
-    main_controler = MainControler(window)
+    main_controller = MainController(window)
 
     window.show()
 

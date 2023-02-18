@@ -210,7 +210,7 @@
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QFrame" name="frameAnswers">
+     <widget class="QFrame" name="frameExams">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -225,7 +225,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_14">
        <item row="0" column="0">
-        <widget class="QLabel" name="labelAnswers">
+        <widget class="QLabel" name="labelExams">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>4</horstretch>
@@ -238,7 +238,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="labelAnswersFileName">
+        <widget class="QLabel" name="labelExamsFileName">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -272,7 +272,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="pushButtonAnswersShow">
+        <widget class="QPushButton" name="pushButtonExamsShow">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -288,7 +288,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QPushButton" name="pushButtonAnswersOpen">
+        <widget class="QPushButton" name="pushButtonExamsOpen">
          <property name="toolTip">
           <string>Seleciona o arquivo PDF com as respostas dos candidatos</string>
          </property>
@@ -304,7 +304,7 @@
      </widget>
     </item>
     <item row="9" column="0">
-     <widget class="QFrame" name="frameGrades">
+     <widget class="QFrame" name="frameResults">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -319,7 +319,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="2" column="0">
-        <widget class="QLabel" name="labelOutputGradesFileName">
+        <widget class="QLabel" name="labelOutputResultsFileName">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -355,7 +355,7 @@
        <item row="1" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QLabel" name="labelOutputGrades">
+          <widget class="QLabel" name="labelOutputResults">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>4</horstretch>
@@ -368,7 +368,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonOutputGradesChoose">
+          <widget class="QPushButton" name="pushButtonOutputResultsChoose">
            <property name="toolTip">
             <string>Escolhe nome do arquivo XLSX para salvar as notas</string>
            </property>
@@ -855,13 +855,13 @@
   <tabstop>lineEditKeys</tabstop>
   <tabstop>pushButtonKeysEdit</tabstop>
   <tabstop>pushButtonKeysShow</tabstop>
-  <tabstop>pushButtonAnswersOpen</tabstop>
-  <tabstop>pushButtonAnswersShow</tabstop>
+  <tabstop>pushButtonExamsOpen</tabstop>
+  <tabstop>pushButtonExamsShow</tabstop>
   <tabstop>pushButtonNamesOpen</tabstop>
   <tabstop>pushButtonNamesRemove</tabstop>
   <tabstop>lineEditNameFistName</tabstop>
   <tabstop>pushButtonNamesShow</tabstop>
-  <tabstop>pushButtonOutputGradesChoose</tabstop>
+  <tabstop>pushButtonOutputResultsChoose</tabstop>
   <tabstop>pushButtonOutputAnnotationsChoose</tabstop>
   <tabstop>pushButtonRun</tabstop>
  </tabstops>

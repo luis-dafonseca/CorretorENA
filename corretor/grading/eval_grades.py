@@ -40,7 +40,7 @@ def eval_grades(
 
     answers = Answers(keys)
 
-    n_pages = exam.page_count
+    n_pages = exam.page_count()
 
     progress.start(n_pages)
 

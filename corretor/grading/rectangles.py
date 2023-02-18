@@ -136,6 +136,30 @@ GRADES_BOX_LEFT, GRADES_BOX_RIGHT = _calc_grades_boxes()
 
 #------------------------------------------------------------------------------#
 
+def _calc_background() -> IRect:
+
+    x = 1175
+    y = 1840
+    w =  140
+    h = 1226
+
+    return IRect(x, y, x+w, y+h)
+
+
+def _calc_background_gray() -> IRect:
+
+    x = 1770
+    y = 3105
+    w =  595
+    h =  125
+
+    return IRect(x, y, x+w, y+h)
+
+BACKGROUND      = _calc_background()
+BACKGROUND_GRAY = _calc_background_gray()
+
+#------------------------------------------------------------------------------#
+
 def _calc_grades() -> tuple[list[IRect]]:
 
     grade_box  = []

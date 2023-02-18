@@ -46,9 +46,9 @@ class ImageManipulation:
         rect = rects.REGISTRATION_MASK
         self.mask[rect.y0:rect.y1, rect.x0:rect.x1] = 255
 
-        # Thresholding
-        self.threshold    = 220
-        self.average_gray = 1
+        # Gray level threshold
+        self.threshold  = 0
+        self.background = 0
 
     #--------------------------------------------------------------------------#
     def set_model(self, model_pixmap: fitz.Pixmap) -> None:
@@ -93,7 +93,22 @@ class ImageManipulation:
 
         self.image = cv2.warpPerspective(image, hh, self.warp_shape)
 
+        self.update_threshold()
+
         return self.image
+
+    #--------------------------------------------------------------------------#
+    def update_threshold(self):
+        '''Update values of threshold and background'''
+
+        rect = rects.BACKGROUND
+        back = np.mean(self.image[rect.y0:rect.y1, rect.x0:rect.x1])
+
+        rect = rects.BACKGROUND_GRAY
+        gray = np.mean(self.image[rect.y0:rect.y1, rect.x0:rect.x1])
+
+        self.threshold  = (back + gray) / 2
+        self.background = back / 255
 
     #--------------------------------------------------------------------------#
     def get_binary(self):
@@ -121,6 +136,6 @@ class ImageManipulation:
     def bg_gray(self) -> int:
         '''Return the average background gray level'''
 
-        return self.average_gray
+        return self.background
 
 #------------------------------------------------------------------------------#

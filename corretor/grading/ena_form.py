@@ -23,6 +23,7 @@ COLOR_NAME          = (0,0,1)
 
 # ------------------------------------------------------------------------------#
 def create_keys_page(model: InputPDF, output:OutputPDF, keys: str) -> None:
+    '''Extract input first page add it to output and draw answer keys'''
 
     form = ENAForm(output.new_page())
 
@@ -39,6 +40,7 @@ def create_fields_page(
     output: OutputPDF,
     extra:  bool = False
 ) -> None:
+    '''Extract input first page add it to output and draw rectangles'''
 
     form = ENAForm(output.new_page())
 
@@ -231,6 +233,10 @@ class ENAForm:
         self.shape.draw_rect(rects.MARKS_BOX_RIGHT )
         self.shape.draw_rect(rects.GRADES_BOX_LEFT )
         self.shape.draw_rect(rects.GRADES_BOX_RIGHT)
+
+        # Background sampling
+        self.shape.draw_rect(rects.BACKGROUND)
+        self.shape.draw_rect(rects.BACKGROUND_GRAY)
 
         self.shape.finish(
             width = 1,

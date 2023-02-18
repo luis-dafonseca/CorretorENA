@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 
 from grading.pdfs         import InputPDF, OutputPDF
-from grading.spreadsheets import DataSheet, ResultsSheet
+from grading.spreadsheets import ResultsSheet, read_names_from_spreadsheet
 from grading.eval_grades  import eval_grades
 from grading.ena_form     import create_fields_page, create_keys_page
 
@@ -143,8 +143,7 @@ class MainModel:
         fpath = Path(fname).resolve()
 
         try:
-            input = DataSheet()
-            self.names = input.read_names(fpath, first_cell)
+            self.names = read_names_from_spreadsheet(fpath, first_cell)
 
         except IOError as er:
 

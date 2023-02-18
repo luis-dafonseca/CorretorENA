@@ -7,7 +7,7 @@ sys.path.append(str(Path(__file__).parents[1]))
 
 import argparse
 
-from grading.spreadsheets import ResultsSheet, DataSheet
+from grading.spreadsheets import ResultsSheet, read_names_from_spreadsheet
 from grading.pdfs         import InputPDF, OutputPDF
 from grading.eval_grades  import eval_grades
 
@@ -37,8 +37,7 @@ if __name__ == '__main__':
     exam  = InputPDF(args.exam)
     annot = OutputPDF()
 
-    sheet = DataSheet()
-    names = sheet.read_names(args.names, args.cell)
+    names = read_names_from_spreadsheet(args.names, args.cell)
 
     results = ResultsSheet()
     results.write_names(names)

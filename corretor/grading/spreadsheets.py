@@ -1,15 +1,8 @@
 #------------------------------------------------------------------------------#
 '''Wrapper to OpenPyXL
 
-Classes:
-
-DataSheet: Class to wrap the spreadsheet with candidates names
-
-    def __init__(self) -> None
-        Initialize class instance
-
-    def read_names(self, fname: str, first_cell: str) -> list[str]
-        Open spreadsheet, read names and close the spreadsheet
+def read_names_from_spreadsheet(fname: str, first_cell: str) -> list[str]
+    Open spreadsheet, read names and close it
 
 ResultsSheet: Class to wrap the spreadsheet to store and save the results
 
@@ -37,30 +30,22 @@ from openpyxl.utils.cell import (column_index_from_string,
 from grading.answers import Answers
 
 #------------------------------------------------------------------------------#
-class DataSheet:
-    '''Class to wrap the spreadsheet with candidates names'''
+def read_names_from_spreadsheet(fname: str, first_cell: str) -> list[str]:
+    '''Read names from spreadsheet'''
 
-    #--------------------------------------------------------------------------#
-    def __init__(self) -> None:
-        '''Initialize class instance'''
-        pass
+    xy = coordinate_from_string(first_cell)
+    cc = column_index_from_string(xy[0]) - 1
+    ll = xy[1]
 
-    #--------------------------------------------------------------------------#
-    def read_names(self, fname: str, first_cell: str) -> list[str]:
-        '''Read names from spreadsheet'''
+    input = load_workbook(fname)
+    sheet = input.active
 
-        xy = coordinate_from_string(first_cell)
-        cc = column_index_from_string(xy[0]) - 1
-        ll = xy[1]
+    names = [row[cc]
+             for row in sheet.iter_rows(min_row=ll, values_only=True)]
 
-        input = load_workbook(fname)
-        sheet = input.active
+    input.close()
 
-        names = [row[cc] for row in sheet.iter_rows(min_row=ll, values_only=True)]
-
-        input.close()
-
-        return names
+    return names
 
 #------------------------------------------------------------------------------#
 class ResultsSheet:

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>539</width>
-    <height>698</height>
+    <width>502</width>
+    <height>743</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -118,6 +118,9 @@
          <property name="wordWrap">
           <bool>false</bool>
          </property>
+         <property name="buddy">
+          <cstring>pushButtonModelShow</cstring>
+         </property>
         </widget>
        </item>
        <item row="0" column="0">
@@ -130,6 +133,9 @@
          </property>
          <property name="text">
           <string>Arquivo PDF com o modelo da folha de respostas</string>
+         </property>
+         <property name="buddy">
+          <cstring>pushButtonModelOpen</cstring>
          </property>
         </widget>
        </item>
@@ -151,36 +157,17 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_5">
-       <item row="0" column="1">
-        <widget class="QPushButton" name="pushButtonKeysEdit">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEditKeys">
          <property name="toolTip">
-          <string>Abre o editor para editar o gabarito</string>
+          <string>Edição manual do gabarito, use X para anular uma questão</string>
          </property>
          <property name="statusTip">
-          <string>Abre o editor para editar o gabarito</string>
-         </property>
-         <property name="text">
-          <string>Editar</string>
+          <string>Edição manual do gabarito, use X para anular uma questão</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelKeys">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>4</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Gabarito</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
+       <item row="1" column="2">
         <widget class="QPushButton" name="pushButtonKeysShow">
          <property name="enabled">
           <bool>false</bool>
@@ -196,15 +183,85 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLineEdit" name="lineEditKeys">
+       <item row="0" column="2">
+        <widget class="QPushButton" name="pushButtonKeysEdit">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="toolTip">
-          <string>Edição manual do gabarito, use X para anular uma questão</string>
+          <string>Abre o editor para editar o gabarito</string>
          </property>
          <property name="statusTip">
-          <string>Edição manual do gabarito, use X para anular uma questão</string>
+          <string>Abre o editor para editar o gabarito</string>
+         </property>
+         <property name="text">
+          <string>Editar</string>
          </property>
         </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="labelKeys">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>4</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Gabarito</string>
+         </property>
+         <property name="buddy">
+          <cstring>pushButtonKeysEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="labelMinimumCorrects">
+           <property name="text">
+            <string>Número mínimo de acertos para aprovação </string>
+           </property>
+           <property name="buddy">
+            <cstring>spinBoxMinimumCorrects</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBoxMinimumCorrects">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>85</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Determina o número mínimo de acertos para aprovação</string>
+           </property>
+           <property name="statusTip">
+            <string>Determina o número mínimo de acertos para aprovação</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>30</number>
+           </property>
+           <property name="value">
+            <number>15</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -234,6 +291,9 @@
          </property>
          <property name="text">
           <string>Arquivo PDF com as respostas dos candidatos</string>
+         </property>
+         <property name="buddy">
+          <cstring>pushButtonExamsOpen</cstring>
          </property>
         </widget>
        </item>
@@ -268,6 +328,9 @@
          </property>
          <property name="text">
           <string>Nome do arquivo</string>
+         </property>
+         <property name="buddy">
+          <cstring>pushButtonExamsShow</cstring>
          </property>
         </widget>
        </item>
@@ -350,37 +413,55 @@
          <property name="text">
           <string>Nome do arquivo</string>
          </property>
+         <property name="buddy">
+          <cstring>pushButtonResultsShow</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QPushButton" name="pushButtonResultsShow">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>Exibe as notas dos candidatos</string>
+         </property>
+         <property name="statusTip">
+          <string>Exibe as notas dos candidatos</string>
+         </property>
+         <property name="text">
+          <string>Ver</string>
+         </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QLabel" name="labelOutputResults">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>4</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Arquivo XLSX onde serão salvas as notas</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonOutputResultsChoose">
-           <property name="toolTip">
-            <string>Escolhe nome do arquivo XLSX para salvar as notas</string>
-           </property>
-           <property name="statusTip">
-            <string>Escolhe nome do arquivo XLSX para salvar as notas</string>
-           </property>
-           <property name="text">
-            <string>Escolher</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QLabel" name="labelOutputResults">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>4</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Arquivo XLSX onde serão salvas as notas</string>
+         </property>
+         <property name="buddy">
+          <cstring>pushButtonOutputResultsChoose</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pushButtonOutputResultsChoose">
+         <property name="toolTip">
+          <string>Escolhe nome do arquivo XLSX para salvar as notas</string>
+         </property>
+         <property name="statusTip">
+          <string>Escolhe nome do arquivo XLSX para salvar as notas</string>
+         </property>
+         <property name="text">
+          <string>Escolher</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -476,6 +557,9 @@
            <property name="text">
             <string>Opcional: Arquivo XLSX com a lista dos nomes dos candidatos</string>
            </property>
+           <property name="buddy">
+            <cstring>pushButtonNamesOpen</cstring>
+           </property>
           </widget>
          </item>
          <item row="3" column="0">
@@ -495,6 +579,9 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+               <property name="buddy">
+                <cstring>lineEditNameFistName</cstring>
                </property>
               </widget>
              </item>
@@ -584,53 +671,56 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_11">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="pushButtonRun">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Executa a correção</string>
+         </property>
+         <property name="statusTip">
+          <string>Executa a correção</string>
+         </property>
+         <property name="text">
+          <string>Corrigir</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="labelCorrection">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>0</width>
-             <height>26</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Corrigir provas</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonRun">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>Executa a correção</string>
-           </property>
-           <property name="statusTip">
-            <string>Executa a correção</string>
-           </property>
-           <property name="text">
-            <string>Corrigir</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QLabel" name="labelCorrection">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>26</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Corrigir provas</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pushButtonExit">
+         <property name="text">
+          <string>Sair</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -650,37 +740,36 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QLabel" name="labelOutputAnnotations">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>4</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Arquivo PDF onde serão salvas as anotações da correção</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonOutputAnnotationsChoose">
-           <property name="toolTip">
-            <string>Escolhe nome do arquivo PDF para salvar as anotações</string>
-           </property>
-           <property name="statusTip">
-            <string>Escolhe nome do arquivo PDF para salvar as anotações</string>
-           </property>
-           <property name="text">
-            <string>Escolher</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="pushButtonOutputAnnotationsChoose">
+         <property name="toolTip">
+          <string>Escolhe nome do arquivo PDF para salvar as anotações</string>
+         </property>
+         <property name="statusTip">
+          <string>Escolhe nome do arquivo PDF para salvar as anotações</string>
+         </property>
+         <property name="text">
+          <string>Escolher</string>
+         </property>
+        </widget>
        </item>
-       <item row="2" column="0">
+       <item row="1" column="1">
+        <widget class="QLabel" name="labelOutputAnnotations">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>4</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Arquivo PDF onde serão salvas as anotações da correção</string>
+         </property>
+         <property name="buddy">
+          <cstring>pushButtonOutputAnnotationsChoose</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
         <widget class="QLabel" name="labelOutputAnnotationsFileName">
          <property name="enabled">
           <bool>false</bool>
@@ -712,6 +801,25 @@
          <property name="text">
           <string>Nome do arquivo</string>
          </property>
+         <property name="buddy">
+          <cstring>pushButtonAnnotationsShow</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QPushButton" name="pushButtonAnnotationsShow">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>Exibe as anotações das correções</string>
+         </property>
+         <property name="statusTip">
+          <string>Exibe as anotações das correções</string>
+         </property>
+         <property name="text">
+          <string>Ver</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -740,7 +848,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>539</width>
+     <width>502</width>
      <height>23</height>
     </rect>
    </property>
@@ -861,9 +969,6 @@
   <tabstop>pushButtonNamesRemove</tabstop>
   <tabstop>lineEditNameFistName</tabstop>
   <tabstop>pushButtonNamesShow</tabstop>
-  <tabstop>pushButtonOutputResultsChoose</tabstop>
-  <tabstop>pushButtonOutputAnnotationsChoose</tabstop>
-  <tabstop>pushButtonRun</tabstop>
  </tabstops>
  <resources/>
  <connections/>

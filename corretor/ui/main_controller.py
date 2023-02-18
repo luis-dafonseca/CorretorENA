@@ -64,48 +64,61 @@ class MainController:
     def connectSignalsAndSlots(self) -> None:
         '''Initialise callbacks'''
 
-        self.ui.action_Run   .triggered.connect(self.run)
-        self.ui.pushButtonRun.clicked  .connect(self.run)
+        ui    = self.ui
+        model = self.uimodel
 
-        self.ui.action_Exit.triggered.connect(self.exit)
+        ui.action_Run  .triggered.connect(self.run)
+        ui.pushButtonRun .clicked.connect(self.run)
+        ui.pushButtonExit.clicked.connect(self.exit)
 
-        self.ui.action_Keys_Open  .triggered.connect(self.open_keys  )
-        self.ui.action_Keys_Save  .triggered.connect(self.save_keys  )
-        self.ui.action_Keys_Saveas.triggered.connect(self.saveas_keys)
+        ui.action_Exit.triggered.connect(self.exit)
 
-        self.ui.action_About.triggered.connect(self.about)
-        self.ui.action_Help .triggered.connect(self.help )
+        ui.action_Keys_Open  .triggered.connect(self.open_keys)
+        ui.action_Keys_Save  .triggered.connect(self.save_keys)
+        ui.action_Keys_Saveas.triggered.connect(self.saveas_keys)
 
-        for yy in self.uimodel.keys_model.get_ena_years():
+        ui.action_About.triggered.connect(self.about)
+        ui.action_Help .triggered.connect(self.help)
+
+        for yy in model.keys_model.get_ena_years():
             action = QAction(f'ENA {yy}', self.win)
             action.triggered.connect(partial(self.set_ena_keys, yy))
-            self.ui.menuKeys.addAction(action)
+            ui.menuKeys.addAction(action)
 
-        self.ui.pushButtonModelOpen.clicked.connect(self.open_model)
-        self.ui.pushButtonModelShow.clicked.connect(self.show_model)
+        ui.pushButtonModelOpen.clicked.connect(self.open_model)
 
-        self.ui.pushButtonKeysEdit.clicked  .connect(self.edit_keys )
-        self.ui.pushButtonKeysShow.clicked  .connect(self.show_keys )
-        self.ui.lineEditKeys.editingFinished.connect(self.parse_keys)
+        ui.pushButtonKeysEdit         .clicked.connect(self.edit_keys)
+        ui.lineEditKeys       .editingFinished.connect(self.parse_keys)
+        ui.spinBoxMinimumCorrects.valueChanged.connect(self.set_minimum)
 
-        self.ui.pushButtonExamsOpen.clicked.connect(self.open_exams)
-        self.ui.pushButtonExamsShow.clicked.connect(self.show_exams)
+        ui.pushButtonExamsOpen.clicked.connect(self.open_exams)
 
-        self.ui.pushButtonNamesOpen  .clicked.connect(self.open_names  )
-        self.ui.pushButtonNamesShow  .clicked.connect(self.show_names  )
-        self.ui.pushButtonNamesRemove.clicked.connect(self.remove_names)
-        self.ui.lineEditNameFistName.editingFinished.connect(self.set_first_cell)
+        ui.pushButtonNamesOpen         .clicked.connect(self.open_names)
+        ui.pushButtonNamesShow         .clicked.connect(self.show_names)
+        ui.pushButtonNamesRemove       .clicked.connect(self.remove_names)
+        ui.lineEditNameFistName.editingFinished.connect(self.set_first_cell)
 
-        self.ui.pushButtonOutputResultsChoose    .clicked.connect(self.choose_results    )
-        self.ui.pushButtonOutputAnnotationsChoose.clicked.connect(self.choose_annotations)
+        ui.pushButtonOutputResultsChoose    .clicked.connect(self.choose_results)
+        ui.pushButtonOutputAnnotationsChoose.clicked.connect(self.choose_annotations)
+
+        def show_connect(widget, function: Callable[[None],None]) -> None:
+            widget.clicked.connect(partial(self.show, function))
+
+        show_connect(ui.pushButtonModelShow,       model.get_model_pdf      )
+        show_connect(ui.pushButtonKeysShow,        model.get_keys_pdf       )
+        show_connect(ui.pushButtonExamsShow,       model.get_exams_pdf      )
+        show_connect(ui.pushButtonResultsShow,     model.get_results_xlsx   )
+        show_connect(ui.pushButtonAnnotationsShow, model.get_annotations_pdf)
 
     #--------------------------------------------------------------------------#
     def update(self) -> None:
         '''Update window widgets'''
 
-        has_model = self.uimodel.has_model
-        has_exams = self.uimodel.has_exams
-        has_names = self.uimodel.has_names
+        has_model   = self.uimodel.has_model
+        has_exams   = self.uimodel.has_exams
+        has_names   = self.uimodel.has_names
+        has_results = self.uimodel.has_results
+        has_annot   = self.uimodel.has_annot
 
         self.ui.pushButtonModelShow.setEnabled(has_model)
         self.ui.labelModelFileName .setEnabled(has_model)
@@ -118,8 +131,13 @@ class MainController:
         self.ui.pushButtonNamesRemove.setEnabled(has_names)
         self.ui.labelNamesFileName   .setEnabled(has_names)
 
-        self.ui.labelOutputResultsFileName    .setEnabled(self.uimodel.has_results)
-        self.ui.labelOutputAnnotationsFileName.setEnabled(self.uimodel.has_annot)
+        self.ui.labelOutputResultsFileName    .setEnabled(has_results)
+        self.ui.labelOutputAnnotationsFileName.setEnabled(has_annot)
+
+        done = self.uimodel.done
+
+        self.ui.pushButtonResultsShow    .setEnabled(done)
+        self.ui.pushButtonAnnotationsShow.setEnabled(done)
 
         ready = self.uimodel.ready_to_run()
         self.ui.labelCorrection.setEnabled(ready)
@@ -129,7 +147,10 @@ class MainController:
         num_exams = self.uimodel.num_exams
         num_names = self.uimodel.num_names
 
-        if self.uimodel.has_conflict():
+        if done:
+            message = 'Provas corrigidas'
+
+        elif self.uimodel.has_conflict():
             message = (
                 f'Atenção: A quantidade de respostas ({num_exams}) '
                 f'não coincide com a quantidade de candidatos ({num_names})'
@@ -192,6 +213,8 @@ class MainController:
                 msg.setText(        ep.TITLE+': Correção Cancelada' + ' '*25)
 
             msg.show()
+
+        self.update()
 
     #--------------------------------------------------------------------------#
     def about(self) -> None:
@@ -470,13 +493,22 @@ class MainController:
         if diag.exec():
             keys = self.uimodel.keys_model.keys
             self.ui.lineEditKeys.setText(keys)
+            self.uimodel.set_keys(keys)
 
     #--------------------------------------------------------------------------#
     def parse_keys(self) -> None:
         '''Parse line edit keys string to keys model'''
 
-        self.uimodel.keys_model.set_keys(self.ui.lineEditKeys.text())
+        new_keys = self.ui.lineEditKeys.text()
+        self.uimodel.keys_model.set_keys(new_keys)
         self.uimodel.keys_model.update()
+        # self.uimodel.set_keys(new_keys)
+
+    #--------------------------------------------------------------------------#
+    def set_minimum(self) -> None:
+        '''Set the minumum number of correct answers to approval'''
+
+        self.uimodel.set_minimum(self.ui.spinBoxMinimumCorrects.value())
 
     #--------------------------------------------------------------------------#
     def set_ena_keys(self, year:int) -> None:
@@ -486,24 +518,10 @@ class MainController:
         self.ui.lineEditKeys.setText(keys)
 
     #--------------------------------------------------------------------------#
-    def show_model(self) -> None:
-        '''Call default desktop application to show PDF with the model page'''
+    def show(self, get_function: Callable[[None],None]) -> None:
+        '''Call default desktop application to show a file'''
 
-        url = QUrl.fromLocalFile(self.uimodel.get_model_pdf())
-        QDesktopServices.openUrl(url)
-
-    #--------------------------------------------------------------------------#
-    def show_keys(self) -> None:
-        '''Call default desktop application to show PDF with answer keys page'''
-
-        url = QUrl.fromLocalFile(self.uimodel.get_keys_pdf())
-        QDesktopServices.openUrl(url)
-
-    #--------------------------------------------------------------------------#
-    def show_exams(self) -> None:
-        '''Call default desktop application to show PDF with exams'''
-
-        url = QUrl.fromLocalFile(self.uimodel.get_exams_pdf())
+        url = QUrl.fromLocalFile(get_function())
         QDesktopServices.openUrl(url)
 
     #-------------------------------------------------------------------------#

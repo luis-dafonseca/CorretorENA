@@ -18,14 +18,14 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QLabel, QLineEdit, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
-    QVBoxLayout, QWidget)
+    QMenuBar, QPushButton, QSizePolicy, QSpinBox,
+    QStatusBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(539, 698)
+        MainWindow.resize(502, 743)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -108,29 +108,51 @@ class Ui_MainWindow(object):
         self.frameKeys.setFrameShadow(QFrame.Raised)
         self.gridLayout_5 = QGridLayout(self.frameKeys)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
+        self.lineEditKeys = QLineEdit(self.frameKeys)
+        self.lineEditKeys.setObjectName(u"lineEditKeys")
+
+        self.gridLayout_5.addWidget(self.lineEditKeys, 1, 1, 1, 1)
+
+        self.pushButtonKeysShow = QPushButton(self.frameKeys)
+        self.pushButtonKeysShow.setObjectName(u"pushButtonKeysShow")
+        self.pushButtonKeysShow.setEnabled(False)
+
+        self.gridLayout_5.addWidget(self.pushButtonKeysShow, 1, 2, 1, 1)
+
         self.pushButtonKeysEdit = QPushButton(self.frameKeys)
         self.pushButtonKeysEdit.setObjectName(u"pushButtonKeysEdit")
         self.pushButtonKeysEdit.setEnabled(True)
 
-        self.gridLayout_5.addWidget(self.pushButtonKeysEdit, 0, 1, 1, 1)
+        self.gridLayout_5.addWidget(self.pushButtonKeysEdit, 0, 2, 1, 1)
 
         self.labelKeys = QLabel(self.frameKeys)
         self.labelKeys.setObjectName(u"labelKeys")
         sizePolicy1.setHeightForWidth(self.labelKeys.sizePolicy().hasHeightForWidth())
         self.labelKeys.setSizePolicy(sizePolicy1)
 
-        self.gridLayout_5.addWidget(self.labelKeys, 0, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.labelKeys, 0, 1, 1, 1)
 
-        self.pushButtonKeysShow = QPushButton(self.frameKeys)
-        self.pushButtonKeysShow.setObjectName(u"pushButtonKeysShow")
-        self.pushButtonKeysShow.setEnabled(False)
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.labelMinimumCorrects = QLabel(self.frameKeys)
+        self.labelMinimumCorrects.setObjectName(u"labelMinimumCorrects")
 
-        self.gridLayout_5.addWidget(self.pushButtonKeysShow, 1, 1, 1, 1)
+        self.horizontalLayout_5.addWidget(self.labelMinimumCorrects)
 
-        self.lineEditKeys = QLineEdit(self.frameKeys)
-        self.lineEditKeys.setObjectName(u"lineEditKeys")
+        self.spinBoxMinimumCorrects = QSpinBox(self.frameKeys)
+        self.spinBoxMinimumCorrects.setObjectName(u"spinBoxMinimumCorrects")
+        sizePolicy.setHeightForWidth(self.spinBoxMinimumCorrects.sizePolicy().hasHeightForWidth())
+        self.spinBoxMinimumCorrects.setSizePolicy(sizePolicy)
+        self.spinBoxMinimumCorrects.setMaximumSize(QSize(85, 16777215))
+        self.spinBoxMinimumCorrects.setAlignment(Qt.AlignCenter)
+        self.spinBoxMinimumCorrects.setMinimum(1)
+        self.spinBoxMinimumCorrects.setMaximum(30)
+        self.spinBoxMinimumCorrects.setValue(15)
 
-        self.gridLayout_5.addWidget(self.lineEditKeys, 1, 0, 1, 1)
+        self.horizontalLayout_5.addWidget(self.spinBoxMinimumCorrects)
+
+
+        self.gridLayout_5.addLayout(self.horizontalLayout_5, 2, 1, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.frameKeys, 1, 0, 1, 1)
@@ -196,22 +218,23 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addWidget(self.labelOutputResultsFileName, 2, 0, 1, 1)
 
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.pushButtonResultsShow = QPushButton(self.frameResults)
+        self.pushButtonResultsShow.setObjectName(u"pushButtonResultsShow")
+        self.pushButtonResultsShow.setEnabled(False)
+
+        self.gridLayout_2.addWidget(self.pushButtonResultsShow, 2, 1, 1, 1)
+
         self.labelOutputResults = QLabel(self.frameResults)
         self.labelOutputResults.setObjectName(u"labelOutputResults")
         sizePolicy1.setHeightForWidth(self.labelOutputResults.sizePolicy().hasHeightForWidth())
         self.labelOutputResults.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout_4.addWidget(self.labelOutputResults)
+        self.gridLayout_2.addWidget(self.labelOutputResults, 1, 0, 1, 1)
 
         self.pushButtonOutputResultsChoose = QPushButton(self.frameResults)
         self.pushButtonOutputResultsChoose.setObjectName(u"pushButtonOutputResultsChoose")
 
-        self.horizontalLayout_4.addWidget(self.pushButtonOutputResultsChoose)
-
-
-        self.gridLayout_2.addLayout(self.horizontalLayout_4, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.pushButtonOutputResultsChoose, 1, 1, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.frameResults, 9, 0, 1, 1)
@@ -313,33 +336,33 @@ class Ui_MainWindow(object):
         self.frameButtons.setFrameShadow(QFrame.Raised)
         self.gridLayout_11 = QGridLayout(self.frameButtons)
         self.gridLayout_11.setObjectName(u"gridLayout_11")
-        self.horizontalLayout_2 = QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.labelCorrection = QLabel(self.frameButtons)
-        self.labelCorrection.setObjectName(u"labelCorrection")
-        self.labelCorrection.setEnabled(False)
-        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.labelCorrection.sizePolicy().hasHeightForWidth())
-        self.labelCorrection.setSizePolicy(sizePolicy4)
-        self.labelCorrection.setBaseSize(QSize(0, 26))
-
-        self.horizontalLayout_2.addWidget(self.labelCorrection)
-
         self.pushButtonRun = QPushButton(self.frameButtons)
         self.pushButtonRun.setObjectName(u"pushButtonRun")
         self.pushButtonRun.setEnabled(False)
-        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.pushButtonRun.sizePolicy().hasHeightForWidth())
+        self.pushButtonRun.setSizePolicy(sizePolicy4)
+
+        self.gridLayout_11.addWidget(self.pushButtonRun, 0, 1, 1, 1)
+
+        self.labelCorrection = QLabel(self.frameButtons)
+        self.labelCorrection.setObjectName(u"labelCorrection")
+        self.labelCorrection.setEnabled(False)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy5.setHorizontalStretch(0)
         sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.pushButtonRun.sizePolicy().hasHeightForWidth())
-        self.pushButtonRun.setSizePolicy(sizePolicy5)
+        sizePolicy5.setHeightForWidth(self.labelCorrection.sizePolicy().hasHeightForWidth())
+        self.labelCorrection.setSizePolicy(sizePolicy5)
+        self.labelCorrection.setBaseSize(QSize(0, 26))
 
-        self.horizontalLayout_2.addWidget(self.pushButtonRun)
+        self.gridLayout_11.addWidget(self.labelCorrection, 0, 0, 1, 1)
 
+        self.pushButtonExit = QPushButton(self.frameButtons)
+        self.pushButtonExit.setObjectName(u"pushButtonExit")
 
-        self.gridLayout_11.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
+        self.gridLayout_11.addWidget(self.pushButtonExit, 1, 1, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.frameButtons, 11, 0, 1, 1)
@@ -352,22 +375,17 @@ class Ui_MainWindow(object):
         self.frameAnnotations.setFrameShadow(QFrame.Raised)
         self.gridLayout = QGridLayout(self.frameAnnotations)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.horizontalLayout_3 = QHBoxLayout()
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.pushButtonOutputAnnotationsChoose = QPushButton(self.frameAnnotations)
+        self.pushButtonOutputAnnotationsChoose.setObjectName(u"pushButtonOutputAnnotationsChoose")
+
+        self.gridLayout.addWidget(self.pushButtonOutputAnnotationsChoose, 1, 2, 1, 1)
+
         self.labelOutputAnnotations = QLabel(self.frameAnnotations)
         self.labelOutputAnnotations.setObjectName(u"labelOutputAnnotations")
         sizePolicy1.setHeightForWidth(self.labelOutputAnnotations.sizePolicy().hasHeightForWidth())
         self.labelOutputAnnotations.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout_3.addWidget(self.labelOutputAnnotations)
-
-        self.pushButtonOutputAnnotationsChoose = QPushButton(self.frameAnnotations)
-        self.pushButtonOutputAnnotationsChoose.setObjectName(u"pushButtonOutputAnnotationsChoose")
-
-        self.horizontalLayout_3.addWidget(self.pushButtonOutputAnnotationsChoose)
-
-
-        self.gridLayout.addLayout(self.horizontalLayout_3, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.labelOutputAnnotations, 1, 1, 1, 1)
 
         self.labelOutputAnnotationsFileName = QLabel(self.frameAnnotations)
         self.labelOutputAnnotationsFileName.setObjectName(u"labelOutputAnnotationsFileName")
@@ -379,7 +397,13 @@ class Ui_MainWindow(object):
         self.labelOutputAnnotationsFileName.setAutoFillBackground(True)
         self.labelOutputAnnotationsFileName.setFrameShape(QFrame.NoFrame)
 
-        self.gridLayout.addWidget(self.labelOutputAnnotationsFileName, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.labelOutputAnnotationsFileName, 2, 1, 1, 1)
+
+        self.pushButtonAnnotationsShow = QPushButton(self.frameAnnotations)
+        self.pushButtonAnnotationsShow.setObjectName(u"pushButtonAnnotationsShow")
+        self.pushButtonAnnotationsShow.setEnabled(False)
+
+        self.gridLayout.addWidget(self.pushButtonAnnotationsShow, 2, 2, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.frameAnnotations, 10, 0, 1, 1)
@@ -395,7 +419,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 539, 23))
+        self.menubar.setGeometry(QRect(0, 0, 502, 23))
         self.menuArquivo = QMenu(self.menubar)
         self.menuArquivo.setObjectName(u"menuArquivo")
         self.menuAjuda = QMenu(self.menubar)
@@ -408,6 +432,20 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.statusbar.sizePolicy().hasHeightForWidth())
         self.statusbar.setSizePolicy(sizePolicy)
         MainWindow.setStatusBar(self.statusbar)
+#if QT_CONFIG(shortcut)
+        self.labelModelFileName.setBuddy(self.pushButtonModelShow)
+        self.labelModel.setBuddy(self.pushButtonModelOpen)
+        self.labelKeys.setBuddy(self.pushButtonKeysEdit)
+        self.labelMinimumCorrects.setBuddy(self.spinBoxMinimumCorrects)
+        self.labelExams.setBuddy(self.pushButtonExamsOpen)
+        self.labelExamsFileName.setBuddy(self.pushButtonExamsShow)
+        self.labelOutputResultsFileName.setBuddy(self.pushButtonResultsShow)
+        self.labelOutputResults.setBuddy(self.pushButtonOutputResultsChoose)
+        self.labelNames.setBuddy(self.pushButtonNamesOpen)
+        self.labelNomeCell.setBuddy(self.lineEditNameFistName)
+        self.labelOutputAnnotations.setBuddy(self.pushButtonOutputAnnotationsChoose)
+        self.labelOutputAnnotationsFileName.setBuddy(self.pushButtonAnnotationsShow)
+#endif // QT_CONFIG(shortcut)
         QWidget.setTabOrder(self.pushButtonModelOpen, self.pushButtonModelShow)
         QWidget.setTabOrder(self.pushButtonModelShow, self.lineEditKeys)
         QWidget.setTabOrder(self.lineEditKeys, self.pushButtonKeysEdit)
@@ -418,9 +456,6 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.pushButtonNamesOpen, self.pushButtonNamesRemove)
         QWidget.setTabOrder(self.pushButtonNamesRemove, self.lineEditNameFistName)
         QWidget.setTabOrder(self.lineEditNameFistName, self.pushButtonNamesShow)
-        QWidget.setTabOrder(self.pushButtonNamesShow, self.pushButtonOutputResultsChoose)
-        QWidget.setTabOrder(self.pushButtonOutputResultsChoose, self.pushButtonOutputAnnotationsChoose)
-        QWidget.setTabOrder(self.pushButtonOutputAnnotationsChoose, self.pushButtonRun)
 
         self.menubar.addAction(self.menuArquivo.menuAction())
         self.menubar.addAction(self.menuKeys.menuAction())
@@ -496,13 +531,11 @@ class Ui_MainWindow(object):
         self.labelModelFileName.setText(QCoreApplication.translate("MainWindow", u"Nome do arquivo", None))
         self.labelModel.setText(QCoreApplication.translate("MainWindow", u"Arquivo PDF com o modelo da folha de respostas", None))
 #if QT_CONFIG(tooltip)
-        self.pushButtonKeysEdit.setToolTip(QCoreApplication.translate("MainWindow", u"Abre o editor para editar o gabarito", None))
+        self.lineEditKeys.setToolTip(QCoreApplication.translate("MainWindow", u"Edi\u00e7\u00e3o manual do gabarito, use X para anular uma quest\u00e3o", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(statustip)
-        self.pushButtonKeysEdit.setStatusTip(QCoreApplication.translate("MainWindow", u"Abre o editor para editar o gabarito", None))
+        self.lineEditKeys.setStatusTip(QCoreApplication.translate("MainWindow", u"Edi\u00e7\u00e3o manual do gabarito, use X para anular uma quest\u00e3o", None))
 #endif // QT_CONFIG(statustip)
-        self.pushButtonKeysEdit.setText(QCoreApplication.translate("MainWindow", u"Editar", None))
-        self.labelKeys.setText(QCoreApplication.translate("MainWindow", u"Gabarito", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonKeysShow.setToolTip(QCoreApplication.translate("MainWindow", u"Exibe o gabarito na folha de respostas", None))
 #endif // QT_CONFIG(tooltip)
@@ -511,10 +544,19 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(statustip)
         self.pushButtonKeysShow.setText(QCoreApplication.translate("MainWindow", u"Ver", None))
 #if QT_CONFIG(tooltip)
-        self.lineEditKeys.setToolTip(QCoreApplication.translate("MainWindow", u"Edi\u00e7\u00e3o manual do gabarito, use X para anular uma quest\u00e3o", None))
+        self.pushButtonKeysEdit.setToolTip(QCoreApplication.translate("MainWindow", u"Abre o editor para editar o gabarito", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(statustip)
-        self.lineEditKeys.setStatusTip(QCoreApplication.translate("MainWindow", u"Edi\u00e7\u00e3o manual do gabarito, use X para anular uma quest\u00e3o", None))
+        self.pushButtonKeysEdit.setStatusTip(QCoreApplication.translate("MainWindow", u"Abre o editor para editar o gabarito", None))
+#endif // QT_CONFIG(statustip)
+        self.pushButtonKeysEdit.setText(QCoreApplication.translate("MainWindow", u"Editar", None))
+        self.labelKeys.setText(QCoreApplication.translate("MainWindow", u"Gabarito", None))
+        self.labelMinimumCorrects.setText(QCoreApplication.translate("MainWindow", u"N\u00famero m\u00ednimo de acertos para aprova\u00e7\u00e3o ", None))
+#if QT_CONFIG(tooltip)
+        self.spinBoxMinimumCorrects.setToolTip(QCoreApplication.translate("MainWindow", u"Determina o n\u00famero m\u00ednimo de acertos para aprova\u00e7\u00e3o", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(statustip)
+        self.spinBoxMinimumCorrects.setStatusTip(QCoreApplication.translate("MainWindow", u"Determina o n\u00famero m\u00ednimo de acertos para aprova\u00e7\u00e3o", None))
 #endif // QT_CONFIG(statustip)
         self.labelExams.setText(QCoreApplication.translate("MainWindow", u"Arquivo PDF com as respostas dos candidatos", None))
         self.labelExamsFileName.setText(QCoreApplication.translate("MainWindow", u"Nome do arquivo", None))
@@ -533,6 +575,13 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(statustip)
         self.pushButtonExamsOpen.setText(QCoreApplication.translate("MainWindow", u"Abrir", None))
         self.labelOutputResultsFileName.setText(QCoreApplication.translate("MainWindow", u"Nome do arquivo", None))
+#if QT_CONFIG(tooltip)
+        self.pushButtonResultsShow.setToolTip(QCoreApplication.translate("MainWindow", u"Exibe as notas dos candidatos", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(statustip)
+        self.pushButtonResultsShow.setStatusTip(QCoreApplication.translate("MainWindow", u"Exibe as notas dos candidatos", None))
+#endif // QT_CONFIG(statustip)
+        self.pushButtonResultsShow.setText(QCoreApplication.translate("MainWindow", u"Ver", None))
         self.labelOutputResults.setText(QCoreApplication.translate("MainWindow", u"Arquivo XLSX onde ser\u00e3o salvas as notas", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonOutputResultsChoose.setToolTip(QCoreApplication.translate("MainWindow", u"Escolhe nome do arquivo XLSX para salvar as notas", None))
@@ -572,7 +621,6 @@ class Ui_MainWindow(object):
         self.pushButtonNamesRemove.setStatusTip(QCoreApplication.translate("MainWindow", u"Remove os nomes dos candidatos", None))
 #endif // QT_CONFIG(statustip)
         self.pushButtonNamesRemove.setText(QCoreApplication.translate("MainWindow", u"Remover", None))
-        self.labelCorrection.setText(QCoreApplication.translate("MainWindow", u"Corrigir provas", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonRun.setToolTip(QCoreApplication.translate("MainWindow", u"Executa a corre\u00e7\u00e3o", None))
 #endif // QT_CONFIG(tooltip)
@@ -580,7 +628,8 @@ class Ui_MainWindow(object):
         self.pushButtonRun.setStatusTip(QCoreApplication.translate("MainWindow", u"Executa a corre\u00e7\u00e3o", None))
 #endif // QT_CONFIG(statustip)
         self.pushButtonRun.setText(QCoreApplication.translate("MainWindow", u"Corrigir", None))
-        self.labelOutputAnnotations.setText(QCoreApplication.translate("MainWindow", u"Arquivo PDF onde ser\u00e3o salvas as anota\u00e7\u00f5es da corre\u00e7\u00e3o", None))
+        self.labelCorrection.setText(QCoreApplication.translate("MainWindow", u"Corrigir provas", None))
+        self.pushButtonExit.setText(QCoreApplication.translate("MainWindow", u"Sair", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonOutputAnnotationsChoose.setToolTip(QCoreApplication.translate("MainWindow", u"Escolhe nome do arquivo PDF para salvar as anota\u00e7\u00f5es", None))
 #endif // QT_CONFIG(tooltip)
@@ -588,7 +637,15 @@ class Ui_MainWindow(object):
         self.pushButtonOutputAnnotationsChoose.setStatusTip(QCoreApplication.translate("MainWindow", u"Escolhe nome do arquivo PDF para salvar as anota\u00e7\u00f5es", None))
 #endif // QT_CONFIG(statustip)
         self.pushButtonOutputAnnotationsChoose.setText(QCoreApplication.translate("MainWindow", u"Escolher", None))
+        self.labelOutputAnnotations.setText(QCoreApplication.translate("MainWindow", u"Arquivo PDF onde ser\u00e3o salvas as anota\u00e7\u00f5es da corre\u00e7\u00e3o", None))
         self.labelOutputAnnotationsFileName.setText(QCoreApplication.translate("MainWindow", u"Nome do arquivo", None))
+#if QT_CONFIG(tooltip)
+        self.pushButtonAnnotationsShow.setToolTip(QCoreApplication.translate("MainWindow", u"Exibe as anota\u00e7\u00f5es das corre\u00e7\u00f5es", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(statustip)
+        self.pushButtonAnnotationsShow.setStatusTip(QCoreApplication.translate("MainWindow", u"Exibe as anota\u00e7\u00f5es das corre\u00e7\u00f5es", None))
+#endif // QT_CONFIG(statustip)
+        self.pushButtonAnnotationsShow.setText(QCoreApplication.translate("MainWindow", u"Ver", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Corre\u00e7\u00e3o", None))
         self.menuArquivo.setTitle(QCoreApplication.translate("MainWindow", u"&Arquivo", None))
         self.menuAjuda.setTitle(QCoreApplication.translate("MainWindow", u"Aj&uda", None))

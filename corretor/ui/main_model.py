@@ -24,6 +24,7 @@ class MainModel:
         self.has_annot   = False
         self.has_results = False
         self.has_names   = False
+        self.done        = False
 
         self.names: list[str] = []
 
@@ -39,6 +40,8 @@ class MainModel:
         self.fname_exams = ''
 
         self.keys_model = KeysModel()
+
+        self.minimum = 15
 
     #--------------------------------------------------------------------------#
     def __del__(self) -> None:
@@ -60,6 +63,7 @@ class MainModel:
         finished = eval_grades(
             self.model,
             self.keys_model.keys,
+            self.minimum,
             self.exams,
             annot,
             results,
@@ -69,6 +73,7 @@ class MainModel:
         if finished:
             annot  .save(self.fname_annot)
             results.save(self.fname_results)
+            self.done = True
 
         return finished
 
@@ -108,6 +113,7 @@ class MainModel:
 
         self.model     = new_model
         self.has_model = True
+        self.done      = False
 
     #--------------------------------------------------------------------------#
     def set_exams(self, fname: str) -> None:
@@ -129,6 +135,7 @@ class MainModel:
         self.exams       = new_exams
         self.fname_exams = str(fname)
         self.has_exams   = True
+        self.done        = False
 
         if self.has_names and (self.num_exams != self.num_names):
             raise IndexError((
@@ -156,6 +163,7 @@ class MainModel:
 
         self.num_names = len(self.names)
         self.has_names = True
+        self.done      = False
 
         if self.has_exams and (self.num_exams != self.num_names):
             raise IndexError((
@@ -170,6 +178,7 @@ class MainModel:
         self.names     = []
         self.num_names = 0
         self.has_names = False
+        self.done      = False
 
     #--------------------------------------------------------------------------#
     def set_annotations(self, fname: str) -> None:
@@ -177,6 +186,7 @@ class MainModel:
 
         self.fname_annot = fname
         self.has_annot   = True
+        self.done        = False
 
     #--------------------------------------------------------------------------#
     def set_results(self, fname: str) -> None:
@@ -184,6 +194,22 @@ class MainModel:
 
         self.fname_results = fname
         self.has_results   = True
+        self.done          = False
+
+    #--------------------------------------------------------------------------#
+    # def set_keys(self, new_keys: str) -> None:
+    #     '''Parse line edit keys string to keys model'''
+
+    #     if self.keys != new_keys:
+    #         self.keys = new_keys
+    #         self.done = False
+
+    #--------------------------------------------------------------------------#
+    def set_minimum(self, value: int) -> None:
+        '''Set the minimum number of correct answers to approval'''
+
+        self.minimum = value
+        self.done    = False
 
     #--------------------------------------------------------------------------#
     def get_model_pdf(self) -> str:
@@ -222,6 +248,18 @@ class MainModel:
         '''Return exams PDF file name'''
 
         return self.fname_exams
+
+    #--------------------------------------------------------------------------#
+    def get_annotations_pdf(self) -> str:
+        '''Return annotations PDF file name'''
+
+        return self.fname_annot
+
+    #--------------------------------------------------------------------------#
+    def get_results_xlsx(self) -> str:
+        '''Return results xlsx file name'''
+
+        return self.fname_results
 
     #--------------------------------------------------------------------------#
     def has_conflict(self) -> bool:

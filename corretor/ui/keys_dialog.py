@@ -17,6 +17,8 @@ from PySide6.QtWidgets import (QDialog,
 
 from ui.keys_model import KeysModel
 
+import ui.keys_validator as keys_val
+
 #------------------------------------------------------------------------------#
 class EditKeysDialog(QDialog):
     '''Edit keys dialog class'''
@@ -69,14 +71,11 @@ class EditKeysDialog(QDialog):
                 button.setToolButtonStyle(Qt.ToolButtonTextOnly)
                 button.setDefaultAction(action)
 
-                if cc == 'X':
-                    button.setStyleSheet(
-                        'QToolButton:checked {background-color: #FF0000;}'
-                    )
-                else:
-                    button.setStyleSheet(
-                        'QToolButton:checked {background-color: #0000FF;}'
-                    )
+                color = 'FF0000' if cc == 'X' else '0000FF'
+
+                button.setStyleSheet(
+                    f'QToolButton:checked {{background-color: #{color};}}'
+                )
 
                 layout.addWidget(button, ii, jj+1)
 
@@ -109,9 +108,9 @@ class EditKeysDialog(QDialog):
         self.edit = QLineEdit(self.keys_model.keys_next, self)
         self.edit.textEdited.connect(self.parse_line_edit)
 
-        self.edit.setFont     (self.keys_model.font)
-        self.edit.setInputMask(self.keys_model.mask)
-        self.edit.setValidator(self.keys_model.validator(self))
+        self.edit.setFont     (keys_val.FONT)
+        self.edit.setInputMask(keys_val.MASK)
+        self.edit.setValidator(keys_val.validator(self))
 
         layout = QHBoxLayout()
         layout.addWidget(label)
@@ -139,6 +138,8 @@ class EditKeysDialog(QDialog):
 
         self.keys_model.set_key(ii, cc)
         self.edit.setText(self.keys_model.keys_next)
+
+        self.edit.setCursorPosition(ii + 2 + (ii+1) // 5)
 
     #--------------------------------------------------------------------------#
     def parse_line_edit(self) -> None:

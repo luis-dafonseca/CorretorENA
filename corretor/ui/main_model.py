@@ -27,6 +27,7 @@ class MainModel:
         self.done        = False
 
         self.names: list[str] = []
+        self.keys = ''
 
         self.model: InputPDF | None = None
         self.exams: InputPDF | None = None
@@ -39,8 +40,6 @@ class MainModel:
 
         self.fname_exams = ''
 
-        self.keys_model = KeysModel()
-
         self.minimum = 15
 
     #--------------------------------------------------------------------------#
@@ -50,6 +49,8 @@ class MainModel:
         if self.has_model: self.model.close()
         if self.has_exams: self.exams.close()
 
+    #--------------------------------------------------------------------------#
+    # EXecution function
     #--------------------------------------------------------------------------#
     def run(self, progress_bar) -> bool:
         '''Evaluate all exams and save output files'''
@@ -62,7 +63,7 @@ class MainModel:
 
         finished = eval_grades(
             self.model,
-            self.keys_model.keys,
+            self.keys,
             self.minimum,
             self.exams,
             annot,
@@ -78,6 +79,8 @@ class MainModel:
         return finished
 
     #--------------------------------------------------------------------------#
+    # Checking functions
+    #--------------------------------------------------------------------------#
     def ready_to_run(self) -> bool:
         '''Check if all information needed to evaluation was provided'''
 
@@ -88,6 +91,18 @@ class MainModel:
             self.has_results
         )
 
+    #--------------------------------------------------------------------------#
+    def has_conflict(self) -> bool:
+        '''Return if there is conflict between quantity of exams and names'''
+
+        return (
+            self.has_exams and
+            self.has_names and
+            self.num_names != self.num_exams
+        )
+
+    #--------------------------------------------------------------------------#
+    # Set functions
     #--------------------------------------------------------------------------#
     def set_model(self, fname: str) -> None:
         '''Open PDF model file'''
@@ -197,20 +212,25 @@ class MainModel:
         self.done          = False
 
     #--------------------------------------------------------------------------#
-    # def set_keys(self, new_keys: str) -> None:
-    #     '''Parse line edit keys string to keys model'''
+    def set_keys(self, keys: str) -> None:
+        '''Store the answer keys'''
 
-    #     if self.keys != new_keys:
-    #         self.keys = new_keys
-    #         self.done = False
+        if self.keys == keys: return
+
+        self.keys = keys
+        self.done = False
 
     #--------------------------------------------------------------------------#
     def set_minimum(self, value: int) -> None:
         '''Set the minimum number of correct answers to approval'''
 
+        if self.minimum == value: return
+
         self.minimum = value
         self.done    = False
 
+    #--------------------------------------------------------------------------#
+    # Get file functions
     #--------------------------------------------------------------------------#
     def get_model_pdf(self) -> str:
         '''Create a PDF with the model page and mark rectangles'''
@@ -237,7 +257,7 @@ class MainModel:
         )
 
         output = OutputPDF()
-        create_keys_page(self.model, output, self.keys_model.keys)
+        create_keys_page(self.model, output, self.keys)
         output.save(self.temp_file.name)
         output.close()
 
@@ -260,15 +280,5 @@ class MainModel:
         '''Return results xlsx file name'''
 
         return self.fname_results
-
-    #--------------------------------------------------------------------------#
-    def has_conflict(self) -> bool:
-        '''Return if there is conflict between quantity of exams and names'''
-
-        return (
-            self.has_exams and
-            self.has_names and
-            self.num_names != self.num_exams
-        )
 
 #------------------------------------------------------------------------------#

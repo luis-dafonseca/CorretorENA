@@ -3,19 +3,9 @@
 
 from pathlib import Path
 
-from PySide6.QtCore    import QRegularExpression
-from PySide6.QtWidgets import QWidget
-from PySide6.QtGui     import(QRegularExpressionValidator, QFontDatabase)
-
 import ena_param as ep
 
 N_QUESTIONS = 30
-
-#------------------------------------------------------------------------------#
-def parse_keys_str(s: str) -> str:
-    '''Parse keys string to remove spaces and convert all chars to uppercase'''
-
-    return (''.join(s.split())).upper()
 
 #------------------------------------------------------------------------------#
 class KeysModel:
@@ -30,9 +20,19 @@ class KeysModel:
         self.keys = 'A' * N_QUESTIONS
         self.keys_next = self.keys
 
-        self.mask  = '>'+(' '+'A'*5)*6
-        self.regex = QRegularExpression((' '+'[ABCDEX]'*5)*6)
-        self.font  = QFontDatabase.systemFont(QFontDatabase.FixedFont)
+        self.fname = ''
+
+    #--------------------------------------------------------------------------#
+    def parse_keys_str(self, keys: str) -> str:
+        '''Remove spaces and convert string to uppercase'''
+
+        return (''.join(keys.split())).upper()
+
+    #--------------------------------------------------------------------------#
+    def get_keys(self) -> str:
+        '''Return keys string'''
+
+        return self.keys
 
     #--------------------------------------------------------------------------#
     def update(self) -> None:
@@ -47,12 +47,6 @@ class KeysModel:
         self.keys_next = self.keys
 
     #--------------------------------------------------------------------------#
-    def validator(self, parent: QWidget) -> QRegularExpressionValidator:
-        '''Return the regular expression validator for line edit keys'''
-
-        return QRegularExpressionValidator(self.regex, parent)
-
-    #--------------------------------------------------------------------------#
     def set_key(self, ii: int, kk: str) -> None:
         '''Set ii key value to kk'''
 
@@ -60,9 +54,10 @@ class KeysModel:
 
     #--------------------------------------------------------------------------#
     def set_keys(self, new_keys: str) -> None:
-        '''Define new key values to new_keys'''
+        '''Define new key values'''
 
-        self.keys_next = parse_keys_str(new_keys)
+        self.keys_next = self.parse_keys_str(new_keys)
+        self.keys      = self.keys_next
 
     #--------------------------------------------------------------------------#
     def set_ena_keys(self, year: int) -> str:
@@ -80,19 +75,19 @@ class KeysModel:
         return self.ena_keys.keys()
 
     #--------------------------------------------------------------------------#
-    def read_keys(self, filename: str) -> str:
+    def read_keys(self, fname: str) -> str:
         '''Read answer keys from TXT file'''
 
-        with open(filename) as file:
+        with open(fname) as file:
             contents = file.readlines()
 
-        name    = Path(filename).name
+        name    = Path(fname).name
         message = f'O arquivo {name} não contém um gabarito!'
 
         if len(contents) != 1:
             raise ValueError(message)
 
-        str_keys = parse_keys_str(contents[0])
+        str_keys = self.parse_keys_str(contents[0])
 
         if len(str_keys) != 30:
             raise ValueError(message)
@@ -106,11 +101,15 @@ class KeysModel:
         self.keys      = str_keys
         self.keys_next = str_keys
 
+        self.fname = fname
+
         return str_keys
 
     #--------------------------------------------------------------------------#
-    def write_keys( self, filename ) -> None:
-        with open( filename, 'w' ) as f:
-             f.write( self.keys )
+    def write_keys(self) -> None:
+        '''Write answer keys from TXT file'''
+
+        with open(self.fname, 'w') as file:
+            file.write(self.keys)
 
 #------------------------------------------------------------------------------#

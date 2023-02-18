@@ -64,12 +64,14 @@ class Ui_MainWindow(object):
         self.gridLayout_12.setObjectName(u"gridLayout_12")
         self.pushButtonModelOpen = QPushButton(self.frameModel)
         self.pushButtonModelOpen.setObjectName(u"pushButtonModelOpen")
+        self.pushButtonModelOpen.setAutoDefault(True)
 
         self.gridLayout_12.addWidget(self.pushButtonModelOpen, 0, 1, 1, 1)
 
         self.pushButtonModelShow = QPushButton(self.frameModel)
         self.pushButtonModelShow.setObjectName(u"pushButtonModelShow")
         self.pushButtonModelShow.setEnabled(False)
+        self.pushButtonModelShow.setAutoDefault(True)
 
         self.gridLayout_12.addWidget(self.pushButtonModelShow, 1, 1, 1, 1)
 
@@ -116,12 +118,14 @@ class Ui_MainWindow(object):
         self.pushButtonKeysShow = QPushButton(self.frameKeys)
         self.pushButtonKeysShow.setObjectName(u"pushButtonKeysShow")
         self.pushButtonKeysShow.setEnabled(False)
+        self.pushButtonKeysShow.setAutoDefault(True)
 
         self.gridLayout_5.addWidget(self.pushButtonKeysShow, 1, 2, 1, 1)
 
         self.pushButtonKeysEdit = QPushButton(self.frameKeys)
         self.pushButtonKeysEdit.setObjectName(u"pushButtonKeysEdit")
         self.pushButtonKeysEdit.setEnabled(True)
+        self.pushButtonKeysEdit.setAutoDefault(True)
 
         self.gridLayout_5.addWidget(self.pushButtonKeysEdit, 0, 2, 1, 1)
 
@@ -187,11 +191,13 @@ class Ui_MainWindow(object):
         self.pushButtonExamsShow = QPushButton(self.frameExams)
         self.pushButtonExamsShow.setObjectName(u"pushButtonExamsShow")
         self.pushButtonExamsShow.setEnabled(False)
+        self.pushButtonExamsShow.setAutoDefault(True)
 
         self.gridLayout_14.addWidget(self.pushButtonExamsShow, 1, 1, 1, 1)
 
         self.pushButtonExamsOpen = QPushButton(self.frameExams)
         self.pushButtonExamsOpen.setObjectName(u"pushButtonExamsOpen")
+        self.pushButtonExamsOpen.setAutoDefault(True)
 
         self.gridLayout_14.addWidget(self.pushButtonExamsOpen, 0, 1, 1, 1)
 
@@ -221,6 +227,7 @@ class Ui_MainWindow(object):
         self.pushButtonResultsShow = QPushButton(self.frameResults)
         self.pushButtonResultsShow.setObjectName(u"pushButtonResultsShow")
         self.pushButtonResultsShow.setEnabled(False)
+        self.pushButtonResultsShow.setAutoDefault(True)
 
         self.gridLayout_2.addWidget(self.pushButtonResultsShow, 2, 1, 1, 1)
 
@@ -233,6 +240,7 @@ class Ui_MainWindow(object):
 
         self.pushButtonOutputResultsChoose = QPushButton(self.frameResults)
         self.pushButtonOutputResultsChoose.setObjectName(u"pushButtonOutputResultsChoose")
+        self.pushButtonOutputResultsChoose.setAutoDefault(True)
 
         self.gridLayout_2.addWidget(self.pushButtonOutputResultsChoose, 1, 1, 1, 1)
 
@@ -266,12 +274,14 @@ class Ui_MainWindow(object):
 
         self.pushButtonNamesOpen = QPushButton(self.frameNames)
         self.pushButtonNamesOpen.setObjectName(u"pushButtonNamesOpen")
+        self.pushButtonNamesOpen.setAutoDefault(True)
 
         self.gridLayout_4.addWidget(self.pushButtonNamesOpen, 0, 1, 1, 1)
 
         self.pushButtonNamesShow = QPushButton(self.frameNames)
         self.pushButtonNamesShow.setObjectName(u"pushButtonNamesShow")
         self.pushButtonNamesShow.setEnabled(False)
+        self.pushButtonNamesShow.setAutoDefault(True)
 
         self.gridLayout_4.addWidget(self.pushButtonNamesShow, 3, 1, 1, 1)
 
@@ -297,18 +307,18 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.labelNomeCell)
 
-        self.lineEditNameFistName = QLineEdit(self.frameNames)
-        self.lineEditNameFistName.setObjectName(u"lineEditNameFistName")
-        sizePolicy.setHeightForWidth(self.lineEditNameFistName.sizePolicy().hasHeightForWidth())
-        self.lineEditNameFistName.setSizePolicy(sizePolicy)
-        self.lineEditNameFistName.setMinimumSize(QSize(0, 0))
-        self.lineEditNameFistName.setMaximumSize(QSize(84, 16777215))
-        self.lineEditNameFistName.setBaseSize(QSize(0, 0))
-        self.lineEditNameFistName.setMaxLength(2)
-        self.lineEditNameFistName.setFrame(True)
-        self.lineEditNameFistName.setAlignment(Qt.AlignCenter)
+        self.lineEditFirstCell = QLineEdit(self.frameNames)
+        self.lineEditFirstCell.setObjectName(u"lineEditFirstCell")
+        sizePolicy.setHeightForWidth(self.lineEditFirstCell.sizePolicy().hasHeightForWidth())
+        self.lineEditFirstCell.setSizePolicy(sizePolicy)
+        self.lineEditFirstCell.setMinimumSize(QSize(0, 0))
+        self.lineEditFirstCell.setMaximumSize(QSize(84, 16777215))
+        self.lineEditFirstCell.setBaseSize(QSize(0, 0))
+        self.lineEditFirstCell.setMaxLength(2)
+        self.lineEditFirstCell.setFrame(True)
+        self.lineEditFirstCell.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout.addWidget(self.lineEditNameFistName)
+        self.horizontalLayout.addWidget(self.lineEditFirstCell)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout)
@@ -319,6 +329,7 @@ class Ui_MainWindow(object):
         self.pushButtonNamesRemove = QPushButton(self.frameNames)
         self.pushButtonNamesRemove.setObjectName(u"pushButtonNamesRemove")
         self.pushButtonNamesRemove.setEnabled(False)
+        self.pushButtonNamesRemove.setAutoDefault(True)
 
         self.gridLayout_4.addWidget(self.pushButtonNamesRemove, 2, 1, 1, 1)
 
@@ -344,12 +355,13 @@ class Ui_MainWindow(object):
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.pushButtonRun.sizePolicy().hasHeightForWidth())
         self.pushButtonRun.setSizePolicy(sizePolicy4)
+        self.pushButtonRun.setAutoDefault(True)
 
         self.gridLayout_11.addWidget(self.pushButtonRun, 0, 1, 1, 1)
 
         self.labelCorrection = QLabel(self.frameButtons)
         self.labelCorrection.setObjectName(u"labelCorrection")
-        self.labelCorrection.setEnabled(False)
+        self.labelCorrection.setEnabled(True)
         sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy5.setHorizontalStretch(0)
         sizePolicy5.setVerticalStretch(0)
@@ -361,8 +373,14 @@ class Ui_MainWindow(object):
 
         self.pushButtonExit = QPushButton(self.frameButtons)
         self.pushButtonExit.setObjectName(u"pushButtonExit")
+        self.pushButtonExit.setAutoDefault(True)
 
         self.gridLayout_11.addWidget(self.pushButtonExit, 1, 1, 1, 1)
+
+        self.labelCorrectionExtra = QLabel(self.frameButtons)
+        self.labelCorrectionExtra.setObjectName(u"labelCorrectionExtra")
+
+        self.gridLayout_11.addWidget(self.labelCorrectionExtra, 1, 0, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.frameButtons, 11, 0, 1, 1)
@@ -377,6 +395,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.pushButtonOutputAnnotationsChoose = QPushButton(self.frameAnnotations)
         self.pushButtonOutputAnnotationsChoose.setObjectName(u"pushButtonOutputAnnotationsChoose")
+        self.pushButtonOutputAnnotationsChoose.setAutoDefault(True)
 
         self.gridLayout.addWidget(self.pushButtonOutputAnnotationsChoose, 1, 2, 1, 1)
 
@@ -402,6 +421,7 @@ class Ui_MainWindow(object):
         self.pushButtonAnnotationsShow = QPushButton(self.frameAnnotations)
         self.pushButtonAnnotationsShow.setObjectName(u"pushButtonAnnotationsShow")
         self.pushButtonAnnotationsShow.setEnabled(False)
+        self.pushButtonAnnotationsShow.setAutoDefault(True)
 
         self.gridLayout.addWidget(self.pushButtonAnnotationsShow, 2, 2, 1, 1)
 
@@ -442,20 +462,27 @@ class Ui_MainWindow(object):
         self.labelOutputResultsFileName.setBuddy(self.pushButtonResultsShow)
         self.labelOutputResults.setBuddy(self.pushButtonOutputResultsChoose)
         self.labelNames.setBuddy(self.pushButtonNamesOpen)
-        self.labelNomeCell.setBuddy(self.lineEditNameFistName)
+        self.labelNomeCell.setBuddy(self.lineEditFirstCell)
         self.labelOutputAnnotations.setBuddy(self.pushButtonOutputAnnotationsChoose)
         self.labelOutputAnnotationsFileName.setBuddy(self.pushButtonAnnotationsShow)
 #endif // QT_CONFIG(shortcut)
         QWidget.setTabOrder(self.pushButtonModelOpen, self.pushButtonModelShow)
         QWidget.setTabOrder(self.pushButtonModelShow, self.lineEditKeys)
-        QWidget.setTabOrder(self.lineEditKeys, self.pushButtonKeysEdit)
+        QWidget.setTabOrder(self.lineEditKeys, self.spinBoxMinimumCorrects)
+        QWidget.setTabOrder(self.spinBoxMinimumCorrects, self.pushButtonKeysEdit)
         QWidget.setTabOrder(self.pushButtonKeysEdit, self.pushButtonKeysShow)
         QWidget.setTabOrder(self.pushButtonKeysShow, self.pushButtonExamsOpen)
         QWidget.setTabOrder(self.pushButtonExamsOpen, self.pushButtonExamsShow)
         QWidget.setTabOrder(self.pushButtonExamsShow, self.pushButtonNamesOpen)
         QWidget.setTabOrder(self.pushButtonNamesOpen, self.pushButtonNamesRemove)
-        QWidget.setTabOrder(self.pushButtonNamesRemove, self.lineEditNameFistName)
-        QWidget.setTabOrder(self.lineEditNameFistName, self.pushButtonNamesShow)
+        QWidget.setTabOrder(self.pushButtonNamesRemove, self.lineEditFirstCell)
+        QWidget.setTabOrder(self.lineEditFirstCell, self.pushButtonNamesShow)
+        QWidget.setTabOrder(self.pushButtonNamesShow, self.pushButtonOutputResultsChoose)
+        QWidget.setTabOrder(self.pushButtonOutputResultsChoose, self.pushButtonResultsShow)
+        QWidget.setTabOrder(self.pushButtonResultsShow, self.pushButtonOutputAnnotationsChoose)
+        QWidget.setTabOrder(self.pushButtonOutputAnnotationsChoose, self.pushButtonAnnotationsShow)
+        QWidget.setTabOrder(self.pushButtonAnnotationsShow, self.pushButtonRun)
+        QWidget.setTabOrder(self.pushButtonRun, self.pushButtonExit)
 
         self.menubar.addAction(self.menuArquivo.menuAction())
         self.menubar.addAction(self.menuKeys.menuAction())
@@ -608,12 +635,12 @@ class Ui_MainWindow(object):
         self.labelNames.setText(QCoreApplication.translate("MainWindow", u"Opcional: Arquivo XLSX com a lista dos nomes dos candidatos", None))
         self.labelNomeCell.setText(QCoreApplication.translate("MainWindow", u"C\u00e9lula do primeiro nome", None))
 #if QT_CONFIG(tooltip)
-        self.lineEditNameFistName.setToolTip(QCoreApplication.translate("MainWindow", u"Indica a c\u00e9lula onde est\u00e1 armazenado o primeiro nome", None))
+        self.lineEditFirstCell.setToolTip(QCoreApplication.translate("MainWindow", u"Indica a c\u00e9lula onde est\u00e1 armazenado o primeiro nome", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(statustip)
-        self.lineEditNameFistName.setStatusTip(QCoreApplication.translate("MainWindow", u"Indica a c\u00e9lula onde est\u00e1 armazenado o primeiro nome", None))
+        self.lineEditFirstCell.setStatusTip(QCoreApplication.translate("MainWindow", u"Indica a c\u00e9lula onde est\u00e1 armazenado o primeiro nome", None))
 #endif // QT_CONFIG(statustip)
-        self.lineEditNameFistName.setText(QCoreApplication.translate("MainWindow", u"A2", None))
+        self.lineEditFirstCell.setText(QCoreApplication.translate("MainWindow", u"A2", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonNamesRemove.setToolTip(QCoreApplication.translate("MainWindow", u"Remove os nomes dos candidatos", None))
 #endif // QT_CONFIG(tooltip)
@@ -630,6 +657,7 @@ class Ui_MainWindow(object):
         self.pushButtonRun.setText(QCoreApplication.translate("MainWindow", u"Corrigir", None))
         self.labelCorrection.setText(QCoreApplication.translate("MainWindow", u"Corrigir provas", None))
         self.pushButtonExit.setText(QCoreApplication.translate("MainWindow", u"Sair", None))
+        self.labelCorrectionExtra.setText("")
 #if QT_CONFIG(tooltip)
         self.pushButtonOutputAnnotationsChoose.setToolTip(QCoreApplication.translate("MainWindow", u"Escolhe nome do arquivo PDF para salvar as anota\u00e7\u00f5es", None))
 #endif // QT_CONFIG(tooltip)

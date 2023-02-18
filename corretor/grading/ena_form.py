@@ -12,7 +12,7 @@ from grading.pdfs    import InputPDF, OutputPDF
 COLOR_CORRECT       = (0,0,1)
 COLOR_INCORRECT     = (1,0,0)
 COLOR_MASK          = (1,0,1)
-COLOR_ANNUL         = (1,0,1)
+COLOR_ANNUL         = (0,0,1)
 COLOR_ENTRY         = (0,0,1)
 COLOR_SCORE         = (1,0,0)
 COLOR_ANSWER        = (0,0,1)

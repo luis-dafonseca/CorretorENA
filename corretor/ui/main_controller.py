@@ -16,11 +16,14 @@ from PySide6.QtGui     import (QRegularExpressionValidator,
 
 import ena_param as ep
 
-from ui.main_model       import MainModel
-from ui.edit_keys_dialog import EditKeysDialog
-from ui.progress_dialog  import ProgressDialog
-from ui.help_window      import HelpWindow
-from ui.show_names       import show_names
+from ui.main_model      import MainModel
+from ui.keys_model      import KeysModel
+from ui.keys_dialog     import EditKeysDialog
+from ui.help_window     import HelpWindow
+from ui.show_names      import show_names
+from ui.progress_dialog import ProgressDialog
+
+import ui.keys_validator as keys_val
 
 #------------------------------------------------------------------------------#
 class MainController:
@@ -36,73 +39,76 @@ class MainController:
         self.last_dir              = ep.HOME
         self.suggested_annotations = ''
         self.suggested_results     = ''
-        self.keys_fname            = ''
 
-        self.uimodel = MainModel()
+        self.keys_model = KeysModel()
+        self.main_model = MainModel()
+
+        self.main_model.set_keys(self.keys_model.get_keys())
 
         self.start_line_edits()
         self.connectSignalsAndSlots()
 
     #--------------------------------------------------------------------------#
+    # GUI functions
+    #--------------------------------------------------------------------------#
     def start_line_edits(self) -> None:
         '''Initialise line edit widgets'''
 
-        k_model = self.uimodel.keys_model
+        self.ui.lineEditKeys.setFont     (keys_val.FONT)
+        self.ui.lineEditKeys.setInputMask(keys_val.MASK)
+        self.ui.lineEditKeys.setValidator(keys_val.validator(self.win))
 
-        self.ui.lineEditKeys.setFont     (k_model.font)
-        self.ui.lineEditKeys.setInputMask(k_model.mask)
-        self.ui.lineEditKeys.setValidator(k_model.validator(self.win))
-        self.ui.lineEditKeys.setText     (k_model.keys)
+        self.ui.lineEditKeys.setText(self.keys_model.get_keys())
 
-        regex     = QRegularExpression           ('[A-Z][1-9]')
-        validator = QRegularExpressionValidator  (regex, self.win)
-        self.ui.lineEditNameFistName.setFont     (k_model.font)
-        self.ui.lineEditNameFistName.setInputMask('>AD')
-        self.ui.lineEditNameFistName.setValidator(validator)
+        regex     = QRegularExpression         ('[A-Z][1-9]')
+        validator = QRegularExpressionValidator(regex, self.win)
+
+        self.ui.lineEditFirstCell.setFont     (keys_val.FONT)
+        self.ui.lineEditFirstCell.setInputMask('>AD')
+        self.ui.lineEditFirstCell.setValidator(validator)
 
     #--------------------------------------------------------------------------#
     def connectSignalsAndSlots(self) -> None:
         '''Initialise callbacks'''
 
-        ui    = self.ui
-        model = self.uimodel
+        ui = self.ui
 
         ui.action_Run  .triggered.connect(self.run)
         ui.pushButtonRun .clicked.connect(self.run)
         ui.pushButtonExit.clicked.connect(self.exit)
 
-        ui.action_Exit.triggered.connect(self.exit)
+        ui.action_Exit .triggered.connect(self.exit)
+        ui.action_About.triggered.connect(self.about)
+        ui.action_Help .triggered.connect(self.help)
 
         ui.action_Keys_Open  .triggered.connect(self.open_keys)
         ui.action_Keys_Save  .triggered.connect(self.save_keys)
         ui.action_Keys_Saveas.triggered.connect(self.saveas_keys)
 
-        ui.action_About.triggered.connect(self.about)
-        ui.action_Help .triggered.connect(self.help)
-
-        for yy in model.keys_model.get_ena_years():
+        for yy in self.keys_model.get_ena_years():
             action = QAction(f'ENA {yy}', self.win)
             action.triggered.connect(partial(self.set_ena_keys, yy))
             ui.menuKeys.addAction(action)
-
-        ui.pushButtonModelOpen.clicked.connect(self.open_model)
 
         ui.pushButtonKeysEdit         .clicked.connect(self.edit_keys)
         ui.lineEditKeys       .editingFinished.connect(self.parse_keys)
         ui.spinBoxMinimumCorrects.valueChanged.connect(self.set_minimum)
 
+        ui.pushButtonModelOpen.clicked.connect(self.open_model)
         ui.pushButtonExamsOpen.clicked.connect(self.open_exams)
 
-        ui.pushButtonNamesOpen         .clicked.connect(self.open_names)
-        ui.pushButtonNamesShow         .clicked.connect(self.show_names)
-        ui.pushButtonNamesRemove       .clicked.connect(self.remove_names)
-        ui.lineEditNameFistName.editingFinished.connect(self.set_first_cell)
+        ui.pushButtonNamesOpen      .clicked.connect(self.open_names)
+        ui.pushButtonNamesShow      .clicked.connect(self.show_names)
+        ui.pushButtonNamesRemove    .clicked.connect(self.remove_names)
+        ui.lineEditFirstCell.editingFinished.connect(self.set_first_cell)
 
         ui.pushButtonOutputResultsChoose    .clicked.connect(self.choose_results)
         ui.pushButtonOutputAnnotationsChoose.clicked.connect(self.choose_annotations)
 
         def show_connect(widget, function: Callable[[None],None]) -> None:
             widget.clicked.connect(partial(self.show, function))
+
+        model = self.main_model
 
         show_connect(ui.pushButtonModelShow,       model.get_model_pdf      )
         show_connect(ui.pushButtonKeysShow,        model.get_keys_pdf       )
@@ -114,11 +120,11 @@ class MainController:
     def update(self) -> None:
         '''Update window widgets'''
 
-        has_model   = self.uimodel.has_model
-        has_exams   = self.uimodel.has_exams
-        has_names   = self.uimodel.has_names
-        has_results = self.uimodel.has_results
-        has_annot   = self.uimodel.has_annot
+        has_model   = self.main_model.has_model
+        has_exams   = self.main_model.has_exams
+        has_names   = self.main_model.has_names
+        has_results = self.main_model.has_results
+        has_annot   = self.main_model.has_annot
 
         self.ui.pushButtonModelShow.setEnabled(has_model)
         self.ui.labelModelFileName .setEnabled(has_model)
@@ -134,23 +140,22 @@ class MainController:
         self.ui.labelOutputResultsFileName    .setEnabled(has_results)
         self.ui.labelOutputAnnotationsFileName.setEnabled(has_annot)
 
-        done = self.uimodel.done
+        done = self.main_model.done
 
         self.ui.pushButtonResultsShow    .setEnabled(done)
         self.ui.pushButtonAnnotationsShow.setEnabled(done)
 
-        ready = self.uimodel.ready_to_run()
-        self.ui.labelCorrection.setEnabled(ready)
-        self.ui.action_Run     .setEnabled(ready)
-        self.ui.pushButtonRun  .setEnabled(ready)
+        ready = self.main_model.ready_to_run() and not done
+        self.ui.action_Run   .setEnabled(ready)
+        self.ui.pushButtonRun.setEnabled(ready)
 
-        num_exams = self.uimodel.num_exams
-        num_names = self.uimodel.num_names
+        num_exams = self.main_model.num_exams
+        num_names = self.main_model.num_names
 
         if done:
             message = 'Provas corrigidas'
 
-        elif self.uimodel.has_conflict():
+        elif self.main_model.has_conflict():
             message = (
                 f'Atenção: A quantidade de respostas ({num_exams}) '
                 f'não coincide com a quantidade de candidatos ({num_names})'
@@ -171,10 +176,24 @@ class MainController:
         QApplication.quit()
 
     #--------------------------------------------------------------------------#
+    def about(self) -> None:
+        '''Show about dialog box'''
+
+        QMessageBox.about(self.win, ep.TITLE+' - Sobre', ep.ABOUT)
+
+    #--------------------------------------------------------------------------#
+    def help(self) -> None:
+        '''Show help window'''
+
+        HelpWindow(self.win)
+
+    #--------------------------------------------------------------------------#
+    # Execution function
+    #--------------------------------------------------------------------------#
     def run(self) -> None:
         '''Execute the correction'''
 
-        if self.uimodel.has_conflict():
+        if self.main_model.has_conflict():
             ans = QMessageBox.question(
                 self.win,
                 'Conflito',
@@ -188,10 +207,10 @@ class MainController:
             if ans == QMessageBox.No:
                 return
 
-        progress = ProgressDialog(self.win, ep.TITLE+' - Correção')
+        progress = ProgressDialog(self.win, f'{ep.TITLE} - Correção')
 
         try:
-            finished = self.uimodel.run(progress)
+            finished = self.main_model.run(progress)
 
         except IOError as er:
             self.error_box(
@@ -217,17 +236,7 @@ class MainController:
         self.update()
 
     #--------------------------------------------------------------------------#
-    def about(self) -> None:
-        '''Show about dialog box'''
-
-        QMessageBox.about(self.win, ep.TITLE+' - Sobre', ep.ABOUT)
-
-    #--------------------------------------------------------------------------#
-    def help(self) -> None:
-        '''Show help window'''
-
-        HelpWindow(self.win)
-
+    # Exams model and answers functions
     #--------------------------------------------------------------------------#
     def open_model(self) -> None:
         '''Open PDF file with model'''
@@ -244,7 +253,7 @@ class MainController:
         message = ''
 
         try:
-            self.uimodel.set_model(fname)
+            self.main_model.set_model(fname)
 
         except ValueError as er:
             message = str(er)
@@ -280,7 +289,7 @@ class MainController:
         self.last_dir = Path(fname).parent
 
         accept = self.load_names_or_exams(
-            partial(self.uimodel.set_exams, fname),
+            partial(self.main_model.set_exams, fname),
             'as respostas'
             )
 
@@ -291,6 +300,8 @@ class MainController:
             self.ui.labelExamsFileName.setText(fname)
             self.update()
 
+    #--------------------------------------------------------------------------#
+    # List of names functions
     #--------------------------------------------------------------------------#
     def open_names(self) -> None:
         '''Select spreadsheet file with candidates names'''
@@ -306,9 +317,9 @@ class MainController:
 
         accept = self.load_names_or_exams(
             partial(
-                self.uimodel.set_names,
+                self.main_model.set_names,
                 fname,
-                self.ui.lineEditNameFistName.text()
+                self.ui.lineEditFirstCell.text()
             ),
             'os nomes'
         )
@@ -320,13 +331,13 @@ class MainController:
 #--------------------------------------------------------------------------#
     def set_first_cell(self) -> None:
 
-        if not self.uimodel.has_names: return
+        if not self.main_model.has_names: return
 
         accept = self.load_names_or_exams(
             partial(
-                self.uimodel.set_names,
-                self.ui.labelNamesFileName  .text(),
-                self.ui.lineEditNameFistName.text()
+                self.main_model.set_names,
+                self.ui.labelNamesFileName.text(),
+                self.ui.lineEditFirstCell .text()
             ),
             'os nomes'
         )
@@ -337,7 +348,7 @@ class MainController:
     #--------------------------------------------------------------------------#
     def load_names_or_exams(
         self,
-        load_function: Callable[[None], None],
+        model_set_function: Callable[[None], None],
         item: str
     ) -> bool:
 
@@ -346,7 +357,7 @@ class MainController:
         accept  = True
 
         try:
-            load_function()
+            model_set_function()
 
         except (
             IOError,
@@ -372,13 +383,15 @@ class MainController:
     def remove_names(self) -> None:
         '''Remove the candidates names'''
 
-        self.uimodel.remove_names()
+        self.main_model.remove_names()
 
-        self.ui.lineEditNameFistName.setText('A2')
-        self.ui.labelNamesFileName  .setText('')
+        self.ui.lineEditFirstCell .setText('A2')
+        self.ui.labelNamesFileName.setText('')
 
         self.update()
 
+    #--------------------------------------------------------------------------#
+    # Results and Annotations functions
     #--------------------------------------------------------------------------#
     def choose_results(self) -> None:
         '''Choose spreadsheet file to save the results'''
@@ -393,7 +406,7 @@ class MainController:
             return
 
         try:
-            self.uimodel.set_results(fname)
+            self.main_model.set_results(fname)
 
         except IOError as er:
             self.error_box(
@@ -419,24 +432,23 @@ class MainController:
         if fname:
             self.last_dir = Path(fname).parent
             self.ui.labelOutputAnnotationsFileName.setText(fname)
-            self.uimodel.set_annotations(fname)
+            self.main_model.set_annotations(fname)
             self.update()
 
+    #--------------------------------------------------------------------------#
+    # Keys and minimum score functions
     #--------------------------------------------------------------------------#
     def open_keys(self) -> None:
         '''Choose TXT file with answer keys'''
 
-        fname = self.get_open_fname(
-            'Arquivo com o gabarito',
-            'txt'
-        )
+        fname = self.get_open_fname('Arquivo com o gabarito', 'txt')
 
-        if not fname:return
+        if not fname: return
 
         message = ''
 
         try:
-            keys = self.uimodel.keys_model.read_keys(fname)
+            keys = self.keys_model.read_keys(fname)
 
         except ValueError as er:
             message = str(er)
@@ -445,25 +457,26 @@ class MainController:
             message = f'Não foi possível ler o arquivo!\n\n{str(er)}'
 
         else:
-            self.keys_fname = fname
             self.ui.lineEditKeys.setText(keys)
 
         if message:
             self.error_box('Erro lendo o gabarito', message)
+        else:
+            self.main_model.set_keys(self.keys_model.get_keys())
 
     #--------------------------------------------------------------------------#
     def save_keys(self) -> None:
         '''Choose TXT file to save answer keys'''
 
-        if not self.keys_fname:
-            self.keys_fname = self.get_save_fname(
+        if not self.keys_model.fname:
+            self.keys_model.fname = self.get_save_fname(
                 'Arquivo para salvar o gabarito',
                 'txt'
             )
 
-        if self.keys_fname:
+        if self.keys_model.fname:
             try:
-                self.uimodel.keys_model.write_keys(self.keys_fname)
+                self.keys_model.write_keys()
 
             except IOError as er:
                 self.error_box(
@@ -481,42 +494,44 @@ class MainController:
         )
 
         if fname:
-            self.keys_fname = fname
+            self.keys_model.fname = fname
             self.save_keys()
 
     #--------------------------------------------------------------------------#
     def edit_keys(self) -> None:
         '''Open dialog box to edit answer keys'''
 
-        diag = EditKeysDialog(self.win, self.uimodel.keys_model)
+        diag = EditKeysDialog(self.win, self.keys_model)
 
         if diag.exec():
-            keys = self.uimodel.keys_model.keys
+            keys = self.keys_model.get_keys()
             self.ui.lineEditKeys.setText(keys)
-            self.uimodel.set_keys(keys)
+            self.main_model.set_keys(keys)
 
     #--------------------------------------------------------------------------#
     def parse_keys(self) -> None:
         '''Parse line edit keys string to keys model'''
 
         new_keys = self.ui.lineEditKeys.text()
-        self.uimodel.keys_model.set_keys(new_keys)
-        self.uimodel.keys_model.update()
-        # self.uimodel.set_keys(new_keys)
-
-    #--------------------------------------------------------------------------#
-    def set_minimum(self) -> None:
-        '''Set the minumum number of correct answers to approval'''
-
-        self.uimodel.set_minimum(self.ui.spinBoxMinimumCorrects.value())
+        self.keys_model.set_keys(new_keys)
+        self.main_model.set_keys(new_keys)
 
     #--------------------------------------------------------------------------#
     def set_ena_keys(self, year:int) -> None:
         '''Set keys of a predefined ENA year'''
 
-        keys = self.uimodel.keys_model.set_ena_keys(year)
+        keys = self.keys_model.set_ena_keys(year)
         self.ui.lineEditKeys.setText(keys)
+        self.main_model.set_keys(keys)
 
+    #--------------------------------------------------------------------------#
+    def set_minimum(self) -> None:
+        '''Set the minimum number of correct answers to approval'''
+
+        self.main_model.set_minimum(self.ui.spinBoxMinimumCorrects.value())
+
+    #--------------------------------------------------------------------------#
+    # Show functions
     #--------------------------------------------------------------------------#
     def show(self, get_function: Callable[[None],None]) -> None:
         '''Call default desktop application to show a file'''
@@ -528,13 +543,14 @@ class MainController:
     def show_names(self) -> None:
         '''Show dialog box with first and last candidates names'''
 
-        filename   = self.ui.labelNamesFileName  .text()
-        first_name = self.ui.lineEditNameFistName.text()
-        names      = self.uimodel.names
+        filename   = self.ui.labelNamesFileName.text()
+        first_name = self.ui.lineEditFirstCell .text()
+        names      = self.main_model.names
 
         show_names(self.win, filename, first_name, names)
 
     #-------------------------------------------------------------------------#
+    # Convenience functions
     #-------------------------------------------------------------------------#
     def error_box( self, title, message ) -> None:
         '''Convenience function to show error message dialog'''

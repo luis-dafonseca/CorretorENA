@@ -55,6 +55,14 @@ if __name__ == '__main__':
         progress_bar
     )
 
+    summary = results.summary()
+
+    print(f" Total:      {summary['total'     ]: 4d}")
+    print(f" Eliminados: {summary['eliminated']: 4d}")
+    print(f" Ausentes:   {summary['absent'    ]: 4d}")
+    print(f" Aprovados:  {summary['approved'  ]: 4d}")
+    print(f" Reprovados: {summary['reproved'  ]: 4d}")
+
     results.save(args.results)
     annot  .save(args.annot)
 

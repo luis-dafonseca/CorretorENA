@@ -40,6 +40,8 @@ class MainModel:
 
         self.fname_exams = ''
 
+        self.summary = None
+
         self.minimum = 15
 
     #--------------------------------------------------------------------------#
@@ -72,8 +74,12 @@ class MainModel:
         )
 
         if finished:
+
+            self.summary = results.summary()
+
             annot  .save(self.fname_annot)
             results.save(self.fname_results)
+
             self.done = True
 
         return finished

@@ -75,6 +75,13 @@ class ResultsSheet:
         self.sheet.column_dimensions['A'].width = 16
         self.sheet.column_dimensions['C'].width = 12
 
+        # Summary
+        self.total      = 0
+        self.eliminated = 0
+        self.absent     = 0
+        self.approved   = 0
+        self.reproved   = 0
+
     #--------------------------------------------------------------------------#
     def write_names(self, names: list[str]) -> None:
         '''Write names to spreadsheet'''
@@ -106,6 +113,8 @@ class ResultsSheet:
     def add_grade(self, ii: int, answers: Answers) -> None:
         '''Write grade and status of candidate to spreadsheet'''
 
+        self.total += 1
+
         aa = self.sheet.cell(ii+2, 1)
         bb = self.sheet.cell(ii+2, 2)
         cc = self.sheet.cell(ii+2, 3)
@@ -116,10 +125,33 @@ class ResultsSheet:
         bb.value     = answers.get_score()
         bb.alignment = Alignment(horizontal='center')
 
-        if   answers.is_eliminated(): cc.value = 'Eliminado'
-        elif answers.is_absent    (): cc.value = 'Ausente'
-        elif answers.is_approved  (): cc.value = 'Aprovado'
-        else:                         cc.value = 'Reprovado'
+        if answers.is_eliminated():
+            cc.value = 'Eliminado'
+            self.eliminated += 1
+
+        elif answers.is_absent():
+            cc.value = 'Ausente'
+            self.absent += 1
+
+        elif answers.is_approved():
+            cc.value = 'Aprovado'
+            self.approved += 1
+
+        else:
+            cc.value = 'Reprovado'
+            self.reproved += 1
+
+    #--------------------------------------------------------------------------#
+    def summary(self) -> dict[str, int]:
+        '''Return a results summary'''
+
+        return {
+            'total':      self.total,
+            'eliminated': self.eliminated,
+            'absent':     self.absent,
+            'approved':   self.approved,
+            'reproved':   self.reproved
+        }
 
     #--------------------------------------------------------------------------#
     def save(self, fname: str) -> None:

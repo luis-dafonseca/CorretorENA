@@ -19,9 +19,10 @@ import ena_param as ep
 from ui.main_model      import MainModel
 from ui.keys_model      import KeysModel
 from ui.keys_dialog     import EditKeysDialog
-from ui.help_window     import HelpWindow
-from ui.show_names      import show_names
 from ui.progress_dialog import ProgressDialog
+from ui.show_help       import show_help
+from ui.show_names      import show_names
+from ui.show_summary    import show_summary
 
 import ui.keys_validator as keys_val
 
@@ -153,7 +154,8 @@ class MainController:
         num_names = self.main_model.num_names
 
         if done:
-            message = 'Provas corrigidas'
+            total = self.main_model.summary['total']
+            message = f'{total} provas corrigidas'
 
         elif self.main_model.has_conflict():
             message = (
@@ -185,7 +187,7 @@ class MainController:
     def help(self) -> None:
         '''Show help window'''
 
-        HelpWindow(self.win)
+        show_help(self.win)
 
     #--------------------------------------------------------------------------#
     # Execution function
@@ -221,17 +223,7 @@ class MainController:
             )
 
         else:
-            msg = QMessageBox(self.win)
-            msg.setIcon(QMessageBox.Information)
-
-            if finished:
-                msg.setWindowTitle( ep.TITLE+' - Conclusão')
-                msg.setText(        ep.TITLE+': Correção Concluída' + ' '*25)
-            else:
-                msg.setWindowTitle( ep.TITLE+' - Conclusão')
-                msg.setText(        ep.TITLE+': Correção Cancelada' + ' '*25)
-
-            msg.show()
+            show_summary(self.win, finished, self.main_model.summary)
 
         self.update()
 
@@ -463,6 +455,7 @@ class MainController:
             self.error_box('Erro lendo o gabarito', message)
         else:
             self.main_model.set_keys(self.keys_model.get_keys())
+            self.update()
 
     #--------------------------------------------------------------------------#
     def save_keys(self) -> None:
@@ -507,6 +500,7 @@ class MainController:
             keys = self.keys_model.get_keys()
             self.ui.lineEditKeys.setText(keys)
             self.main_model.set_keys(keys)
+            self.update()
 
     #--------------------------------------------------------------------------#
     def parse_keys(self) -> None:
@@ -515,6 +509,7 @@ class MainController:
         new_keys = self.ui.lineEditKeys.text()
         self.keys_model.set_keys(new_keys)
         self.main_model.set_keys(new_keys)
+        self.update()
 
     #--------------------------------------------------------------------------#
     def set_ena_keys(self, year:int) -> None:
@@ -523,12 +518,14 @@ class MainController:
         keys = self.keys_model.set_ena_keys(year)
         self.ui.lineEditKeys.setText(keys)
         self.main_model.set_keys(keys)
+        self.update()
 
     #--------------------------------------------------------------------------#
     def set_minimum(self) -> None:
         '''Set the minimum number of correct answers to approval'''
 
         self.main_model.set_minimum(self.ui.spinBoxMinimumCorrects.value())
+        self.update()
 
     #--------------------------------------------------------------------------#
     # Show functions

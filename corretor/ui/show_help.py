@@ -1,15 +1,17 @@
 #------------------------------------------------------------------------------#
 
 from PySide6.QtCore    import QUrl
-from PySide6.QtWidgets import QMainWindow, QTextBrowser
+from PySide6.QtWidgets import QWidget, QMainWindow, QTextBrowser
 
 import ena_param as ep
 
 #------------------------------------------------------------------------------#
 class HelpWindow(QMainWindow):
+    '''Help window'''
 
     #--------------------------------------------------------------------------#
-    def __init__( self, parent ):
+    def __init__(self, parent: QWidget) -> None:
+        '''Initialize help window instance'''
 
         super().__init__(parent)
 
@@ -18,12 +20,18 @@ class HelpWindow(QMainWindow):
 
         self.help = QTextBrowser()
         self.help.setAcceptRichText(True)
-        self.help.setSource( help_url )
+        self.help.setSource(help_url)
 
-        self.setWindowTitle( ep.TITLE + ' - Ajuda')
-        self.setCentralWidget( self.help )
-        self.resize( 800, 600 )
+        self.setWindowTitle(ep.TITLE + ' - Ajuda')
+        self.setCentralWidget(self.help)
+        self.resize(800, 600)
 
         self.show()
+
+#------------------------------------------------------------------------------#
+def show_help(parent: QWidget) -> None:
+    '''Show help window'''
+
+    HelpWindow(parent)
 
 #------------------------------------------------------------------------------#

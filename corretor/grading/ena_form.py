@@ -16,9 +16,8 @@ COLOR_ANNUL         = (0,0,1)
 COLOR_ENTRY         = (0,0,1)
 COLOR_SCORE         = (1,0,0)
 COLOR_ANSWER        = (0,0,1)
-COLOR_ENTRY         = (0,0,1)
 COLOR_KEY           = (0,0,1)
-COLOR_KEY_INCORRECT = (1,0,1)
+COLOR_KEY_INCORRECT = (0,0.7,0.7)
 COLOR_NAME          = (0,0,1)
 
 # ------------------------------------------------------------------------------#
@@ -292,7 +291,7 @@ class ENAForm:
             width = 1,
             color = COLOR_KEY_INCORRECT,
             fill  = COLOR_KEY_INCORRECT,
-            fill_opacity = 0.2
+            fill_opacity = 0.4
         )
 
     #--------------------------------------------------------------------------#

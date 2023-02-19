@@ -102,13 +102,15 @@ class ImageManipulation:
         '''Update values of threshold and background'''
 
         rect = rects.BACKGROUND
-        back = np.mean(self.image[rect.y0:rect.y1, rect.x0:rect.x1])
+        back = int(np.mean(self.image[rect.y0:rect.y1, rect.x0:rect.x1]))
+        self.background = back / 255
+
+        back = int(np.amin(self.image[rect.y0:rect.y1, rect.x0:rect.x1]))
 
         rect = rects.BACKGROUND_GRAY
-        gray = np.mean(self.image[rect.y0:rect.y1, rect.x0:rect.x1])
+        gray = int(np.amax(self.image[rect.y0:rect.y1, rect.x0:rect.x1]))
 
-        self.threshold  = (back + gray) / 2
-        self.background = back / 255
+        self.threshold = (back + gray) / 2
 
     #--------------------------------------------------------------------------#
     def get_binary(self):

@@ -36,205 +36,99 @@ from fitz import IRect
 #------------------------------------------------------------------------------#
 
 DPI  = 300
-PAGE = IRect(0, 0, 2481, 3508)
 N_QUESTIONS = 30
 
-#------------------------------------------------------------------------------#
-
-def _calc_registration_mask() -> IRect:
-
-    x0 =   90
-    y0 = 1700
-    x1 = x0 + 2305
-    y1 = y0 + 1580
-
-    return IRect(x0, y0, x1, y1)
-
-REGISTRATION_MASK = _calc_registration_mask()
+PAGE              = IRect( 0,    0, 2481, 3508)
+REGISTRATION_MASK = IRect(90, 1700, 2395, 3280)
 
 #------------------------------------------------------------------------------#
 
-def _calc_name() -> tuple[IRect]:
+NAME      = IRect(115, 320, 2299, 420)
+NAME_TEXT = IRect(125, 332, 2299, 393)
 
-    x0 =  115
-    y0 =  320
-    w  = 2184
-    h  =  100
-    x1 = x0 + w
-    y1 = y0 + h
+ABSENT     = IRect( 102, 558,  278, 662)
+ELIMINATED = IRect(2135, 558, 2311, 662)
 
-    name = IRect(x0, y0, x1, y1)
-
-    x0 = x0 + 10
-    y0 = y0 + 12
-    y1 = y1 - 27
-
-    text = IRect(x0, y0, x1, y1)
-
-    return (name, text)
-
-NAME, NAME_TEXT = _calc_name()
+BACKGROUND      = IRect(1175, 1840, 1315, 3066)
+BACKGROUND_GRAY = IRect(1770, 3105, 2365, 3230)
 
 #------------------------------------------------------------------------------#
 
-def _calc_absent_eliminated() -> tuple[IRect]:
-
-    x_absent     =  102
-    x_eliminated = 2135
-    y = 558
-    w = 176
-    h = 104
-
-    return (
-        IRect(x_absent,     y, x_absent    +w, y+h),
-        IRect(x_eliminated, y, x_eliminated+w, y+h)
-    )
-
-ABSENT, ELIMINATED = _calc_absent_eliminated()
-
-#------------------------------------------------------------------------------#
-
-def _calc_grades_full() -> IRect:
-
-    x = 1780
-    y = 3110
-    w =  580
-    h =   80
-
-    return IRect(x, y, x+w, y+h)
-
-GRADES_FINAL = _calc_grades_full()
-
-#------------------------------------------------------------------------------#
-
-def _calc_mark_boxes() -> tuple[IRect]:
-
-    x_left  =  300
-    x_right = 1483
-    y = 1840
-    w =  698
-    h = 1226
-
-    return (
-        IRect(x_left,  y, x_left +w, y+h),
-        IRect(x_right, y, x_right+w, y+h)
-    )
-
-MARKS_BOX_LEFT, MARKS_BOX_RIGHT = _calc_mark_boxes()
-
-#------------------------------------------------------------------------------#
-
-def _calc_grades_boxes() -> tuple[IRect]:
-
-    x_left  = 1040
-    x_right = 2222
-    y = 1840
-    w =  106
-    h = 1226
-
-    return (
-        IRect(x_left,  y, x_left +w, y+h),
-        IRect(x_right, y, x_right+w, y+h)
-    )
-
-GRADES_BOX_LEFT, GRADES_BOX_RIGHT = _calc_grades_boxes()
-
-#------------------------------------------------------------------------------#
-
-def _calc_background() -> IRect:
-
-    x = 1175
-    y = 1840
-    w =  140
-    h = 1226
-
-    return IRect(x, y, x+w, y+h)
-
-
-def _calc_background_gray() -> IRect:
-
-    x = 1770
-    y = 3105
-    w =  595
-    h =  125
-
-    return IRect(x, y, x+w, y+h)
-
-BACKGROUND      = _calc_background()
-BACKGROUND_GRAY = _calc_background_gray()
-
-#------------------------------------------------------------------------------#
+GRADES_BOX_LEFT  = IRect(1040, 1840, 1146, 3066)
+GRADES_BOX_RIGHT = IRect(2222, 1840, 2328, 3066)
+GRADES_FINAL     = IRect(1780, 3110, 2360, 3190)
 
 def _calc_grades() -> tuple[list[IRect]]:
+
+    BOX_HEIGHT  = 53
+    CELL_HEIGHT = 83.6
+    CELL_BASE   =  2
+    TEXT_BASE   = -6
 
     grades_box  = []
     grades_text = []
 
-    box_height  = 53
-    cell_height = 83.6
-    cell_base   =  2
-    text_base   = -6
+    rect = GRADES_BOX_LEFT
+    base_y0 = rect.y0 + CELL_BASE
 
-    for nn in range(30):
+    for ii in range(15):
 
-        if nn < 15:
-            rect = GRADES_BOX_LEFT.rect
-            ii = nn
-        else:
-            rect = GRADES_BOX_RIGHT.rect
-            ii = nn - 15
+        box_y0  = int(base_y0 + ii * CELL_HEIGHT)
+        text_y0 = box_y0 + TEXT_BASE
 
-        rect.y0 += ii * cell_height + cell_base
-        rect.y1  = rect.y0 + box_height
+        grades_box .append(IRect(rect.x0, box_y0,  rect.x1, box_y0 +BOX_HEIGHT))
+        grades_text.append(IRect(rect.x0, text_y0, rect.x1, text_y0+BOX_HEIGHT))
 
-        grades_box .append(rect.irect)
+    rect = GRADES_BOX_RIGHT
 
-        rect.y0 += text_base
-        rect.y1 += text_base
+    for ii in range(15):
 
-        grades_text.append(rect.irect)
+        box_y0  = int(base_y0 + ii * CELL_HEIGHT)
+        text_y0 = box_y0 + TEXT_BASE
+
+        grades_box .append(IRect(rect.x0, box_y0,  rect.x1, box_y0 +BOX_HEIGHT))
+        grades_text.append(IRect(rect.x0, text_y0, rect.x1, text_y0+BOX_HEIGHT))
 
     return (grades_box, grades_text)
-
 
 GRADES, GRADES_TEXT = _calc_grades()
 
 #------------------------------------------------------------------------------#
 
-def _calc_marks() -> tuple[list[list[IRect]],int]:
+MARKS_BOX_LEFT  = IRect( 300, 1840,  998, 3066)
+MARKS_BOX_RIGHT = IRect(1483, 1840, 2181, 3066)
 
-    marks = []
+def _calc_marks() -> list[list[IRect]]:
 
-    mark_height =  56
-    mark_width  = 106
+    def calc_marks_at_line(xx: int, y0: int) -> list[IRect]:
 
-    cell_height =  83.6
-    cell_width  = 148
-
-    for nn in range(30):
-
-        if nn < 15:
-            rect = MARKS_BOX_LEFT
-            ii = nn
-        else:
-            rect = MARKS_BOX_RIGHT
-            ii = nn - 15
-
-        y0 = rect.y0 + cell_height * ii
-        y1 =      y0 + mark_height
+        MARK_HEIGHT =  56
+        MARK_WIDTH  = 106
+        CELL_WIDTH  = 148
 
         line = []
 
-        xx = rect.x0
-
         for jj in range(5):
+            x0 = int(xx + CELL_WIDTH * jj)
+            line.append(IRect(x0, y0, x0+MARK_WIDTH, y0+MARK_HEIGHT))
 
-            x0 = xx + cell_width * jj
-            x1 = x0 + mark_width
+        return line
 
-            line.append(IRect(x0,y0,x1,y1))
+    CELL_HEIGHT = 83.6
 
-        marks.append(line.copy())
+    marks = []
+
+    rect = MARKS_BOX_LEFT
+
+    for ii in range(15):
+        y0 = int(rect.y0 + CELL_HEIGHT * ii)
+        marks.append(calc_marks_at_line(rect.x0, y0))
+
+    rect = MARKS_BOX_RIGHT
+
+    for ii in range(15):
+        y0 = int(rect.y0 + CELL_HEIGHT * ii)
+        marks.append(calc_marks_at_line(rect.x0, y0))
 
     return marks
 

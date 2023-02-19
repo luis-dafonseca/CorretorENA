@@ -120,10 +120,10 @@ class ENAForm:
         def write_final_score(shape, text: str, color: tuple[int]) -> None:
             '''Convenience function to write on final grade field'''
 
-            font_size = int( 0.9*rects.FINAL_GRADE.height )
+            font_size = int(0.9*rects.GRADES_FINAL.height)
 
             shape.insert_textbox(
-                rects.FINAL_GRADE,
+                rects.GRADES_FINAL,
                 text,
                 color=color,
                 fontsize=font_size,
@@ -139,7 +139,7 @@ class ENAForm:
             return
 
         # Write the score for each answer
-        font_size = int(0.9*rects.GRADE_TEXT[0].height)
+        font_size = int(0.9*rects.GRADES_TEXT[0].height)
 
         for ii in range(rects.N_QUESTIONS):
 
@@ -147,7 +147,7 @@ class ENAForm:
             color   = COLOR_CORRECT if correct else COLOR_INCORRECT
 
             self.shape.insert_textbox(
-                rects.GRADE_TEXT[ii],
+                rects.GRADES_TEXT[ii],
                 str(correct),
                 color=color,
                 fontsize=font_size,
@@ -185,7 +185,7 @@ class ENAForm:
         self.draw_annulated_questions(keys)
 
         for ii, jj in [ (ii,jj) for ii, jj in enumerate(keys) if jj != -1 ]:
-            self.shape.draw_rect(rects.MARK[ii][jj])
+            self.shape.draw_rect(rects.MARKS[ii][jj])
 
         self.shape.finish(
             width = 2,
@@ -200,13 +200,13 @@ class ENAForm:
 
         # Score entries
         for ii in range(rects.N_QUESTIONS):
-            self.shape.draw_rect(rects.GRADE[ii])
+            self.shape.draw_rect(rects.GRADES[ii])
         self.shape.finish(width=5, color=COLOR_SCORE)
 
         # Answer entries
         for ii in range(rects.N_QUESTIONS):
             for jj in range(5):
-                self.shape.draw_rect(rects.MARK[ii][jj])
+                self.shape.draw_rect(rects.MARKS[ii][jj])
         self.shape.finish(width=5, color=COLOR_ANSWER)
 
         # Absent and eliminated
@@ -244,7 +244,7 @@ class ENAForm:
             fill_opacity = 0.05
         )
 
-        self.shape.draw_rect(rects.FINAL_GRADE)
+        self.shape.draw_rect(rects.GRADES_FINAL)
         self.shape.finish(width=5, color=COLOR_SCORE)
 
     #--------------------------------------------------------------------------#
@@ -258,7 +258,7 @@ class ENAForm:
         for ii in [ ii for ii, cc in enumerate(answers.correct) if cc ]:
             key = answers.keys[ii]
             if key != -1:
-                self.shape.draw_rect(rects.MARK[ii][key])
+                self.shape.draw_rect(rects.MARKS[ii][key])
 
         self.shape.finish(
             width = 7,
@@ -273,7 +273,7 @@ class ENAForm:
             if answers.correct[ii]:
                 continue
             for jj in ans:
-                self.shape.draw_rect(rects.MARK[ii][jj])
+                self.shape.draw_rect(rects.MARKS[ii][jj])
 
         self.shape.finish(
             width = 7,
@@ -285,7 +285,7 @@ class ENAForm:
         '''Draw key on wrong answers'''
 
         for ii in [ ii for ii, cc in enumerate(answers.correct) if not cc ]:
-            self.shape.draw_rect(rects.MARK[ii][answers.keys[ii]])
+            self.shape.draw_rect(rects.MARKS[ii][answers.keys[ii]])
 
         self.shape.finish(
             width = 1,
@@ -300,8 +300,8 @@ class ENAForm:
         #----------------------------------------------------------------------#
         def draw_annul(shape, ii:int) -> None:
 
-            r1 = rects.MARK[ii][0]
-            r2 = rects.MARK[ii][4]
+            r1 = rects.MARKS[ii][0]
+            r2 = rects.MARKS[ii][4]
 
             p1 = [ r1.x0+5, (r1.y0+r1.y1)/2 ]
             p2 = [ r2.x1-5, (r2.y0+r2.y1)/2 ]

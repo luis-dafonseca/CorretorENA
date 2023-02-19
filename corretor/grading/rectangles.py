@@ -2,24 +2,31 @@
 '''Define rectangles pointing to field positions on the ENA form
 
 This module defines the following constants:
+
     DPI
     PAGE
     N_QUESTIONS
+
     REGISTRATION_MASK
+
     NAME
     NAME_TEXT
+
     ABSENT
-    ABSENT_AREA
     ELIMINATED
-    FINAL_GRADE
+
+    MARKS
     MARKS_BOX_LEFT
     MARKS_BOX_RIGHT
+
+    GRADES
+    GRADES_TEXT
     GRADES_BOX_LEFT
     GRADES_BOX_RIGHT
-    GRADE
-    GRADE_TEXT
-    MARK
-    MARK_AREA
+    GRADES_FINAL
+
+    BACKGROUND
+    BACKGROUND_GRAY
 
 WARNING: Never edit the rectangles from this module!
 '''
@@ -85,11 +92,9 @@ def _calc_absent_eliminated() -> tuple[IRect]:
 
 ABSENT, ELIMINATED = _calc_absent_eliminated()
 
-ABSENT_AREA = ABSENT.get_area()
-
 #------------------------------------------------------------------------------#
 
-def _calc_full_grade() -> IRect:
+def _calc_grades_full() -> IRect:
 
     x = 1780
     y = 3110
@@ -98,7 +103,7 @@ def _calc_full_grade() -> IRect:
 
     return IRect(x, y, x+w, y+h)
 
-FINAL_GRADE = _calc_full_grade()
+GRADES_FINAL = _calc_grades_full()
 
 #------------------------------------------------------------------------------#
 
@@ -162,8 +167,8 @@ BACKGROUND_GRAY = _calc_background_gray()
 
 def _calc_grades() -> tuple[list[IRect]]:
 
-    grade_box  = []
-    grade_text = []
+    grades_box  = []
+    grades_text = []
 
     box_height  = 53
     cell_height = 83.6
@@ -182,17 +187,17 @@ def _calc_grades() -> tuple[list[IRect]]:
         rect.y0 += ii * cell_height + cell_base
         rect.y1  = rect.y0 + box_height
 
-        grade_box .append(rect.irect)
+        grades_box .append(rect.irect)
 
         rect.y0 += text_base
         rect.y1 += text_base
 
-        grade_text.append(rect.irect)
+        grades_text.append(rect.irect)
 
-    return (grade_box, grade_text)
+    return (grades_box, grades_text)
 
 
-GRADE, GRADE_TEXT = _calc_grades()
+GRADES, GRADES_TEXT = _calc_grades()
 
 #------------------------------------------------------------------------------#
 
@@ -231,8 +236,8 @@ def _calc_marks() -> tuple[list[list[IRect]],int]:
 
         marks.append(line.copy())
 
-    return (marks, mark_width*mark_height)
+    return marks
 
-MARK, MARK_AREA = _calc_marks()
+MARKS = _calc_marks()
 
 #------------------------------------------------------------------------------#

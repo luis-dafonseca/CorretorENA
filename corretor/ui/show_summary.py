@@ -15,10 +15,10 @@ def show_summary(
     sep = '\n     '
 
     if not finished:
-        message = f"Correção Cancelada{' '*40}"
+        message = 'Correção Cancelada'
 
     else:
-        message = f"Correção Concluída{' '*40}"
+        message = 'Correção Concluída'
 
         tot = summary['total'     ]
         eli = summary['eliminated']
@@ -40,6 +40,8 @@ def show_summary(
 
         if   rep == 1: message += sep +      '1 candidato reprovado'
         elif rep >  1: message += sep + f'{rep} candidatos reprovados'
+
+    message += ' '*80
 
     dialog = QMessageBox(parent)
     dialog.setIcon(QMessageBox.Information)

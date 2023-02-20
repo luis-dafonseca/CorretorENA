@@ -29,7 +29,7 @@ VERSION   = '0.0.2 - beta'
 TITLE     = 'CorretorENA'
 MY_APP_ID = 'Prof_Luis_A_DAfonseca.Corretor_ENA'
 
-ABOUT = f'''{TITLE} é um programa para corrigir as provas do ENA {' '*8}
+ABOUT = f'''{TITLE} é um programa para corrigir as provas do ENA
 
 Desenvolvedor: {AUTHOR}
 Versão: {VERSION}

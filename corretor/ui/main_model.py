@@ -173,13 +173,13 @@ class MainModel:
         try:
             self.names = read_names_from_spreadsheet(fpath, first_cell)
 
-        except IOError as er:
+        except (IOError, IndexError) as er:
 
             self.names = []
 
             raise IOError(
-                f'Não foi possível ler os nomes do arquivo {fpath.name}!'
-                '\n\n{str(er)}'
+                f'Não foi possível ler os nomes do arquivo {fpath.name}!\n\n'
+                f'Erro: {str(er)}'
             )
 
         self.num_names = len(self.names)
@@ -187,10 +187,10 @@ class MainModel:
         self.done      = False
 
         if self.has_exams and (self.num_exams != self.num_names):
-            raise IndexError((
-                f'Cuidado: A quantidade de respostas ({self.num_exams})'
-                f' não coincide com a quantidade de nomes ({self.num_names}).\n'
-            ))
+            raise IndexError(
+                f'Cuidado: A quantidade de respostas ({self.num_exams}) '
+                f'não coincide com a quantidade de nomes ({self.num_names}).\n'
+            )
 
     #--------------------------------------------------------------------------#
     def remove_names(self) -> None:

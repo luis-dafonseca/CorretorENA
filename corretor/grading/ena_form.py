@@ -45,8 +45,6 @@ def create_fields_page(
 
     form.insert_pixmap(model.get_pixmap(0))
 
-    form.insert_name('CAMPOS', 1)
-
     if extra:
         form.insert_extra_rects()
 

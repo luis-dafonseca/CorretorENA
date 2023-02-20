@@ -24,7 +24,7 @@ from ui.show_help       import show_help
 from ui.show_names      import show_names
 from ui.show_summary    import show_summary
 
-import ui.keys_validator as keys_val
+import ui.keys_validator as kval
 
 #------------------------------------------------------------------------------#
 class MainController:
@@ -55,16 +55,16 @@ class MainController:
     def start_line_edits(self) -> None:
         '''Initialise line edit widgets'''
 
-        self.ui.lineEditKeys.setFont     (keys_val.FONT)
-        self.ui.lineEditKeys.setInputMask(keys_val.MASK)
-        self.ui.lineEditKeys.setValidator(keys_val.validator(self.win))
+        self.ui.lineEditKeys.setFont     (kval.FONT)
+        self.ui.lineEditKeys.setInputMask(kval.MASK)
+        self.ui.lineEditKeys.setValidator(kval.validator(self.win))
 
         self.ui.lineEditKeys.setText(self.keys_model.get_keys())
 
         regex     = QRegularExpression         ('[A-Z][1-9]')
         validator = QRegularExpressionValidator(regex, self.win)
 
-        self.ui.lineEditFirstCell.setFont     (keys_val.FONT)
+        self.ui.lineEditFirstCell.setFont     (kval.FONT)
         self.ui.lineEditFirstCell.setInputMask('>AD')
         self.ui.lineEditFirstCell.setValidator(validator)
 
@@ -181,7 +181,10 @@ class MainController:
     def about(self) -> None:
         '''Show about dialog box'''
 
-        QMessageBox.about(self.win, ep.TITLE+' - Sobre', ep.ABOUT)
+        title   = ep.TITLE + ' - Sobre'
+        message = ep.ABOUT + '\n' + ' '*120
+
+        QMessageBox.about(self.win, title, message)
 
     #--------------------------------------------------------------------------#
     def help(self) -> None:
@@ -257,7 +260,7 @@ class MainController:
         ) as er:
             message = (
                 f'Não foi possível ler o arquivo com o modelo!\n\n'
-                f'Mensagem: {str(er)}'
+                f'{str(er)}'
             )
 
         else:
@@ -358,7 +361,7 @@ class MainController:
         ) as er:
             message = (
                 f'Não foi possível ler o arquivo com {item}!\n\n'
-                f'Mensagem: {str(er)}'
+                f'{str(er)}'
             )
             accept = False
 
@@ -552,6 +555,8 @@ class MainController:
     def error_box( self, title, message ) -> None:
         '''Convenience function to show error message dialog'''
 
+        message = message + '\n' + ' '*90
+
         QMessageBox.critical(
             self.win,
             title,
@@ -576,7 +581,7 @@ class MainController:
         '''Convenience function to show file save dialog'''
 
         if not suggestion:
-            suggestion = self.last_dir
+            suggestion = str(self.last_dir)
 
         fname, _ = QFileDialog.getSaveFileName(
             parent  = self.win,

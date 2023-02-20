@@ -32,13 +32,13 @@ class MainModel:
         self.model: InputPDF | None = None
         self.exams: InputPDF | None = None
 
-        self.fname_annot:   str = ''
-        self.fname_results: str = ''
+        self.fname_exams   = ''
+        self.fname_names   = ''
+        self.fname_annot   = ''
+        self.fname_results = ''
 
         self.num_exams = 0
         self.num_names = 0
-
-        self.fname_exams = ''
 
         self.summary = None
 
@@ -142,12 +142,25 @@ class MainModel:
 
         fpath = Path(fname).resolve()
 
-        new_exams = InputPDF(fpath)
+        try:
+            new_exams = InputPDF(fpath)
+
+        except (
+            IOError,
+            FileNotFoundError,
+            RuntimeError
+        ) as er:
+            raise IOError(
+                f'Não foi possível ler o arquivo {fpath.name}\n'
+                f'Erro: {str(er)}'
+            )
 
         nn = new_exams.page_count()
 
         if nn == 0:
-            raise ValueError( f'O arquivo {fpath.name} não contém nenhuma página.\n' )
+            raise ValueError(
+                f'O arquivo {fpath.name} não contém nenhuma página.\n'
+            )
 
         if self.has_exams:
             self.exams.close()
@@ -182,9 +195,10 @@ class MainModel:
                 f'Erro: {str(er)}'
             )
 
-        self.num_names = len(self.names)
-        self.has_names = True
-        self.done      = False
+        self.num_names   = len(self.names)
+        self.has_names   = True
+        self.fname_names = str(fname)
+        self.done        = False
 
         if self.has_exams and (self.num_exams != self.num_names):
             raise IndexError(
@@ -274,6 +288,12 @@ class MainModel:
         '''Return exams PDF file name'''
 
         return self.fname_exams
+
+    #--------------------------------------------------------------------------#
+    def get_names_xlsx(self) -> str:
+        '''Return names xlsx file name'''
+
+        return self.fname_names
 
     #--------------------------------------------------------------------------#
     def get_annotations_pdf(self) -> str:

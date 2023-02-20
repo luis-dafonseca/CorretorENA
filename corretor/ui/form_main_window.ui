@@ -52,15 +52,15 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_12">
        <item row="0" column="1">
-        <widget class="QPushButton" name="pushButtonModelOpen">
+        <widget class="QPushButton" name="pushButtonModelLoad">
          <property name="toolTip">
-          <string>Seleciona o arquivo PDF com o modelo da folha de respostas</string>
+          <string>Carrega o arquivo PDF com o modelo da folha de respostas</string>
          </property>
          <property name="statusTip">
-          <string>Seleciona o arquivo PDF com o modelo da folha de respostas</string>
+          <string>Carrega o arquivo PDF com o modelo da folha de respostas</string>
          </property>
          <property name="text">
-          <string>Abrir</string>
+          <string>Carregar</string>
          </property>
          <property name="autoDefault">
           <bool>true</bool>
@@ -68,7 +68,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="pushButtonModelShow">
+        <widget class="QPushButton" name="pushButtonModelOpen">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -79,7 +79,7 @@
           <string>Exibe o modelo da folha de respostas com as marcações para a correção</string>
          </property>
          <property name="text">
-          <string>Ver</string>
+          <string>Abrir</string>
          </property>
          <property name="autoDefault">
           <bool>true</bool>
@@ -125,7 +125,7 @@
           <bool>false</bool>
          </property>
          <property name="buddy">
-          <cstring>pushButtonModelShow</cstring>
+          <cstring>pushButtonModelOpen</cstring>
          </property>
         </widget>
        </item>
@@ -141,7 +141,7 @@
           <string>Arquivo PDF com o modelo da folha de respostas</string>
          </property>
          <property name="buddy">
-          <cstring>pushButtonModelOpen</cstring>
+          <cstring>pushButtonModelLoad</cstring>
          </property>
         </widget>
        </item>
@@ -174,7 +174,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QPushButton" name="pushButtonKeysShow">
+        <widget class="QPushButton" name="pushButtonKeysOpen">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -185,7 +185,7 @@
           <string>Exibe o gabarito na folha de respostas</string>
          </property>
          <property name="text">
-          <string>Ver</string>
+          <string>Abrir</string>
          </property>
          <property name="autoDefault">
           <bool>true</bool>
@@ -235,12 +235,12 @@
             <string>Número mínimo de acertos para aprovação </string>
            </property>
            <property name="buddy">
-            <cstring>spinBoxMinimumCorrects</cstring>
+            <cstring>spinBoxMinimum</cstring>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBoxMinimumCorrects">
+          <widget class="QSpinBox" name="spinBoxMinimum">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -305,7 +305,7 @@
           <string>Arquivo PDF com as respostas dos candidatos</string>
          </property>
          <property name="buddy">
-          <cstring>pushButtonExamsOpen</cstring>
+          <cstring>pushButtonExamsLoad</cstring>
          </property>
         </widget>
        </item>
@@ -342,12 +342,12 @@
           <string>Nome do arquivo</string>
          </property>
          <property name="buddy">
-          <cstring>pushButtonExamsShow</cstring>
+          <cstring>pushButtonExamsOpen</cstring>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="pushButtonExamsShow">
+        <widget class="QPushButton" name="pushButtonExamsOpen">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -358,7 +358,7 @@
           <string>Exibe o arquivo PDF com as respostas dos candidatos</string>
          </property>
          <property name="text">
-          <string>Ver</string>
+          <string>Abrir</string>
          </property>
          <property name="autoDefault">
           <bool>true</bool>
@@ -366,15 +366,15 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QPushButton" name="pushButtonExamsOpen">
+        <widget class="QPushButton" name="pushButtonExamsLoad">
          <property name="toolTip">
-          <string>Seleciona o arquivo PDF com as respostas dos candidatos</string>
+          <string>Carrega o arquivo PDF com as respostas dos candidatos</string>
          </property>
          <property name="statusTip">
-          <string>Seleciona o arquivo PDF com as respostas dos candidatos</string>
+          <string>Carrega o arquivo PDF com as respostas dos candidatos</string>
          </property>
          <property name="text">
-          <string>Abrir</string>
+          <string>Carregar</string>
          </property>
          <property name="autoDefault">
           <bool>true</bool>
@@ -432,12 +432,12 @@
           <string>Nome do arquivo</string>
          </property>
          <property name="buddy">
-          <cstring>pushButtonResultsShow</cstring>
+          <cstring>pushButtonResultsOpen</cstring>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QPushButton" name="pushButtonResultsShow">
+        <widget class="QPushButton" name="pushButtonResultsOpen">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -448,7 +448,7 @@
           <string>Exibe as notas dos candidatos</string>
          </property>
          <property name="text">
-          <string>Ver</string>
+          <string>Abrir</string>
          </property>
          <property name="autoDefault">
           <bool>true</bool>
@@ -542,34 +542,15 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QPushButton" name="pushButtonNamesOpen">
+          <widget class="QPushButton" name="pushButtonNamesToggle">
            <property name="toolTip">
-            <string>Seleciona arquivo XLSX que contém o nome dos candidatos</string>
+            <string>Carrega arquivo XLSX que contém o nome dos candidatos</string>
            </property>
            <property name="statusTip">
-            <string>Seleciona arquivo XLSX que contém o nome dos candidatos</string>
+            <string>Carrega arquivo XLSX que contém o nome dos candidatos</string>
            </property>
            <property name="text">
-            <string>Abrir</string>
-           </property>
-           <property name="autoDefault">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QPushButton" name="pushButtonNamesShow">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>Exibe os nomes dos candidatos</string>
-           </property>
-           <property name="statusTip">
-            <string>Exibe os nomes dos candidatos</string>
-           </property>
-           <property name="text">
-            <string>Ver</string>
+            <string>Carregar</string>
            </property>
            <property name="autoDefault">
             <bool>true</bool>
@@ -588,7 +569,7 @@
             <string>Opcional: Arquivo XLSX com a lista dos nomes dos candidatos</string>
            </property>
            <property name="buddy">
-            <cstring>pushButtonNamesOpen</cstring>
+            <cstring>pushButtonNamesToggle</cstring>
            </property>
           </widget>
          </item>
@@ -665,19 +646,38 @@
            </item>
           </layout>
          </item>
-         <item row="2" column="1">
-          <widget class="QPushButton" name="pushButtonNamesRemove">
+         <item row="3" column="1">
+          <widget class="QPushButton" name="pushButtonNamesCheck">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="toolTip">
-            <string>Remove os nomes dos candidatos</string>
+            <string>Exibe os nomes dos candidatos</string>
            </property>
            <property name="statusTip">
-            <string>Remove os nomes dos candidatos</string>
+            <string>Exibe os nomes dos candidatos</string>
            </property>
            <property name="text">
-            <string>Remover</string>
+            <string>Conferir</string>
+           </property>
+           <property name="autoDefault">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QPushButton" name="pushButtonNamesOpen">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>Abre o arquivo com os nomes dos candidatos</string>
+           </property>
+           <property name="statusTip">
+            <string>Abre o arquivo com os nomes dos candidatos</string>
+           </property>
+           <property name="text">
+            <string>Abrir</string>
            </property>
            <property name="autoDefault">
             <bool>true</bool>
@@ -851,12 +851,12 @@
           <string>Nome do arquivo</string>
          </property>
          <property name="buddy">
-          <cstring>pushButtonAnnotationsShow</cstring>
+          <cstring>pushButtonAnnotationsOpen</cstring>
          </property>
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QPushButton" name="pushButtonAnnotationsShow">
+        <widget class="QPushButton" name="pushButtonAnnotationsOpen">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -867,7 +867,7 @@
           <string>Exibe as anotações das correções</string>
          </property>
          <property name="text">
-          <string>Ver</string>
+          <string>Abrir</string>
          </property>
          <property name="autoDefault">
           <bool>true</bool>
@@ -1010,22 +1010,22 @@
   </action>
  </widget>
  <tabstops>
+  <tabstop>pushButtonModelLoad</tabstop>
   <tabstop>pushButtonModelOpen</tabstop>
-  <tabstop>pushButtonModelShow</tabstop>
-  <tabstop>lineEditKeys</tabstop>
-  <tabstop>spinBoxMinimumCorrects</tabstop>
   <tabstop>pushButtonKeysEdit</tabstop>
-  <tabstop>pushButtonKeysShow</tabstop>
+  <tabstop>lineEditKeys</tabstop>
+  <tabstop>spinBoxMinimum</tabstop>
+  <tabstop>pushButtonKeysOpen</tabstop>
+  <tabstop>pushButtonExamsLoad</tabstop>
   <tabstop>pushButtonExamsOpen</tabstop>
-  <tabstop>pushButtonExamsShow</tabstop>
+  <tabstop>pushButtonNamesToggle</tabstop>
   <tabstop>pushButtonNamesOpen</tabstop>
-  <tabstop>pushButtonNamesRemove</tabstop>
   <tabstop>lineEditFirstCell</tabstop>
-  <tabstop>pushButtonNamesShow</tabstop>
+  <tabstop>pushButtonNamesCheck</tabstop>
   <tabstop>pushButtonOutputResultsChoose</tabstop>
-  <tabstop>pushButtonResultsShow</tabstop>
+  <tabstop>pushButtonResultsOpen</tabstop>
   <tabstop>pushButtonOutputAnnotationsChoose</tabstop>
-  <tabstop>pushButtonAnnotationsShow</tabstop>
+  <tabstop>pushButtonAnnotationsOpen</tabstop>
   <tabstop>pushButtonRun</tabstop>
   <tabstop>pushButtonExit</tabstop>
  </tabstops>

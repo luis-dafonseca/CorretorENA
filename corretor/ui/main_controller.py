@@ -91,31 +91,31 @@ class MainController:
             action.triggered.connect(partial(self.set_ena_keys, yy))
             ui.menuKeys.addAction(action)
 
-        ui.pushButtonKeysEdit         .clicked.connect(self.edit_keys)
-        ui.lineEditKeys       .editingFinished.connect(self.parse_keys)
-        ui.spinBoxMinimumCorrects.valueChanged.connect(self.set_minimum)
+        ui.pushButtonKeysEdit  .clicked.connect(self.edit_keys)
+        ui.lineEditKeys.editingFinished.connect(self.parse_keys)
+        ui.spinBoxMinimum .valueChanged.connect(self.set_minimum)
 
-        ui.pushButtonModelOpen.clicked.connect(self.open_model)
-        ui.pushButtonExamsOpen.clicked.connect(self.open_exams)
+        ui.pushButtonModelLoad.clicked.connect(self.load_model)
+        ui.pushButtonExamsLoad.clicked.connect(self.load_exams)
 
-        ui.pushButtonNamesOpen      .clicked.connect(self.open_names)
-        ui.pushButtonNamesShow      .clicked.connect(self.show_names)
-        ui.pushButtonNamesRemove    .clicked.connect(self.remove_names)
+        ui.pushButtonNamesToggle    .clicked.connect(self.toggle_names)
+        ui.pushButtonNamesCheck     .clicked.connect(self.show_names)
         ui.lineEditFirstCell.editingFinished.connect(self.set_first_cell)
 
         ui.pushButtonOutputResultsChoose    .clicked.connect(self.choose_results)
         ui.pushButtonOutputAnnotationsChoose.clicked.connect(self.choose_annotations)
 
-        def show_connect(widget, function: Callable[[None],None]) -> None:
-            widget.clicked.connect(partial(self.show, function))
+        def open_connect(widget, function: Callable[[None],None]) -> None:
+            widget.clicked.connect(partial(self.open, function))
 
         model = self.main_model
 
-        show_connect(ui.pushButtonModelShow,       model.get_model_pdf      )
-        show_connect(ui.pushButtonKeysShow,        model.get_keys_pdf       )
-        show_connect(ui.pushButtonExamsShow,       model.get_exams_pdf      )
-        show_connect(ui.pushButtonResultsShow,     model.get_results_xlsx   )
-        show_connect(ui.pushButtonAnnotationsShow, model.get_annotations_pdf)
+        open_connect(ui.pushButtonModelOpen,       model.get_model_pdf      )
+        open_connect(ui.pushButtonKeysOpen,        model.get_keys_pdf       )
+        open_connect(ui.pushButtonExamsOpen,       model.get_exams_pdf      )
+        open_connect(ui.pushButtonNamesOpen,       model.get_names_xlsx     )
+        open_connect(ui.pushButtonResultsOpen,     model.get_results_xlsx   )
+        open_connect(ui.pushButtonAnnotationsOpen, model.get_annotations_pdf)
 
     #--------------------------------------------------------------------------#
     def update(self) -> None:
@@ -127,24 +127,24 @@ class MainController:
         has_results = self.main_model.has_results
         has_annot   = self.main_model.has_annot
 
-        self.ui.pushButtonModelShow.setEnabled(has_model)
+        self.ui.pushButtonModelOpen.setEnabled(has_model)
+        self.ui.pushButtonKeysOpen .setEnabled(has_model)
         self.ui.labelModelFileName .setEnabled(has_model)
-        self.ui.pushButtonKeysShow .setEnabled(has_model)
 
-        self.ui.pushButtonExamsShow.setEnabled(has_exams)
+        self.ui.pushButtonExamsOpen.setEnabled(has_exams)
         self.ui.labelExamsFileName .setEnabled(has_exams)
 
-        self.ui.pushButtonNamesShow  .setEnabled(has_names)
-        self.ui.pushButtonNamesRemove.setEnabled(has_names)
-        self.ui.labelNamesFileName   .setEnabled(has_names)
+        self.ui.pushButtonNamesOpen .setEnabled(has_names)
+        self.ui.pushButtonNamesCheck.setEnabled(has_names)
+        self.ui.labelNamesFileName  .setEnabled(has_names)
 
         self.ui.labelOutputResultsFileName    .setEnabled(has_results)
         self.ui.labelOutputAnnotationsFileName.setEnabled(has_annot)
 
         done = self.main_model.done
 
-        self.ui.pushButtonResultsShow    .setEnabled(done)
-        self.ui.pushButtonAnnotationsShow.setEnabled(done)
+        self.ui.pushButtonResultsOpen    .setEnabled(done)
+        self.ui.pushButtonAnnotationsOpen.setEnabled(done)
 
         ready = self.main_model.ready_to_run() and not done
         self.ui.action_Run   .setEnabled(ready)
@@ -233,7 +233,7 @@ class MainController:
     #--------------------------------------------------------------------------#
     # Exams model and answers functions
     #--------------------------------------------------------------------------#
-    def open_model(self) -> None:
+    def load_model(self) -> None:
         '''Open PDF file with model'''
 
         fname = self.get_open_fname(
@@ -271,7 +271,7 @@ class MainController:
             self.error_box('Erro lendo o modelo', message)
 
     #--------------------------------------------------------------------------#
-    def open_exams(self) -> None:
+    def load_exams(self) -> None:
         '''Open PDF file with exams'''
 
         fname = self.get_open_fname(
@@ -298,7 +298,28 @@ class MainController:
     #--------------------------------------------------------------------------#
     # List of names functions
     #--------------------------------------------------------------------------#
-    def open_names(self) -> None:
+    def toggle_names(self) -> None:
+        '''Load or remove the candidates names'''
+
+        if self.main_model.has_names:
+            self.remove_names()
+        else:
+            self.load_names()
+
+    #--------------------------------------------------------------------------#
+    def remove_names(self) -> None:
+        '''Remove the candidates names'''
+
+        self.main_model.remove_names()
+
+        self.ui.pushButtonNamesToggle.setText('Carregar')
+        self.ui.lineEditFirstCell    .setText('A2')
+        self.ui.labelNamesFileName   .setText('')
+
+        self.update()
+
+    #--------------------------------------------------------------------------#
+    def load_names(self) -> None:
         '''Select spreadsheet file with candidates names'''
 
         fname = self.get_open_fname(
@@ -320,6 +341,7 @@ class MainController:
         )
 
         if accept:
+            self.ui.pushButtonNamesToggle.setText('Remover')
             self.ui.labelNamesFileName.setText(fname)
             self.update()
 
@@ -359,11 +381,8 @@ class MainController:
             FileNotFoundError,
             RuntimeError
         ) as er:
-            message = (
-                f'Não foi possível ler o arquivo com {item}!\n\n'
-                f'{str(er)}'
-            )
-            accept = False
+            message = (str(er))
+            accept  = False
 
         except IndexError as er:
             message = str(er)
@@ -373,17 +392,6 @@ class MainController:
             self.error_box(title, message)
 
         return accept
-
-    #--------------------------------------------------------------------------#
-    def remove_names(self) -> None:
-        '''Remove the candidates names'''
-
-        self.main_model.remove_names()
-
-        self.ui.lineEditFirstCell .setText('A2')
-        self.ui.labelNamesFileName.setText('')
-
-        self.update()
 
     #--------------------------------------------------------------------------#
     # Results and Annotations functions
@@ -533,7 +541,7 @@ class MainController:
     #--------------------------------------------------------------------------#
     # Show functions
     #--------------------------------------------------------------------------#
-    def show(self, get_function: Callable[[None],None]) -> None:
+    def open(self, get_function: Callable[[None],None]) -> None:
         '''Call default desktop application to show a file'''
 
         url = QUrl.fromLocalFile(get_function())

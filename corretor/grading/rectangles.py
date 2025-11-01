@@ -39,7 +39,7 @@ DPI  = 300
 N_QUESTIONS = 30
 
 PAGE              = IRect( 0,    0, 2481, 3508)
-REGISTRATION_MASK = IRect(90, 1700, 2395, 3280)
+REGISTRATION_MASK = IRect(90, 1575, 2460, 3140)
 
 #------------------------------------------------------------------------------#
 
@@ -49,14 +49,14 @@ NAME_TEXT = IRect(125, 332, 2299, 393)
 ABSENT     = IRect( 102, 558,  278, 662)
 ELIMINATED = IRect(2135, 558, 2311, 662)
 
-BACKGROUND      = IRect(1175, 1840, 1315, 3066)
-BACKGROUND_GRAY = IRect(1770, 3105, 2365, 3230)
+BACKGROUND      = IRect(1220, 1700, 1315, 2930)
+BACKGROUND_GRAY = IRect(1800, 2970, 2380, 3080)
 
 #------------------------------------------------------------------------------#
 
-GRADES_BOX_LEFT  = IRect(1040, 1840, 1146, 3066)
-GRADES_BOX_RIGHT = IRect(2222, 1840, 2328, 3066)
-GRADES_FINAL     = IRect(1780, 3110, 2360, 3190)
+GRADES_BOX_LEFT  = IRect(1070, 1700, 1173, 2930)
+GRADES_BOX_RIGHT = IRect(2278, 1700, 2378, 2930)
+GRADES_FINAL     = IRect(1800, 2980, 2380, 3060)
 
 def _calc_grades() -> tuple[list[IRect]]:
 
@@ -95,8 +95,8 @@ GRADES, GRADES_TEXT = _calc_grades()
 
 #------------------------------------------------------------------------------#
 
-MARKS_BOX_LEFT  = IRect( 300, 1840,  998, 3066)
-MARKS_BOX_RIGHT = IRect(1483, 1840, 2181, 3066)
+MARKS_BOX_LEFT  = IRect( 300, 1700, 1020, 2935)
+MARKS_BOX_RIGHT = IRect(1510, 1700, 2230, 2935)
 
 def _calc_marks() -> list[list[IRect]]:
 
@@ -104,7 +104,7 @@ def _calc_marks() -> list[list[IRect]]:
 
         MARK_HEIGHT =  56
         MARK_WIDTH  = 106
-        CELL_WIDTH  = 148
+        CELL_WIDTH  = 154
 
         line = []
 

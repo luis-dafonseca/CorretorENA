@@ -5,10 +5,10 @@ block_cipher = None
 
 
 a = Analysis(
-    ['../src/corretor.py'],
+    ['src/corretor.py'],
     pathex=[],
     binaries=[],
-    datas=[('../src/resources', 'resources')],
+    datas=[('src/resources', 'resources')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -41,5 +41,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['../src/resources/icon.ico'],
+    icon=['src/resources/icon.ico'],
 )

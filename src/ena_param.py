@@ -25,10 +25,10 @@ RESOURCES = Path(__file__).resolve().parent / 'resources'
 #------------------------------------------------------------------------------#
 
 AUTHOR    = "Luis A. D'Afonseca"
-VERSION   = '0.0.2 - beta'
+VERSION   = '0.1.0 - alpha'
 TITLE     = 'CorretorENA'
 MY_APP_ID = 'Prof_Luis_A_DAfonseca.Corretor_ENA'
-APP_URL   = 'https://sites.google.com/view/prof-luis-dafonseca/profmat/Corretor_ENA'
+APP_URL   = 'https://luis-dafonseca.github.io/CorretorENA'
 SOURCE    = 'https://github.com/luis-dafonseca/CorretorENA'
 
 ABOUT = f'''

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+uv run src/corretor.py 2>&1      |
+    grep -v 'Handy-WARNING'      |
+    grep -v '^$'                 |
+    grep -v 'KApplicationTrader' |
+    grep -v 'libreoffice'        |
+    grep -v 'vrenuncia'          |
+    grep -v 'vdenuncia'

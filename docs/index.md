@@ -8,12 +8,15 @@ Exame Nacional de Acesso ao Profmat (ENA),
 desenvolvido por Luis A. D'Afonseca,
 professor do CEFET-MG e ex-coordenador local do Profmat.
 
-Para fazer o download e instalação, siga as instruções desta
-[página](./pages/download.md)
+O programa pode ser baixado gratuitamente desta
+[página](./pages/download.md).
+
+As instruções de uso estão na
+[documentação](./pages/documentacao.md).
 
 ![tela do programa](./pages/imag/tela_do_programa.png){ width="300" }
 /// caption
-Tela do programa
+Tela do programa.
 ///
 
 ![folha de respostas](./pages/imag/folha_respostas.png){ width="300" }

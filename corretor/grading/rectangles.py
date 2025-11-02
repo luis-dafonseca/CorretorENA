@@ -43,8 +43,9 @@ REGISTRATION_MASK = IRect(90, 1575, 2460, 3140)
 
 #------------------------------------------------------------------------------#
 
-NAME      = IRect(115, 320, 2299, 420)
-NAME_TEXT = IRect(125, 332, 2299, 393)
+NAME           = IRect(115, 320, 2299, 420)
+NAME_TEXT      = IRect(125, 330, 2299, 460)
+NAME_FONT_SIZE = 54
 
 ABSENT     = IRect( 102, 558,  278, 662)
 ELIMINATED = IRect(2135, 558, 2311, 662)
@@ -56,11 +57,12 @@ BACKGROUND_GRAY = IRect(1800, 2970, 2380, 3080)
 
 GRADES_BOX_LEFT  = IRect(1070, 1700, 1173, 2930)
 GRADES_BOX_RIGHT = IRect(2278, 1700, 2378, 2930)
-GRADES_FINAL     = IRect(1800, 2980, 2380, 3060)
+GRADES_FINAL     = IRect(1840, 2980, 2500, 3140)
+GRADES_FINAL_FONT_SIZE = 74
 
 def _calc_grades() -> tuple[list[IRect]]:
 
-    BOX_HEIGHT  = 53
+    BOX_HEIGHT  = 200
     CELL_HEIGHT = 83.6
     CELL_BASE   =  2
     TEXT_BASE   = -6
@@ -92,6 +94,8 @@ def _calc_grades() -> tuple[list[IRect]]:
     return (grades_box, grades_text)
 
 GRADES, GRADES_TEXT = _calc_grades()
+
+GRADES_TEXT_FONT_SIZE = 46
 
 #------------------------------------------------------------------------------#
 

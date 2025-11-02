@@ -185,7 +185,7 @@
           <string>Exibe o gabarito na folha de respostas</string>
          </property>
          <property name="text">
-          <string>Abrir</string>
+          <string>Mostrar</string>
          </property>
          <property name="autoDefault">
           <bool>true</bool>

@@ -34,18 +34,18 @@ SOURCE    = 'https://github.com/luis-dafonseca/CorretorENA'
 ABOUT = f'''
 <p>
 {TITLE} é um programa para corrigir as provas do ENA <br>
-<\p>
+</p>
 
 <p>
 <a href="{APP_URL}">Página do programa</a>    <br>
 <a href="{SOURCE}">Código fonte em Python</a> <br>
-<\p>
+</p>
 
 <p>
 Desenvolvedor: {AUTHOR} <br>
 Versão: {VERSION}       <br>
 Licença: GNU General Public License - Version 3
-<\p>
+</p>
 '''
 
 # Previous ENA question keys

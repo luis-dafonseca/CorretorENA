@@ -98,7 +98,7 @@ class ENAForm:
             rects.NAME_TEXT,
             name,
             color    = COLOR_NAME,
-            fontsize = int(0.9*rects.NAME_TEXT.height),
+            fontsize = rects.NAME_FONT_SIZE,
             align    = fitz.TEXT_ALIGN_LEFT
         )
         self.shape.finish()
@@ -118,14 +118,12 @@ class ENAForm:
         def write_final_score(shape, text: str, color: tuple[int]) -> None:
             '''Convenience function to write on final grade field'''
 
-            font_size = int(0.9*rects.GRADES_FINAL.height)
-
             shape.insert_textbox(
                 rects.GRADES_FINAL,
                 text,
-                color=color,
-                fontsize=font_size,
-                align=fitz.TEXT_ALIGN_LEFT
+                color    = color,
+                fontsize = rects.GRADES_FINAL_FONT_SIZE,
+                align    = fitz.TEXT_ALIGN_LEFT
             )
             shape.finish()
         #----------------------------------------------------------------------#
@@ -133,12 +131,10 @@ class ENAForm:
         # Write if candidate was eliminated of absent and exit function
         if answers.eliminated or answers.absent:
             text = 'Eliminado' if answers.eliminated else 'Ausente'
-            write_final_score( self.shape, text, COLOR_INCORRECT)
+            write_final_score(self.shape, text, COLOR_INCORRECT)
             return
 
         # Write the score for each answer
-        font_size = int(0.9*rects.GRADES_TEXT[0].height)
-
         for ii in range(rects.N_QUESTIONS):
 
             correct = answers.correct[ii]
@@ -147,9 +143,9 @@ class ENAForm:
             self.shape.insert_textbox(
                 rects.GRADES_TEXT[ii],
                 str(correct),
-                color=color,
-                fontsize=font_size,
-                align=fitz.TEXT_ALIGN_CENTER
+                color    = color,
+                fontsize = rects.GRADES_TEXT_FONT_SIZE,
+                align    = fitz.TEXT_ALIGN_CENTER
             )
 
         # Write the final score

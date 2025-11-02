@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'form_main_window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.10.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(502, 743)
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
@@ -91,7 +91,7 @@ class Ui_MainWindow(object):
 
         self.labelModel = QLabel(self.frameModel)
         self.labelModel.setObjectName(u"labelModel")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(4)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.labelModel.sizePolicy().hasHeightForWidth())
@@ -260,7 +260,7 @@ class Ui_MainWindow(object):
         self.labelNamesFileName = QLabel(self.frameNames)
         self.labelNamesFileName.setObjectName(u"labelNamesFileName")
         self.labelNamesFileName.setEnabled(False)
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         sizePolicy2.setHorizontalStretch(5)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.labelNamesFileName.sizePolicy().hasHeightForWidth())
@@ -291,7 +291,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.labelNomeCell = QLabel(self.frameNames)
         self.labelNomeCell.setObjectName(u"labelNomeCell")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         sizePolicy3.setHorizontalStretch(2)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.labelNomeCell.sizePolicy().hasHeightForWidth())
@@ -350,7 +350,7 @@ class Ui_MainWindow(object):
         self.pushButtonRun = QPushButton(self.frameButtons)
         self.pushButtonRun.setObjectName(u"pushButtonRun")
         self.pushButtonRun.setEnabled(False)
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy4.setHorizontalStretch(0)
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.pushButtonRun.sizePolicy().hasHeightForWidth())
@@ -362,7 +362,7 @@ class Ui_MainWindow(object):
         self.labelCorrection = QLabel(self.frameButtons)
         self.labelCorrection.setObjectName(u"labelCorrection")
         self.labelCorrection.setEnabled(True)
-        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         sizePolicy5.setHorizontalStretch(0)
         sizePolicy5.setVerticalStretch(0)
         sizePolicy5.setHeightForWidth(self.labelCorrection.sizePolicy().hasHeightForWidth())
@@ -569,7 +569,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(statustip)
         self.pushButtonKeysOpen.setStatusTip(QCoreApplication.translate("MainWindow", u"Exibe o gabarito na folha de respostas", None))
 #endif // QT_CONFIG(statustip)
-        self.pushButtonKeysOpen.setText(QCoreApplication.translate("MainWindow", u"Abrir", None))
+        self.pushButtonKeysOpen.setText(QCoreApplication.translate("MainWindow", u"Mostrar", None))
 #if QT_CONFIG(tooltip)
         self.pushButtonKeysEdit.setToolTip(QCoreApplication.translate("MainWindow", u"Abre o editor para editar o gabarito", None))
 #endif // QT_CONFIG(tooltip)

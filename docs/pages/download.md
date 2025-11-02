@@ -7,8 +7,9 @@ Para baixar o programa standalone, isto é,
 um executável que não precisa ser instalado no sistema e pode ser
 executado diretamente, selecione a opção adequada para seu sistema:
 
-- [Windows]() versão standalone para o Windows
-- [Linux](  ) versão standalone para o Linux
+- [Windows](https://github.com/luis-dafonseca/CorretorENA/releases/download/v0.1.0-alpha/windows-latest-v0.1.0-alpha.zip) versão standalone para o Windows
+- [Linux](   https://github.com/luis-dafonseca/CorretorENA/releases/download/v0.1.0-alpha/ubuntu-latest-v0.1.0-alpha.zip) versão standalone para o Linux
+- [MacOS](    https://github.com/luis-dafonseca/CorretorENA/releases/download/v0.1.0-alpha/macos-latest-v0.1.0-alpha.zip) versão standalone para o MacOS
 
 Se você preferir baixar o código fonte e executá-lo diretamente
 siga esses os [passos](executar_codigo.md).

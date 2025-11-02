@@ -1,80 +1,66 @@
-name: Build
+
+name: Build Standalone Executables (uv, multiplatform)
 
 on:
   push:
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - "v*"
   workflow_dispatch:
 
 jobs:
-
-  createrelease:
-    name: Create Release
-    runs-on: [ubuntu-latest]
-    steps:
-    - name: Create Release
-      id:   create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-    - name: Output Release URL File
-      run:  echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
-    - name: Save Release URL File for publish
-      uses: actions/upload-artifact@v1
-      with:
-        name: release_url
-        path: release_url.txt
-
   build:
-    name: Build packages
-    needs: createrelease
+    name: Build (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        include:
-          - os: macos-latest
-            TARGET: macos
-            CMD_BUILD: >
-                uv run pyinstaller CorretorENA_Standalone.spec &&
-                cd dist/ &&
-                zip -r9 CorretorENA_Standalone CorretorENA_Standalone.app/
-            OUT_FILE_NAME: CorretorENA_Standalone.zip
-            ASSET_MIME: application/zip
-          - os: windows-latest
-            TARGET: windows
-            CMD_BUILD: uv run pyinstaller CorretorENA_Standalone.spec
-            OUT_FILE_NAME: CorretorENA_Standalone.exe
-            ASSET_MIME: application/vnd.microsoft.portable-executable
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
     steps:
-    - uses: actions/checkout@v5
-    - name: Install uv
-      uses: astral-sh/setup-uv@v6
-    - name: Install dependencies
-      run:  uv venv
-    - name: Build with pyinstaller for ${{matrix.TARGET}}
-      run:  ${{matrix.CMD_BUILD}}
-    - name: Load Release URL File from release job
-      uses: actions/download-artifact@v1
-      with:
-        name: release_url
-    - name: Get Release File Name & Upload URL
-      id:   get_release_info
-      shell: bash
-      run: |
-        value=`cat release_url/release_url.txt`
-        echo ::set-output name=upload_url::$value
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-        asset_path: ./dist/${{ matrix.OUT_FILE_NAME}}
-        asset_name: ${{ matrix.OUT_FILE_NAME}}
-        asset_content_type: ${{ matrix.ASSET_MIME}}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          uv-version: "latest"
+
+      - name: Create environment and install dependencies
+        run: |
+          uv sync
+
+      - name: Build standalone with PyInstaller
+        run: |
+          uv run pyinstaller CorretorENA_Standalone.spec
+
+      - name: Package build artifacts
+        shell: bash
+        run: |
+          mkdir -p packaged
+          cp -r dist/* packaged/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: executavel-${{ matrix.os }}
+          path: packaged/
+
+  release:
+    name: Create Release with Assets
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_artifacts
+
+      - name: Show downloaded files (debug)
+        run: ls -R release_artifacts
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release_artifacts/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

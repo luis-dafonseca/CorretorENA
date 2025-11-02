@@ -64,13 +64,14 @@ class ResultsSheet:
         self.sheet['B1'] = 'Nota'
         self.sheet['C1'] = 'Resultado'
 
-        self.sheet['A1'].alignment = Alignment(horizontal='center')
-        self.sheet['B1'].alignment = Alignment(horizontal='center')
-        self.sheet['C1'].alignment = Alignment(horizontal='center')
+        for nn in range(1, 31):
+            cell = self.sheet.cell(row=1, column=nn+3)
+            cell.value = nn
 
-        self.sheet['A1'].font = Font(bold=True)
-        self.sheet['B1'].font = Font(bold=True)
-        self.sheet['C1'].font = Font(bold=True)
+        for nn in range(1, 34):
+            cell = self.sheet.cell(row=1, column=nn)
+            cell.alignment = Alignment(horizontal='center')
+            cell.font      = Font(bold=True)
 
         self.sheet.column_dimensions['A'].width = 16
         self.sheet.column_dimensions['C'].width = 12
@@ -140,6 +141,11 @@ class ResultsSheet:
         else:
             cc.value = 'Reprovado'
             self.reproved += 1
+
+        for nn in range(30):
+            cell = self.sheet.cell(row=ii+2, column=nn+4)
+            cell.value = answers.correct[nn]
+            cell.alignment = Alignment(horizontal='center')
 
     #--------------------------------------------------------------------------#
     def summary(self) -> dict[str, int]:

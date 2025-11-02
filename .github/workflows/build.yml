@@ -22,7 +22,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v3
         with:
-          uv-version: "latest"
+          version: "latest"
 
       - name: Create environment and install dependencies
         run: |

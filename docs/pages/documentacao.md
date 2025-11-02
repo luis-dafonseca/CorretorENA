@@ -1,7 +1,7 @@
 
-# CorretorENA
-
 # Usando o programa
+
+## Preparação
 
 Para usar o CorretorENA é necessário ter em mãos:
 
@@ -49,7 +49,7 @@ ENAs anteriores podem ser acessados pelo menu. Também é possível ler
 o gabarito de um arquivo tipo texto.
 
 
-### Passo a passo para executar o programa
+## Passo a passo para executar o programa
 
 1. Escanear todas as folhas de respostas em um arquivo PDF.
 
@@ -86,7 +86,7 @@ serão salvos automaticamente e o programa pode ser fechado.
 8. Verifique a correção de cada candidato conferindo o arquivo PDF gerado com
 as anotações.
 
-### Cuidados
+## Cuidados
 
 O resultado produzido pelo programa sempre deve ser verificado antes de
 divulgado.  Existem situações onde os algoritmos usados podem não produzir o
@@ -104,7 +104,7 @@ Isso pode acontecer por vários motivos:
     4. o escaneamento está muito escuro (causando sombras na página) ou
     5. muito claro (algumas partes não estão suficientemente visíveis).
 
-### Usando o programa para corrigir outras provas
+## Usando o programa para corrigir outras provas
 
 Desde que a folha de respostas seja equivalente o programa pode ser
 usado para corrigir as respostas de qualquer prova.

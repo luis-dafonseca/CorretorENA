@@ -6,13 +6,13 @@ nav:
   - Início:       index.md
   - Downloads:    pages/download.md
   - Documentação: pages/documentacao.md
-  - Licença:      LICENSE-pt-br.md
+  - Licença:      pages/licenca.md
 
 theme:
   name:       material
   language:   pt-BR
-  logo:       imag/favicon.png
-  favicon:    imga/favicon.png
+  logo:       imag/corretor_ena_icon.png
+  favicon:    imag/corretor_ena_icon.png
   custom_dir: docs/overrides
 
   features:
@@ -41,6 +41,7 @@ theme:
 markdown_extensions:
   - admonition
   - attr_list
+  - pymdownx.blocks.caption
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.tabbed:

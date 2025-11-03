@@ -11,7 +11,7 @@ from grading.spreadsheets import ResultsSheet, read_names_from_spreadsheet
 from grading.pdfs         import InputPDF, OutputPDF
 from grading.eval_grades  import eval_grades
 
-from tests.cli_progress import CLIProgressBar
+from tools.cli_progress import CLIProgressBar
 
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':

@@ -54,3 +54,8 @@ extra_javascript:
 
 extra_css:
   - stylesheets/extras.css
+
+extra:
+  analytics:
+    provider: google
+    property: G-P24E409MPE

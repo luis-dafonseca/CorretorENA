@@ -16,7 +16,6 @@
   font-weight: 400;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  padding-left: .6rem;
   border-bottom: 1px solid var(--md-default-fg-color);
   color: var(--md-accent-fg-color);
 }

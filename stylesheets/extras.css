@@ -1,0 +1,64 @@
+/* ===== Destaque para títulos (h1–h6) no MkDocs Material ===== */
+
+/* Título da página (#) */
+.md-typeset h1 {
+  font-size: 2.4em;
+  font-weight: 500;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: .5rem;
+  color: var(--md-accent-fg-color);
+}
+
+/* Seções principais (##) */
+.md-typeset h2 {
+  font-size: 1.8em;
+  font-weight: 400;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--md-default-fg-color);
+  color: var(--md-accent-fg-color);
+}
+
+/* Subseções (###) */
+.md-typeset h3 {
+  font-size: 1.5em;
+  font-weight: 300;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid var(--md-default-fg-color--lightest);
+  padding-bottom: .25rem;
+  color: var(--md-accent-fg-color);
+}
+
+/* Nível 4 (####) */
+.md-typeset h4 {
+  font-size: 1.3em;
+  font-weight: 300;
+  margin-top: 1.2rem;
+  margin-bottom: 0.4rem;
+  color: var(--md-accent-fg-color);
+  text-decoration: underline;
+  text-decoration-color: var(--md-default-fg-color);
+  text-decoration-thickness: 2px;
+}
+
+/* Nível 5 (#####) */
+.md-typeset h5 {
+  font-size: 1.15em;
+  font-weight: 300;
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+  color: var(--md-default-fg-color--light);
+  letter-spacing: .5px;
+}
+
+/* Nível 6 (######) */
+.md-typeset h6 {
+  font-size: 1em;
+  font-weight: 200;
+  margin-top: 0.8rem;
+  margin-bottom: 0.2rem;
+  color: var(--md-default-fg-color--lighter);
+  font-style: italic;
+}
